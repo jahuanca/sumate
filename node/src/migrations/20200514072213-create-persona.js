@@ -13,7 +13,7 @@ module.exports = {
       apellido: {type: Sequelize.STRING(50), allowNull: false, validate: {notEmpty: true, len: [1,50]}},
       direccion: {type: Sequelize.STRING(150), allowNull: true, validate: {notEmpty: true, len: [1,50]}},
       celular: {type: Sequelize.CHAR(9), allowNull: true, validate: {len: [9,9], isNumeric: true}},
-      imagen: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
+      imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       validado: {type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false},
       descripcion: {type: Sequelize.STRING(100), allowNull: true, validate: {notEmpty: true, len: [1,100]}},
       observacion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},

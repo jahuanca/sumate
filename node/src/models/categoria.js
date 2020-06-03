@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Categoria'
   });
   Categoria.associate = function(models) {
-    // associations can be defined here
+    Categoria.hasMany(models.Producto, {foreignKey: 'id_categoria'})
   };
   return Categoria;
 };

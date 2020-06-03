@@ -16,6 +16,7 @@ const auth=require('../middlewares/auth')
  */
 router.get('/',comercio.getComercios)
 router.get('/id/:id',comercio.getComercio)
+router.get('/id_usuario/:id',comercio.getComercioUsuario)
 router.post('/create',comercio.createComercio)
 router.post('/createAllComercio',comercio.createAllComercio)
 router.put('/update', comercio.updateComercio)

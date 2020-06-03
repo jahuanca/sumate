@@ -55,7 +55,7 @@ async function signInUser(req, res){
     if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
     if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
     let token=service.createToken(usuario)
-    res.status(200).json({username: usuario.username , token})
+    res.status(200).json({usuario: usuario, token})
 }
 
 

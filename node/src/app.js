@@ -89,6 +89,11 @@ app.use(express.static('./public'));
 http.listen(config.port,()=>{
     actualizarDatos.llenarTipoUsuarios();
     actualizarDatos.llenarDepartamentos();
+    actualizarDatos.llenarUsuarios();
+    actualizarDatos.llenarTipoEnvio();
+    actualizarDatos.llenarEstadoPedido();
+    actualizarDatos.llenarTipoComercio();
+    actualizarDatos.llenarCategorias();
     console.log(`API REST: corriendo en el puerto: ${config.port}`)
 })
 

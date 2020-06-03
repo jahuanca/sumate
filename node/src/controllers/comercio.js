@@ -20,6 +20,15 @@ async function getComercio(req,res){
   res.status(200).json(comercio)
 }
 
+async function getComercioUsuario(req,res){
+  let [err,comercio]=await get(models.Comercio.findOne({
+    where:{id_usuario: req.params.id, estado: 'A'}
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(comercio==null) return res.status(404).json({message: `Comercios nulos`})
+  res.status(200).json(comercio)
+}
+
 async function createComercio(req,res){
   let [err,comercio]=await get(models.Comercio.create({
       id_tipo: req.body.id_tipo,
@@ -143,6 +152,7 @@ function get(promise) {
 module.exports={
   getComercios,
   getComercio,
+  getComercioUsuario,
   createComercio,
   createAllComercio,
   updateComercio,

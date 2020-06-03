@@ -3,9 +3,9 @@ const jwt=require('jwt-simple')
 const moment=require('moment')
 const config=require('../config')
 
-function createToken(user, tipo, id){
+function createToken(user){
     const payload={
-        sub: [user.id, tipo, id],
+        sub: [user.id, user.id_tipo_usuario],
         iat: moment().unix(),
         exp: moment().add(1, 'days').unix()
     }

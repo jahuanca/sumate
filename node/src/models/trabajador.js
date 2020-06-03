@@ -2,8 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Trabajador = sequelize.define('Trabajador', {
     id_persona:{type:DataTypes.INTEGER, allowNull: false,validate: {isInt: true, min: 0}},
-    email: {type: DataTypes.STRING(100), allowNull: false, validate: {notEmpty: true, isEmail: true, len: [1,100]}},
-    password: {type: DataTypes.STRING(20), allowNull: false, validate: {notEmpty: true, len: [4,20]}},
+    id_usuario: {type: DataTypes.INTEGER, allowNull: false, validate: {min: 1, isInt: true}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     estado: {type: DataTypes.CHAR(1), allowNull: false, defaultValue: 'A',
       validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}

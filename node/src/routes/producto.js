@@ -3,6 +3,21 @@ const express=require('express')
 const router=express.Router()
 const producto=require('../controllers/producto')
 const auth=require('../middlewares/auth')
+const multer  = require('multer')
+const path=require('path')
+const crypto=require('crypto')
+
+const storage=multer.diskStorage({
+    destination: './public/uploads/productos/',
+    filename: function(req, file, cb) {
+      return crypto.pseudoRandomBytes(16, function(err, raw) {
+        if (err) {
+          return cb(err);
+        }
+        return cb(null, "sum2020_" + (raw.toString('hex')) + (path.extname(file.originalname)));
+      });
+    }
+  });
 
 /**
  * @swagger
@@ -16,9 +31,10 @@ const auth=require('../middlewares/auth')
  */
 router.get('/',producto.getProductos)
 router.get('/id/:id',producto.getProducto)
-router.post('/create',producto.createProducto)
+router.get('/id_comercio/:id',producto.getProductosComercio)
+router.post('/create', multer({storage: storage}).array('files',5) ,producto.createProducto)
 router.post('/createAllProducto',producto.createAllProducto)
-router.put('/update', producto.updateProducto)
+router.put('/update',  multer({storage: storage}).array('files',5) ,producto.updateProducto)
 router.delete('/delete/:id', producto.deleteProducto)
 
 module.exports=router

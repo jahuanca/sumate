@@ -20,18 +20,15 @@ module.exports = {
           key:'id'
         }
       },
-      nombre: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
+      nombre: {type: Sequelize.STRING(200), allowNull: false, validate: {notEmpty: true, len: [1,200]}},
+      presentacion: {type: Sequelize.STRING(200), allowNull: false, validate: {notEmpty: true, len: [1,200]}},
       descripcion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       observacion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       cantidad: {type: Sequelize.INTEGER, allowNull: false, validate: {notEmpty: true, min: 0}},
       peso: {type: Sequelize.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}},
       precio: {type: Sequelize.DOUBLE, allowNull: false, validate: {isDecimal: true, min: 0}},
       tiempo_preparacion: {type: Sequelize.INTEGER, allowNull: false, validate: {isDecimal: true, min: 0}},
-      foto_1: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
-      foto_2: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
-      foto_3: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
-      foto_4: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
-      foto_5: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
+      imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       estado: {type: Sequelize.CHAR(1), allowNull: false, defaultValue: 'A',
         validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}
       },

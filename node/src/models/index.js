@@ -35,3 +35,17 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+module.exports.limpiar=limpiar;
+
+  function limpiar(value){
+    if(value==undefined || value==0 || value==null){
+        return null;
+    }
+    value=value.replace(/-/g,"");
+    if(value.trim()=='' || value.trim()=='null'){
+        return null;
+    }else{
+        return value.trim()
+    }
+}
+

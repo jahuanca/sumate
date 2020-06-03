@@ -8,6 +8,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      id_usuario: {type: Sequelize.INTEGER, allowNull: false, validate: {isInt: true, min: 1}
+        ,references:{
+          model:'Usuario',
+          key: 'id'
+        }
+      },
       id_tipo_comercio: {type: Sequelize.INTEGER, allowNull: false, validate: {isInt: true, min: 1}
         ,references:{
           model:'Tipo_Comercio',
@@ -22,8 +28,8 @@ module.exports = {
       validado: {type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false},
       hora_apertura: {type: Sequelize.DATE, allowNull: false},
       hora_cierre: {type: Sequelize.DATE, allowNull: false},
-      username: {type: Sequelize.STRING(50), allowNull: false, validate: {notEmpty: true, len: [1,50]}},
-      password: {type: Sequelize.STRING(20), allowNull: false, validate: {notEmpty: true, len: [1,20]}},
+      imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
+      descripcion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       observacion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       estado: {type: Sequelize.CHAR(1), allowNull: false, defaultValue: 'A',
         validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}

@@ -34,7 +34,7 @@ const auth=require('../controllers/auth')
 *      password:
 *        type: string
 */
-router.post('/signInUser',auth.signInUser)
+router.post('/signIn',auth.signInUser)
 /**
 * @swagger
 *  /auth/signInAdmin:

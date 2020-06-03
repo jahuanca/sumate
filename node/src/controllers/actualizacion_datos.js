@@ -13,7 +13,10 @@ module.exports={
   llenarDepartamentos,
   llenarEstadoPedido,
   llenarFormaPago,
-  llenarTipoEnvio
+  llenarTipoEnvio,
+  llenarUsuarios,
+  llenarTipoComercio,
+  llenarCategorias
 }
 
 function scriptDireccion() {
@@ -80,6 +83,61 @@ async function llenarSupervisores(){
 
 }
 
+async function llenarUsuarios(){
+  let [err,usuario]=await get(models.Usuario.count({where: {estado: 'A'}}))
+  if(usuario==0){
+    let usuarios=[
+      {
+        id_tipo_usuario: 2,
+        username: 'jose1@gmail.com',
+        password: '1234'
+      },
+      {
+        id_tipo_usuario: 3,
+        username: 'jose2@gmail.com',
+        password: '1234'
+      },
+      {
+        id_tipo_usuario: 4,
+        username: 'jose3@gmail.com',
+        password: '1234'
+      },
+      {
+        id_tipo_usuario: 5,
+        username: 'jose4@gmail.com',
+        password: '1234'
+      },
+    ]
+      let [err2,usuario]=await get(models.Usuario.bulkCreate(usuarios))
+      if(err2) console.log(`${err2}`)
+      console.log('Usuarios creados')
+
+  }else{
+      console.log('Ya tiene usuarios')
+  }
+
+}
+
+async function llenarTipoComercio(){
+  let [err,tipo]=await get(models.Tipo_Comercio.count({where: {estado: 'A'}}))
+  if(tipo==0){
+    let tipos=[
+      {
+        nombre: 'Bebidas y Licores',
+        descripcion: 'Venta de bebidas alcoholicas.',
+        observacion: 'Ingresado por defecto'
+      }
+      
+    ]
+      let [err2,tipo]=await get(models.Tipo_Comercio.bulkCreate(tipos))
+      if(err2) console.log(`${err2}`)
+      console.log('Tipos de comercios creados')
+
+  }else{
+      console.log('Ya tiene tipos de comercios')
+  }
+}
+
 async function llenarTipoUsuarios(){
   let [err,cantidad]=await get(models.Tipo_Usuario.count({where: {estado: 'A'}}))
   if(err) console.log(`${err}`)
@@ -89,7 +147,7 @@ async function llenarTipoUsuarios(){
         {nombre: 'Delivery', descripcion: 'Acceso a todas las tablas y reporte del dia.', observacion: 'Ingresado por defecto.'},
         {nombre: 'Comercio', descripcion: 'Acceso a todas las tablas y reporte del dia.', observacion: 'Ingresado por defecto.'},
         {nombre: 'Administrador', descripcion: 'Acceso a todas las tablas y reporte del dia.', observacion: 'Ingresado por defecto.'},
-        {nombre: 'Super-Admin', descripcion: 'Acceso todas las tablas y funciones.',  observacion: 'Ingresado por defecto.'}
+        {nombre: 'Super_Admin', descripcion: 'Acceso todas las tablas y funciones.',  observacion: 'Ingresado por defecto.'}
       ]
       
       let [err2,tipo]=await get(models.Tipo_Usuario.bulkCreate(tipos,{hooks: false}))
@@ -97,6 +155,32 @@ async function llenarTipoUsuarios(){
       console.log('Tipos de usuarios creados')
   }else{
       console.log('Ya tiene tipos de usuarios')
+  }
+
+}
+
+async function llenarCategorias(){
+  let [err,categoria]=await get(models.Categoria.count({where: {estado: 'A'}}))
+  if(categoria==0){
+    let categorias=[
+      {
+        nombre: 'Bebidas Alcoholicas',
+        descripcion: 'Todo tipo de bebidas con alcohol',
+        observacion: 'Ingresado por defecto'
+      },
+      {
+        nombre: 'Abarrotes',
+        descripcion: 'Todo tipo de abarrotes',
+        observacion: 'Ingresado por defecto'
+      }
+      
+    ]
+      let [err2,categoria]=await get(models.Categoria.bulkCreate(categorias))
+      if(err2) console.log(`${err2}`)
+      console.log('Categorias de comercio creadas')
+
+  }else{
+      console.log('Ya tiene categorias')
   }
 
 }

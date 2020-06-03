@@ -20,17 +20,46 @@ async function getProducto(req,res){
   res.status(200).json(producto)
 }
 
-async function createProducto(req,res){
-  let [err,producto]=await get(models.Producto.create({
-      id_tipo: req.body.id_tipo,
-      username: req.body.username,
-      password: req.body.password,
-      
-      accion: 'I',
-      accion_producto: 'Creo un nuevo producto.',
-      ip: req.ip,
-      producto: 0
+async function getProductosComercio(req,res){
+  let [err,producto]=await get(models.Producto.findAll({
+    where:{id_comercio: req.params.id, estado: 'A'},
+    include: ['Categoria']
   }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(producto==null) return res.status(404).json({message: `Productos nulos`})
+  res.status(200).json(producto)
+}
+
+async function createProducto(req,res){
+  let p={
+    id_categoria: req.body.id_categoria,
+    id_comercio: req.body.id_comercio,
+    nombre: req.body.nombre,
+    presentacion: req.body.presentacion,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+    cantidad: req.body.cantidad,
+    peso: req.body.peso,
+    precio: req.body.precio,
+    tiempo_preparacion: req.body.tiempo_preparacion,
+    accion: 'I',
+    accion_producto: 'Creo un nuevo producto.',
+    ip: req.ip,
+    usuario: 0
+  }
+  if(req.files){
+    p.imagenes='';
+    for (let i = 0; i < req.files.length; i++) {
+      p.imagenes=p.imagenes+req.files[i].filename;
+      if(i!=req.files.length-1){
+        p.imagenes=p.imagenes+','
+      }
+    }
+    p.imagenes=models.limpiar(p.imagenes)
+  }
+  
+  let [err,producto]=await get(models.Producto.create(p))
+  console.log(err)
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
@@ -94,25 +123,52 @@ async function createAllProducto(req,res){
 }
 
 async function updateProducto(req,res){
-  let [err,producto]=await get(models.Producto.update({
-    id_tipo: req.body.id_tipo,
-    username: req.body.username,
-    password: req.body.password,
+  
+  
+  let p={
+    id_categoria: req.body.id_categoria,
+    id_comercio: req.body.id_comercio,
+    nombre: req.body.nombre,
+    presentacion: req.body.presentacion,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+    cantidad: req.body.cantidad,
+    peso: req.body.peso,
+    precio: req.body.precio,
+    tiempo_preparacion: req.body.tiempo_preparacion,
     
     accion: 'U',
     accion_producto: 'Edito un producto.',
     ip: req.ip,
     producto: 0
-  },{
-    where:{
-      id: req.body.id, estado:'A'
-    },
-    individualHooks: true,
-    validate: false
-  }))
+  }
+  if(req.files){
+    p.imagenes='';
+    for (let i = 0; i < req.files.length; i++) {
+      if(req.files[i].originalname.includes('sum2020_')){
+        p.imagenes=p.imagenes+req.files[i].originalname;
+      }else{
+        p.imagenes=p.imagenes+req.files[i].filename;
+      }
+      if(i!=req.files.length-1){
+        p.imagenes=p.imagenes+','
+      }
+    }
+    p.imagenes=models.limpiar(p.imagenes)
+  }
+
+  let [err,producto]=await get(models.Producto.update(p,
+    {
+      where:{
+        id: req.body.id, estado:'A'
+      },
+      individualHooks: true
+    }  
+  ))
+  console.log(err)
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
-  res.status(200).json(producto)
+  res.status(200).json(producto[1][0].dataValues)
 }
 
 async function deleteProducto(req,res){
@@ -142,6 +198,7 @@ function get(promise) {
 
 module.exports={
   getProductos,
+  getProductosComercio,
   getProducto,
   createProducto,
   createAllProducto,
