@@ -10,7 +10,6 @@ module.exports={
     signInUser,
     validateAuth
 }
-
 function validateAuth(metodo){
     switch(metodo){
         case 'signInAdmin':{
@@ -39,23 +38,26 @@ async function signInAdmin(req, res){
     let token=service.createToken(usuario,4,usuario.Directiva.id)
     res.status(200).json({token})
 }
-
+//signin
 async function signInUser(req, res){
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()});
     }
     let [err,usuario]=await get(models.Usuario.findOne({
-        attributes: ['id', 'username'],
         where:{
-            username: req.body.username,
-            password: req.body.password
+            username: req.body.username
         }
     }))
+    
     if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
     if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
-    let token=service.createToken(usuario)
-    res.status(200).json({usuario: usuario, token})
+    if(usuario.correctPassword(String(req.body.password))){
+        let token=service.createToken(usuario)
+        res.status(200).json({usuario: usuario, token})
+    }else{
+        return res.status(404).json({message: `Contraseña incorrecta`})
+    }
 }
 
 

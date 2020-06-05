@@ -24,6 +24,8 @@ module.exports = {
       nombre: {type: Sequelize.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
       razon_social: {type: Sequelize.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
       direccion: {type: Sequelize.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
+      latitud:{type: Sequelize.DOUBLE, allowNull:false, validate: {isNumeric: true}},
+      longitud:{type: Sequelize.DOUBLE, allowNull:false, validate: {isNumeric: true}},
       celular: {type: Sequelize.STRING(9), allowNull: false, validate: {notEmpty: true, len: [9,9]}},
       validado: {type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false},
       hora_apertura: {type: Sequelize.DATE, allowNull: false},

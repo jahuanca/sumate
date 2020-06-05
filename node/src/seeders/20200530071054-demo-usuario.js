@@ -17,7 +17,9 @@ module.exports = {
         }
       )
     }
-    return models.Usuario.bulkCreate(elementos, {returning: true})
+    return models.Usuario.bulkCreate(elementos, {
+      individualHooks: true 
+    }, {returning: true})
   },
 
   down: (queryInterface, Sequelize) => {

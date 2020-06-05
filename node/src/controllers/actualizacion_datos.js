@@ -108,7 +108,7 @@ async function llenarUsuarios(){
         password: '1234'
       },
     ]
-      let [err2,usuario]=await get(models.Usuario.bulkCreate(usuarios))
+      let [err2,usuario]=await get(models.Usuario.bulkCreate(usuarios,{individualHooks: true}))
       if(err2) console.log(`${err2}`)
       console.log('Usuarios creados')
 

@@ -16,6 +16,8 @@ module.exports = {
           nombre: chance.name(),
           razon_social: chance.name({ middle: true }),
           direccion: chance.address(),
+          latitud: chance.latitude({min: -5.3, max: -5.1}),
+          longitud: chance.longitude({min: -80.7, max: -80.5}),
           celular:  chance.string({ length: 8, numeric: true }),
           validado: false,
           hora_apertura: new Date(),

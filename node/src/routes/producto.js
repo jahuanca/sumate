@@ -17,7 +17,7 @@ const storage=multer.diskStorage({
         return cb(null, "sum2020_" + (raw.toString('hex')) + (path.extname(file.originalname)));
       });
     }
-  });
+});
 
 /**
  * @swagger

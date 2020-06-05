@@ -7,6 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     nombre: {type: DataTypes.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
     razon_social: {type: DataTypes.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
     direccion: {type: DataTypes.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
+    latitud:{type: DataTypes.DOUBLE, allowNull:false, validate: {isNumeric: true}},
+    longitud:{type: DataTypes.DOUBLE, allowNull:false, validate: {isNumeric: true}},
     celular: {type: DataTypes.STRING(9), allowNull: false, validate: {notEmpty: true, len: [9,9]}},
     validado: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
     hora_apertura: {type: DataTypes.DATE, allowNull: false},
@@ -30,6 +32,8 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Comercio'
   });
   Comercio.associate = function(models) {
+    Comercio.belongsTo(models.Tipo_Comercio, {foreignKey: 'id_tipo_comercio'})
+    Comercio.belongsTo(models.Usuario, {foreignKey: 'id_usuario'})
   };
   return Comercio;
 };
