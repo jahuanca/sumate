@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Tipo_Usuario'
   });
   Tipo_Usuario.associate = function(models) {
-    // associations can be defined here
+    Tipo_Usuario.hasMany(models.Usuario, {foreignKey: 'id_tipo_usuario'})
   };
   return Tipo_Usuario;
 };

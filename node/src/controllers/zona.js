@@ -22,15 +22,18 @@ async function getZona(req,res){
 
 async function createZona(req,res){
   let [err,zona]=await get(models.Zona.create({
-      id_tipo: req.body.id_tipo,
-      username: req.body.username,
-      password: req.body.password,
+      id_distrito: req.body.id_distrito,
+      nombre: req.body.nombre,
+      descripcion: models.limpiar(req.body.descripcion),
+      observacion: models.limpiar(req.body.observacion),
+      puntos:req.body.puntos,
       
       accion: 'I',
       accion_zona: 'Creo un nuevo zona.',
       ip: req.ip,
       zona: 0
   }))
+  console.log(err)
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(zona==null) return res.status(404).json({message: `Zonas nulos`})
   res.status(200).json(zona)
@@ -95,14 +98,16 @@ async function createAllZona(req,res){
 
 async function updateZona(req,res){
   let [err,zona]=await get(models.Zona.update({
-    id_tipo: req.body.id_tipo,
-    username: req.body.username,
-    password: req.body.password,
+    id_distrito: req.body.id_distrito,
+    nombre: req.body.nombre,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+    puntos:req.body.puntos,
     
     accion: 'U',
-    accion_zona: 'Edito un zona.',
+    accion_usuario: 'Edito una zona.',
     ip: req.ip,
-    zona: 0
+    usuario: 0
   },{
     where:{
       id: req.body.id, estado:'A'
@@ -110,9 +115,10 @@ async function updateZona(req,res){
     individualHooks: true,
     validate: false
   }))
+  console.log(err)
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(zona==null) return res.status(404).json({message: `Zonas nulos`})
-  res.status(200).json(zona)
+  res.status(200).json(zona[1][0].dataValues)
 }
 
 async function deleteZona(req,res){

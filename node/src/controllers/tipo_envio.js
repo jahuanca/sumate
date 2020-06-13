@@ -21,16 +21,27 @@ async function getTipo_Envio(req,res){
 }
 
 async function createTipo_Envio(req,res){
-  let [err,tipo_envio]=await get(models.Tipo_Envio.create({
-      id_tipo: req.body.id_tipo,
-      username: req.body.username,
-      password: req.body.password,
-      
-      accion: 'I',
-      accion_tipo_envio: 'Creo un nuevo tipo_envio.',
-      ip: req.ip,
-      tipo_envio: 0
-  }))
+  let p={
+    nombre: req.body.nombre,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+    
+    accion: 'I',
+    accion_usuario: 'Creo un nuevo tipo de envio.',
+    ip: req.ip,
+    usuario: 0
+  }
+  if(req.files){
+    p.imagenes='';
+    for (let i = 0; i < req.files.length; i++) {
+      p.imagenes=p.imagenes+req.files[i].filename;
+      if(i!=req.files.length-1){
+        p.imagenes=p.imagenes+','
+      }
+    }
+    p.imagenes=models.limpiar(p.imagenes)
+  }
+  let [err,tipo_envio]=await get(models.Tipo_Envio.create(p))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(tipo_envio==null) return res.status(404).json({message: `Tipo_Envios nulos`})
   res.status(200).json(tipo_envio)
@@ -94,22 +105,39 @@ async function createAllTipo_Envio(req,res){
 }
 
 async function updateTipo_Envio(req,res){
-  let [err,tipo_envio]=await get(models.Tipo_Envio.update({
-    id_tipo: req.body.id_tipo,
-    username: req.body.username,
-    password: req.body.password,
+  let p={
+    nombre: req.body.nombre,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
     
     accion: 'U',
-    accion_tipo_envio: 'Edito un tipo_envio.',
+    accion_usuario: 'Edito un tipo de envio.',
     ip: req.ip,
-    tipo_envio: 0
-  },{
-    where:{
-      id: req.body.id, estado:'A'
-    },
-    individualHooks: true,
-    validate: false
-  }))
+    usuario: 0
+  }
+  if(req.files){
+    p.imagenes='';
+    for (let i = 0; i < req.files.length; i++) {
+      if(req.files[i].originalname.includes('sum2020_')){
+        p.imagenes=p.imagenes+req.files[i].originalname;
+      }else{
+        p.imagenes=p.imagenes+req.files[i].filename;
+      }
+      if(i!=req.files.length-1){
+        p.imagenes=p.imagenes+','
+      }
+    }
+    p.imagenes=models.limpiar(p.imagenes)
+  }
+
+  let [err,tipo_envio]=await get(models.Tipo_Envio.update(p,
+    {
+      where:{
+        id: req.body.id, estado:'A'
+      },
+      individualHooks: true
+    }  
+  ))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(tipo_envio==null) return res.status(404).json({message: `Tipo_Envios nulos`})
   res.status(200).json(tipo_envio)

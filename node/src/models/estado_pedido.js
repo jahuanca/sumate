@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Estado_Pedido'
   });
   Estado_Pedido.associate = function(models) {
-    // associations can be defined here
+    Estado_Pedido.hasMany(models.Pedido, {foreignKey: 'id_estado_pedido'})
   };
   return Estado_Pedido;
 };

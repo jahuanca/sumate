@@ -3,7 +3,21 @@ const express=require('express')
 const router=express.Router()
 const tipo_comercio=require('../controllers/tipo_comercio')
 const auth=require('../middlewares/auth')
+const multer  = require('multer')
+const path=require('path')
+const crypto=require('crypto')
 
+const storage=multer.diskStorage({
+    destination: './public/uploads/tipos-comercio/',
+    filename: function(req, file, cb) {
+      return crypto.pseudoRandomBytes(16, function(err, raw) {
+        if (err) {
+          return cb(err);
+        }
+        return cb(null, "sum2020_" + (raw.toString('hex')) + (path.extname(file.originalname)));
+      });
+    }
+});
 /**
  * @swagger
  * /Tipo_Comercio/:
@@ -16,9 +30,8 @@ const auth=require('../middlewares/auth')
  */
 router.get('/',tipo_comercio.getTipo_Comercios)
 router.get('/id/:id',tipo_comercio.getTipo_Comercio)
-router.post('/create',tipo_comercio.createTipo_Comercio)
-router.post('/createAllTipo_Comercio',tipo_comercio.createAllTipo_Comercio)
-router.put('/update', tipo_comercio.updateTipo_Comercio)
+router.post('/create',multer({storage: storage}).array('files',5), tipo_comercio.createTipo_Comercio)
+router.put('/update',multer({storage: storage}).array('files',5),  tipo_comercio.updateTipo_Comercio)
 router.delete('/delete/:id', tipo_comercio.deleteTipo_Comercio)
 
 module.exports=router

@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     nombre: {type: DataTypes.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
     descripcion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
+    imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     estado: {type: DataTypes.CHAR(1), allowNull: false, defaultValue: 'A',
       validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}
     },
@@ -20,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Tipo_Envio'
   });
   Tipo_Envio.associate = function(models) {
-    // associations can be defined here
+    Tipo_Envio.hasMany(models.Pedido, {foreignKey: 'id_tipo_envio'})
   };
   return Tipo_Envio;
 };

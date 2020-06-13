@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     nombre: {type: DataTypes.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
     descripcion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
+    latitud: {type: DataTypes.DOUBLE, allowNull: false, unique: true, validate: {min:1, isInt: true}},
+    longitud: {type: DataTypes.DOUBLE, allowNull: false, unique: true, validate: {min:1, isInt: true}},
+    imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     estado: {type: DataTypes.CHAR(1), allowNull: false, defaultValue: 'A',
       validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}
     },
@@ -21,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Provincia'
   });
   Provincia.associate = function(models) {
-    // associations can be defined here
+    Provincia.belongsTo(models.Departamento, {foreignKey: 'id_departamento'});
+    Provincia.hasMany(models.Distrito, {foreignKey: 'id_provincia'});
   };
   return Provincia;
 };

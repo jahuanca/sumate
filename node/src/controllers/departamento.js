@@ -21,16 +21,29 @@ async function getDepartamento(req,res){
 }
 
 async function createDepartamento(req,res){
-  let [err,departamento]=await get(models.Departamento.create({
-      id_tipo: req.body.id_tipo,
-      username: req.body.username,
-      password: req.body.password,
-      
-      accion: 'I',
-      accion_departamento: 'Creo un nuevo departamento.',
-      ip: req.ip,
-      departamento: 0
-  }))
+  let p={
+    nombre: req.body.nombre,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+    latitud: req.body.latitud,
+    longitud: req.body.longitud,
+    
+    accion: 'I',
+    accion_usuario: 'Creo un nuevo departamento.',
+    ip: req.ip,
+    usuario: 0
+  }
+  if(req.files){
+    p.imagenes='';
+    for (let i = 0; i < req.files.length; i++) {
+      p.imagenes=p.imagenes+req.files[i].filename;
+      if(i!=req.files.length-1){
+        p.imagenes=p.imagenes+','
+      }
+    }
+    p.imagenes=models.limpiar(p.imagenes)
+  }
+  let [err,departamento]=await get(models.Departamento.create(p))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(departamento==null) return res.status(404).json({message: `Departamentos nulos`})
   res.status(200).json(departamento)
@@ -94,22 +107,41 @@ async function createAllDepartamento(req,res){
 }
 
 async function updateDepartamento(req,res){
-  let [err,departamento]=await get(models.Departamento.update({
-    id_tipo: req.body.id_tipo,
-    username: req.body.username,
-    password: req.body.password,
+  let p={
+    nombre: req.body.nombre,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+    latitud: req.body.latitud,
+    longitud: req.body.longitud,
     
     accion: 'U',
-    accion_departamento: 'Edito un departamento.',
+    accion_usuario: 'Edito un departamento.',
     ip: req.ip,
-    departamento: 0
-  },{
-    where:{
-      id: req.body.id, estado:'A'
-    },
-    individualHooks: true,
-    validate: false
-  }))
+    usuario: 0
+  }
+  if(req.files){
+    p.imagenes='';
+    for (let i = 0; i < req.files.length; i++) {
+      if(req.files[i].originalname.includes('sum2020_')){
+        p.imagenes=p.imagenes+req.files[i].originalname;
+      }else{
+        p.imagenes=p.imagenes+req.files[i].filename;
+      }
+      if(i!=req.files.length-1){
+        p.imagenes=p.imagenes+','
+      }
+    }
+    p.imagenes=models.limpiar(p.imagenes)
+  }
+
+  let [err,departamento]=await get(models.Departamento.update(p,
+    {
+      where:{
+        id: req.body.id, estado:'A'
+      },
+      individualHooks: true
+    }  
+  ))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(departamento==null) return res.status(404).json({message: `Departamentos nulos`})
   res.status(200).json(departamento)

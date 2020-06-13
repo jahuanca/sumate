@@ -21,16 +21,30 @@ async function getProvincia(req,res){
 }
 
 async function createProvincia(req,res){
-  let [err,provincia]=await get(models.Provincia.create({
-      id_tipo: req.body.id_tipo,
-      username: req.body.username,
-      password: req.body.password,
-      
-      accion: 'I',
-      accion_provincia: 'Creo un nuevo provincia.',
-      ip: req.ip,
-      provincia: 0
-  }))
+  let p={
+    id_provincia: req.body.id_provincia,
+    nombre: req.body.nombre,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+    latitud: req.body.latitud,
+    longitud: req.body.longitud,
+    
+    accion: 'I',
+    accion_usuario: 'Creo una nueva provincia.',
+    ip: req.ip,
+    usuario: 0
+  }
+  if(req.files){
+    p.imagenes='';
+    for (let i = 0; i < req.files.length; i++) {
+      p.imagenes=p.imagenes+req.files[i].filename;
+      if(i!=req.files.length-1){
+        p.imagenes=p.imagenes+','
+      }
+    }
+    p.imagenes=models.limpiar(p.imagenes)
+  }
+  let [err,provincia]=await get(models.Provincia.create(p))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(provincia==null) return res.status(404).json({message: `Provincias nulos`})
   res.status(200).json(provincia)
@@ -94,22 +108,42 @@ async function createAllProvincia(req,res){
 }
 
 async function updateProvincia(req,res){
-  let [err,provincia]=await get(models.Provincia.update({
-    id_tipo: req.body.id_tipo,
-    username: req.body.username,
-    password: req.body.password,
+  let p={
+    id_departamento: req.body.departamento,
+    nombre: req.body.nombre,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+    latitud: req.body.latitud,
+    longitud: req.body.longitud,
     
     accion: 'U',
-    accion_provincia: 'Edito un provincia.',
+    accion_usuario: 'Edito una provincia.',
     ip: req.ip,
-    provincia: 0
-  },{
-    where:{
-      id: req.body.id, estado:'A'
-    },
-    individualHooks: true,
-    validate: false
-  }))
+    usuario: 0
+  }
+  if(req.files){
+    p.imagenes='';
+    for (let i = 0; i < req.files.length; i++) {
+      if(req.files[i].originalname.includes('sum2020_')){
+        p.imagenes=p.imagenes+req.files[i].originalname;
+      }else{
+        p.imagenes=p.imagenes+req.files[i].filename;
+      }
+      if(i!=req.files.length-1){
+        p.imagenes=p.imagenes+','
+      }
+    }
+    p.imagenes=models.limpiar(p.imagenes)
+  }
+
+  let [err,provincia]=await get(models.Provincia.update(p,
+    {
+      where:{
+        id: req.body.id, estado:'A'
+      },
+      individualHooks: true
+    }  
+  ))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(provincia==null) return res.status(404).json({message: `Provincias nulos`})
   res.status(200).json(provincia)

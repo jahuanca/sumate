@@ -4,7 +4,7 @@ const models=require('../models')
 async function getTarifarios(req,res){
   let [err,tarifarios]=await get(models.Tarifario.findAll({
     where:{estado: 'A'},
-    include: [{all: true}]
+    include: [{model: models.Asociacion, include: [{all: true}]},{model: models.Zona}]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(tarifarios==null) return res.status(404).json({message: `Tarifarios nulos`})
@@ -22,14 +22,19 @@ async function getTarifario(req,res){
 
 async function createTarifario(req,res){
   let [err,tarifario]=await get(models.Tarifario.create({
-      id_tipo: req.body.id_tipo,
-      username: req.body.username,
-      password: req.body.password,
+      id_asociacion: req.body.id_asociacion,
+      id_zona_destino: req.body.id_zona_destino,
+      precio: req.body.precio,
+      tiempo: req.body.tiempo,
+      descripcion: models.limpiar(req.body.descripcion),
+      condicion: models.limpiar(req.body.condicion),
+      restriccion: models.limpiar(req.body.restriccion),
+      observacion: models.limpiar(req.body.observacion),
       
       accion: 'I',
-      accion_tarifario: 'Creo un nuevo tarifario.',
+      accion_usuario: 'Creo un nuevo tarifario.',
       ip: req.ip,
-      tarifario: 0
+      usuario: 0
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(tarifario==null) return res.status(404).json({message: `Tarifarios nulos`})
@@ -95,14 +100,19 @@ async function createAllTarifario(req,res){
 
 async function updateTarifario(req,res){
   let [err,tarifario]=await get(models.Tarifario.update({
-    id_tipo: req.body.id_tipo,
-    username: req.body.username,
-    password: req.body.password,
+    id_asociacion: req.body.id_asociacion,
+    id_zona_destino: req.body.id_zona_destino,
+    precio: req.body.precio,
+    tiempo: req.body.tiempo,
+    descripcion: models.limpiar(req.body.descripcion),
+    condicion: models.limpiar(req.body.condicion),
+    restriccion: models.limpiar(req.body.restriccion),
+    observacion: models.limpiar(req.body.observacion),
     
     accion: 'U',
-    accion_tarifario: 'Edito un tarifario.',
+    accion_usuario: 'Edito un tarifario.',
     ip: req.ip,
-    tarifario: 0
+    usuario: 0
   },{
     where:{
       id: req.body.id, estado:'A'
@@ -119,9 +129,10 @@ async function deleteTarifario(req,res){
   let [err,tarifario]=await get(models.Tarifario.update({
     estado: 'I',
 
-    accion_tarifario: 'Elimino un tarifario.',
+    accion_usuario: 'Elimino un tarifario.',
     accion: 'D',
-    ip: req.ip
+    ip: req.ip,
+    usuario: 0
   },{
     where:{
       id: req.params.id, estado:'A'

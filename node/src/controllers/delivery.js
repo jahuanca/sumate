@@ -38,56 +38,141 @@ async function createDelivery(req,res){
 
 async function createAllDelivery(req,res){
   try {
+    const result = await models.sequelize.transaction(async (t) => {
+      let usuario=null;
+      if(req.body.Usuario){
+        let u=JSON.parse(req.body.Usuario);
+        //validar si las passwods se parecen o si los correos y si no envia usuario que retorne 500
+        usuario=await models.Usuario.create({
+          id_tipo_usuario: 2,
+          username: u.username,
+          password: u.password,
+          accion: 'I',
+          usuario: 1,
+          ip: req.ip,
+          accion_usuario: 'Creo un nuevo usuario de delivery.',
+        }, { transaction: t });
+      }else{
+        return res.status(500).json({message: `Error en el servidor Usuario no enviado.`})
+      }
 
-    const result = await sequelize.transaction(async (t) => {
-  
-      const user=await models.Delivery.create({
-        id_tipo: 1,
-        username: req.body.username,
-        password: req.body.password,
-        observacion: req.body.observacion,
-
-        accion: 'I',
-        delivery: 0,
-        ip: req.ip,
-        accion_delivery: 'Creo un nuevo delivery delivery.',
-      }, { transaction: t });
-      
-      const persona = await models.Persona.create({
-        dni: req.body.dni,
+      let c={
+        id_usuario: usuario.id,
+        ruc: req.body.ruc,
         nombre: req.body.nombre,
-        apellido: req.body.apellido,
+        razon_social: req.body.razon_social,
         direccion: req.body.direccion,
+        latitud: req.body.latitud,
+        longitud: req.body.longitud,
         celular: req.body.celular,
-        descripcion: req.body.descripcion,
-        observacion: req.body.observacion,
-        
-        accion_delivery: 'Creo una nueva persona delivery.',
+        hora_apertura: req.body.hora_apertura,
+        hora_cierre: req.body.hora_cierre,
+        restriccion: models.limpiar(req.body.restriccion),
+        condicion: models.limpiar(req.body.condicion),
+        descripcion: models.limpiar(req.body.descripcion),
+        observacion: models.limpiar(req.body.observacion),
+
         accion: 'I',
+        accion_usuario: 'Creo un nuevo delivery completo.',
         ip: req.ip,
-        delivery: 0
-      }, { transaction: t });
-  
-      await models.Delivery.create({
-        id_persona: persona.id,
-        id_delivery: user.id,
-        descripcion: req.body.descripcion,
-        observacion: req.body.observacion,
-        
-        accion: 'I',
-        accion_delivery: 'Creo un nuevo delivery.',
-        ip: req.ip,
-        delivery: 0
-      }, { transaction: t });
-  
-      return persona;
-  
+        usuario: 0
+      }
+      if(req.files){
+        c.imagenes='';
+        for (let i = 0; i < req.files.length; i++) {
+          c.imagenes=c.imagenes+req.files[i].filename;
+          if(i!=req.files.length-1){
+            c.imagenes=c.imagenes+','
+          }
+        }
+        c.imagenes=models.limpiar(c.imagenes)
+      }
+      let delivery=await get(models.Delivery.create(c,{ transaction: t }))
+      delivery.Usuario=usuario;
+      return delivery;
     });
     res.status(200).json(result)
-  
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({message: `Error en el servidor ${error}`})  
+    return res.status(500).json({message: `Error en el servidor ${error}`})
+  }
+}
+
+async function updateAllDelivery(req,res){
+  try {
+    const result = await models.sequelize.transaction(async (t) => {
+      let usuario=null;
+      if(req.body.Usuario){
+        let u=JSON.parse(req.body.Usuario);
+        //validar si las passwods se parecen o si los correos y si no envia usuario que retorne 500
+        const user={
+          id_tipo_usuario: 2,
+          username: u.username,
+          accion: 'I',
+          usuario: 1,
+          ip: req.ip,
+          accion_usuario: 'Edito el usuario de un delivery.',
+        }
+        if(u.password) user.password=u.password
+        usuario=await models.Usuario.update(user,{
+          where:{
+            id: u.id, estado:'A'
+          },
+          individualHooks: true          
+        }, { transaction: t });
+      }else{
+        return res.status(500).json({message: `Error en el servidor Usuario no enviado.`})
+      }
+
+      let c={
+        id_usuario: usuario[1][0].dataValues.id,
+        ruc: req.body.ruc,
+        nombre: req.body.nombre,
+        razon_social: req.body.razon_social,
+        direccion: req.body.direccion,
+        latitud: req.body.latitud,
+        longitud: req.body.longitud,
+        celular: req.body.celular,
+        hora_apertura: req.body.hora_apertura,
+        hora_cierre: req.body.hora_cierre,
+        condicion: models.limpiar(req.body.condicion),
+        restriccion: models.limpiar(req.body.restriccion),
+        descripcion: models.limpiar(req.body.descripcion),
+        observacion: models.limpiar(req.body.observacion),
+
+        accion: 'I',
+        accion_usuario: 'Edito un delivery.',
+        ip: req.ip,
+        usuario: 0
+      }
+      if(req.files){
+        c.imagenes='';
+        for (let i = 0; i < req.files.length; i++) {
+          if(req.files[i].originalname.includes('sum2020_')){
+            c.imagenes=c.imagenes+req.files[i].originalname;
+          }else{
+            c.imagenes=c.imagenes+req.files[i].filename;
+          }
+          if(i!=req.files.length-1){
+            c.imagenes=c.imagenes+','
+          }
+        }
+        c.imagenes=models.limpiar(c.imagenes)
+      }
+      let delivery=await models.Delivery.update(c,{
+        where:{
+          id: req.body.id, estado:'A'
+        },
+        individualHooks: true
+      },{ transaction: t })
+      usuario[1][0].dataValues.password=null;
+      usuario[1][0].dataValues.salt=null;
+      delivery[1][0].dataValues.Usuario=usuario[1][0].dataValues;
+      console.log(delivery[1][0].dataValues)
+      return delivery[1][0].dataValues;
+    });
+    res.status(200).json(result)
+  } catch (error) {
+    return res.status(500).json({message: `Error en el servidor ${error}`})
   }
 
   
@@ -145,6 +230,7 @@ module.exports={
   getDelivery,
   createDelivery,
   createAllDelivery,
+  updateAllDelivery,
   updateDelivery,
   deleteDelivery
 }

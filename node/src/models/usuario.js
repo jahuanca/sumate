@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Usuario'
   });
   Usuario.associate = function(models) {
-    // associations can be defined here
+    Usuario.belongsTo(models.Tipo_Usuario, {foreignKey: 'id_tipo_usuario'});
   };
   Usuario.generateSalt = function() {
     return crypto.randomBytes(16).toString('base64')

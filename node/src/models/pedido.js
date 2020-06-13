@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     peso: {type: DataTypes.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}},
     total: {type: DataTypes.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
+    imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     estado: {type: DataTypes.CHAR(1), allowNull: false, defaultValue: 'A',
       validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}
     },
@@ -24,10 +25,12 @@ module.exports = (sequelize, DataTypes) => {
     accion_usuario: {type: DataTypes.VIRTUAL}
   }, {
     freezeTableName: true,
-    tableName: 'Pago_Comercio'
+    tableName: 'Pedido'
   });
   Pedido.associate = function(models) {
-    // associations can be defined here
+    Pedido.belongsTo(models.Tipo_Envio, {foreignKey: 'id_tipo_envio'});
+    Pedido.belongsTo(models.Forma_Pago, {foreignKey: 'id_forma_pago'});
+    Pedido.belongsTo(models.Estado_Pedido, {foreignKey: 'id_estado_pedido'});
   };
   return Pedido;
 };

@@ -214,7 +214,9 @@ async function llenarFormaPago(){
   if(cantidad==0){
       let formas=[
         {nombre: 'Pago en tienda', descripcion: 'El pedido sera pagado al recogerlo el cliente.', observacion: 'Ingresado por defecto.'},
-        {nombre: 'Pago por yape', descripcion: 'El pedido se pagara a la cuenta yape.', observacion: 'Ingresado por defecto.'}
+        {nombre: 'Pago por plataforma', descripcion: 'Hara uso de mercado pago asignandole un 4%', observacion: 'Ingresado por defecto.'},
+        {nombre: 'Deposito a cuenta', descripcion: 'Deposita a este numero de cuenta ...', observacion: 'Ingresado por defecto.'},
+        {nombre: 'Pago por yape', descripcion: 'Yapee a este numero ...', observacion: 'Ingresado por defecto.'}
         //pago por pasarela de pago, pago al recibir post
       ]
       
@@ -228,14 +230,14 @@ async function llenarFormaPago(){
 }
 
 async function llenarTipoEnvio(){
-  let [err,cantidad]=await get(models.Forma_Pago.count({where: {estado: 'A'}}))
+  let [err,cantidad]=await get(models.Tipo_Envio.count({where: {estado: 'A'}}))
   if(err) console.log(`${err}`)
   if(cantidad==0){
       let formas=[
         {nombre: 'Recojo en tienda', descripcion: 'El cliente recogera el pedido.', observacion: 'Ingresado por defecto.'},
         {nombre: 'Delivery', descripcion: 'El pedido sera enviado por delivery.', observacion: 'Ingresado por defecto.'}
       ]
-      let [err2,tipo]=await get(models.Forma_Pago.bulkCreate(formas,{hooks: false}))
+      let [err2,tipo]=await get(models.Tipo_Envio.bulkCreate(formas,{hooks: false}))
       if(err2) console.log(`${err2}`)
       console.log('Estados del pedido creados')
   }else{
@@ -316,29 +318,47 @@ function get(promise) {
   }
 
   const departamentos=[
-    {nombre: 'Amazonas'},{nombre: 'Áncash'},{nombre: 'Apurímac'},{nombre: 'Arequipa'},
-    {nombre: 'Ayacucho'},{nombre: 'Cajamarca'},{nombre: 'Cusco'},{nombre: 'Huancavelica'},
-    {nombre: 'Huánuco'},{nombre: 'Ica'},{nombre: 'Junín'},{nombre: 'La Libertad'},
-    {nombre: 'Lambayeque'},{nombre: 'Lima'},{nombre: 'Loreto'},{nombre: 'Madre de Dios'},
-    {nombre: 'Moquegua'},{nombre: 'Pasco'},{nombre: 'Piura'},{nombre: 'Puno'},
-    {nombre: 'San Martín'},{nombre: 'Tacna'},{nombre: 'Tumbes'},{nombre: 'Ucayali'}
+    {nombre: 'Amazonas', latitud: -3.7500000, longitud: -64.5000000},
+    {nombre: 'Áncash', latitud: 	-9.5277901, longitud: -77.5277786},
+    {nombre: 'Apurímac', latitud: -14.0000000,longitud: -73.0000000},
+    {nombre: 'Arequipa', latitud: -16.3988895, longitud: -71.5350037},
+    {nombre: 'Ayacucho', latitud: -13.1587801, longitud: -74.2232132},
+    {nombre: 'Cajamarca', latitud: -7.1637802, longitud: 	-78.500267},
+    {nombre: 'Cusco', latitud: -13.5226402, longitud: -71.9673386},
+    {nombre: 'Huancavelica', latitud: -12.7826099, longitud: -74.9726562},
+    {nombre: 'Huánuco', latitud: -9.929444, longitud: -76.239722},
+    {nombre: 'Ica', latitud: -14.06777,longitud: -75.7286072},
+    {nombre: 'Junín', latitud: -11.1888100, longitud: -76.0119200},
+    {nombre: 'La Libertad', latitud: -11.9433200,longitud: -77.0374900},
+    {nombre: 'Lambayeque', latitud: -6.7011099,longitud: -79.9061127},
+    {nombre: 'Lima', latitud: -12.0431805, longitud: -77.0282364},
+    {nombre: 'Loreto', latitud: -3.74912,longitud: -73.25383},
+    {nombre: 'Madre de Dios', latitud: -12.5933104,longitud: -69.1891327},
+    {nombre: 'Moquegua', latitud: -17.1983204,longitud: -70.9356689},
+    {nombre: 'Pasco', latitud: -10.6674805 ,longitud: -76.2566833},
+    {nombre: 'Piura', latitud: -5.19449, longitud: -80.6328201},
+    {nombre: 'Puno', latitud: -15.07,longitud: -70.12},
+    {nombre: 'San Martín', latitud: -12.0218900,longitud: -76.6855300},
+    {nombre: 'Tacna', latitud: -18.0146503,longitud: -70.2536163},
+    {nombre: 'Tumbes', latitud: -3.5536600,longitud: -80.4161700},
+    {nombre: 'Ucayali', latitud: -8.3791504,longitud: -74.5538712}
   ]
 
   const provincias=[
     //provincias de piura
-    {nombre: 'Ayabaca', id_departamento: 19},
-    {nombre: 'Huancabamba', id_departamento: 19},
-    {nombre: 'Morropon', id_departamento: 19},
-    {nombre: 'Paita', id_departamento: 19},
-    {nombre: 'Piura', id_departamento: 19},
-    {nombre: 'Sechura', id_departamento: 19},
-    {nombre: 'Sullana', id_departamento: 19},
-    {nombre: 'Talara', id_departamento: 19}
+    {nombre: 'Ayabaca', id_departamento: 19, latitud: -4.637, longitud: -79.724},
+    {nombre: 'Huancabamba', id_departamento: 19, latitud: -5.239572, longitud:-79.449642},
+    {nombre: 'Morropon', id_departamento: 19, latitud: -5.097522, longitud: -80.162103},
+    {nombre: 'Paita', id_departamento: 19, latitud: -5.092778, longitud: -81.101944},
+    {nombre: 'Piura', id_departamento: 19, latitud: -5.193333, longitud: -80.633056},
+    {nombre: 'Sechura', id_departamento: 19, latitud: -5.56, longitud: -80.82},
+    {nombre: 'Sullana', id_departamento: 19, latitud: -4.89, longitud: -80.68},
+    {nombre: 'Talara', id_departamento: 19, latitud: -4.579722, longitud: -81.271944}
   ]
 
   const distritos=[
     //ayabaca
-    
+    /*
       {nombre: 'Ayabaca', id_provincia: 1},
       {nombre: 'Frias', id_provincia: 1},
       {nombre: 'Jilili', id_provincia: 1},
@@ -383,22 +403,22 @@ function get(promise) {
       {nombre: 'Paita', id_provincia: 4},
       {nombre: 'Tamarindo', id_provincia: 4},
       {nombre: 'Vichayal', id_provincia: 4}
-    ,
+    ,*/
     //piura
     
-      {nombre: 'Castilla', id_provincia: 5},
-      {nombre: 'Catacaos', id_provincia: 5},
-      {nombre: 'Cura Mori', id_provincia: 5},
-      {nombre: 'El Tallán', id_provincia: 5},
-      {nombre: 'La arena', id_provincia: 5},
-      {nombre: 'La unión', id_provincia: 5},
-      {nombre: 'Las lomas', id_provincia: 5},
-      {nombre: 'Piura', id_provincia: 5},
-      {nombre: 'Tambogrande', id_provincia: 5},
-      {nombre: 'Veintiseis de Octubre', id_provincia: 5}
+      {nombre: 'Castilla', id_provincia: 5, latitud: -5.12963,longitud: -80.51445},
+      {nombre: 'Catacaos', id_provincia: 5, latitud: -5.49037,longitud: -80.33467},
+      {nombre: 'Cura Mori', id_provincia: 5, latitud: -5.35618,longitud: -80.5926},
+      {nombre: 'El Tallán', id_provincia: 5, latitud: -5.43897,longitud: -80.61364},
+      {nombre: 'La arena', id_provincia: 5, latitud: -5.31095,longitud: -80.76308},
+      {nombre: 'La unión', id_provincia: 5, latitud: -5.32219,longitud: -80.8637},
+      {nombre: 'Las lomas', id_provincia: 5, latitud: -4.68906,longitud: -80.21446},
+      {nombre: 'Piura', id_provincia: 5, latitud: -5.195833,longitud: -80.633333},
+      {nombre: 'Tambogrande', id_provincia: 5, latitud: -4.91806,longitud: -80.33307},
+      {nombre: 'Veintiseis de Octubre', id_provincia: 5, latitud: -5.1769,longitud: -80.68095}
     ,
     //sechura
-    
+    /*
       {nombre: 'Bellavista de la unión', id_provincia: 6},
       {nombre: 'Bernal', id_provincia: 6},
       {nombre: 'Cristo nos valga', id_provincia: 6},
@@ -425,4 +445,5 @@ function get(promise) {
       {nombre: 'Los Órganos', id_provincia: 8},
       {nombre: 'Máncora', id_provincia: 8},
       {nombre: 'Pariñas', id_provincia: 8}
+      */
   ]

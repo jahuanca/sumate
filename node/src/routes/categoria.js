@@ -3,7 +3,21 @@ const express=require('express')
 const router=express.Router()
 const categoria=require('../controllers/categoria')
 const auth=require('../middlewares/auth')
+const multer  = require('multer')
+const path=require('path')
+const crypto=require('crypto')
 
+const storage=multer.diskStorage({
+    destination: './public/uploads/categorias/',
+    filename: function(req, file, cb) {
+      return crypto.pseudoRandomBytes(16, function(err, raw) {
+        if (err) {
+          return cb(err);
+        }
+        return cb(null, "sum2020_" + (raw.toString('hex')) + (path.extname(file.originalname)));
+      });
+    }
+});
 /**
  * @swagger
  * /Categoria/:
@@ -16,9 +30,8 @@ const auth=require('../middlewares/auth')
  */
 router.get('/',categoria.getCategorias)
 router.get('/id/:id',categoria.getCategoria)
-router.post('/create',categoria.createCategoria)
-router.post('/createAllCategoria',categoria.createAllCategoria)
-router.put('/update', categoria.updateCategoria)
+router.post('/create', multer({storage: storage}).array('files',1),categoria.createCategoria)
+router.put('/update', multer({storage: storage}).array('files',1), categoria.updateCategoria)
 router.delete('/delete/:id', categoria.deleteCategoria)
 
 module.exports=router

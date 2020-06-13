@@ -110,7 +110,6 @@ async function createAllComercio(req,res){
 async function updateAllComercio(req,res){
   try {
     const result = await models.sequelize.transaction(async (t) => {
-      console.log(req.body)
       let usuario=null;
       if(req.body.Usuario){
         let u=JSON.parse(req.body.Usuario);
@@ -130,7 +129,6 @@ async function updateAllComercio(req,res){
           },
           individualHooks: true          
         }, { transaction: t });
-        console.log(usuario)
       }else{
         return res.status(500).json({message: `Error en el servidor Usuario no enviado.`})
       }
@@ -175,6 +173,8 @@ async function updateAllComercio(req,res){
         },
         individualHooks: true
       },{ transaction: t })
+      usuario[1][0].dataValues.password=null;
+      usuario[1][0].dataValues.salt=null;
       comercio[1][0].dataValues.Usuario=usuario[1][0].dataValues;
       console.log(comercio[1][0].dataValues)
       return comercio[1][0].dataValues;
@@ -196,7 +196,7 @@ async function updateComercio(req,res){
     accion: 'U',
     accion_comercio: 'Edito un comercio.',
     ip: req.ip,
-    comercio: 0
+    usuario: 0
   },{
     where:{
       id: req.body.id, estado:'A'

@@ -22,10 +22,11 @@ module.exports = (sequelize, DataTypes) => {
     accion_usuario: {type: DataTypes.VIRTUAL}
   }, {
     freezeTableName: true,
-    tableName: 'Pago_Comercio'
+    tableName: 'Tarifario'
   });
   Tarifario.associate = function(models) {
-    // associations can be defined here
+    Tarifario.belongsTo(models.Asociacion, {foreignKey: 'id_asociacion'})
+    Tarifario.belongsTo(models.Zona, {foreignKey: 'id_zona_destino'})
   };
   return Tarifario;
 };

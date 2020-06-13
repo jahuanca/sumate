@@ -59,7 +59,6 @@ async function createProducto(req,res){
   }
   
   let [err,producto]=await get(models.Producto.create(p))
-  console.log(err)
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
@@ -77,9 +76,9 @@ async function createAllProducto(req,res){
         observacion: req.body.observacion,
 
         accion: 'I',
-        producto: 0,
+        usuario: 0,
         ip: req.ip,
-        accion_producto: 'Creo un nuevo producto producto.',
+        accion_usuario: 'Creo un nuevo producto producto.',
       }, { transaction: t });
       
       const persona = await models.Persona.create({
@@ -94,7 +93,7 @@ async function createAllProducto(req,res){
         accion_producto: 'Creo una nueva persona producto.',
         accion: 'I',
         ip: req.ip,
-        producto: 0
+        usuario: 0
       }, { transaction: t });
   
       await models.Producto.create({
@@ -104,9 +103,9 @@ async function createAllProducto(req,res){
         observacion: req.body.observacion,
         
         accion: 'I',
-        accion_producto: 'Creo un nuevo producto.',
+        accion_usuario: 'Creo un nuevo producto.',
         ip: req.ip,
-        producto: 0
+        usuario: 0
       }, { transaction: t });
   
       return persona;
@@ -123,8 +122,6 @@ async function createAllProducto(req,res){
 }
 
 async function updateProducto(req,res){
-  
-  
   let p={
     id_categoria: req.body.id_categoria,
     id_comercio: req.body.id_comercio,
@@ -138,9 +135,9 @@ async function updateProducto(req,res){
     tiempo_preparacion: req.body.tiempo_preparacion,
     
     accion: 'U',
-    accion_producto: 'Edito un producto.',
+    accion_usuario: 'Edito un producto.',
     ip: req.ip,
-    producto: 0
+    usuario: 0
   }
   if(req.files){
     p.imagenes='';
@@ -165,7 +162,6 @@ async function updateProducto(req,res){
       individualHooks: true
     }  
   ))
-  console.log(err)
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto[1][0].dataValues)
@@ -175,9 +171,10 @@ async function deleteProducto(req,res){
   let [err,producto]=await get(models.Producto.update({
     estado: 'I',
 
-    accion_producto: 'Elimino un producto.',
+    accion_usuario: 'Elimino un producto.',
     accion: 'D',
-    ip: req.ip
+    ip: req.ip,
+    usuario: 0
   },{
     where:{
       id: req.params.id, estado:'A'

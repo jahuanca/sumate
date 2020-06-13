@@ -22,106 +22,55 @@ async function getAsociacion(req,res){
 
 async function createAsociacion(req,res){
   let [err,asociacion]=await get(models.Asociacion.create({
-      id_tipo: req.body.id_tipo,
-      username: req.body.username,
-      password: req.body.password,
+      id_comercio: req.body.id_comercio,
+      id_delivery: req.body.id_delivery,
+      descripcion: models.limpiar(req.body.descripcion),
+      observacion: models.limpiar(req.body.observacion),
       
       accion: 'I',
-      accion_asociacion: 'Creo un nuevo asociacion.',
+      accion_usuario: 'Creo una nueva asociacion.',
       ip: req.ip,
-      asociacion: 0
+      usuario: 0
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(asociacion==null) return res.status(404).json({message: `Asociacions nulos`})
   res.status(200).json(asociacion)
 }
 
-async function createAllAsociacion(req,res){
-  try {
 
-    const result = await sequelize.transaction(async (t) => {
-  
-      const user=await models.Asociacion.create({
-        id_tipo: 1,
-        username: req.body.username,
-        password: req.body.password,
-        observacion: req.body.observacion,
-
-        accion: 'I',
-        asociacion: 0,
-        ip: req.ip,
-        accion_asociacion: 'Creo un nuevo asociacion asociacion.',
-      }, { transaction: t });
-      
-      const persona = await models.Persona.create({
-        dni: req.body.dni,
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        direccion: req.body.direccion,
-        celular: req.body.celular,
-        descripcion: req.body.descripcion,
-        observacion: req.body.observacion,
-        
-        accion_asociacion: 'Creo una nueva persona asociacion.',
-        accion: 'I',
-        ip: req.ip,
-        asociacion: 0
-      }, { transaction: t });
-  
-      await models.Asociacion.create({
-        id_persona: persona.id,
-        id_asociacion: user.id,
-        descripcion: req.body.descripcion,
-        observacion: req.body.observacion,
-        
-        accion: 'I',
-        accion_asociacion: 'Creo un nuevo asociacion.',
-        ip: req.ip,
-        asociacion: 0
-      }, { transaction: t });
-  
-      return persona;
-  
-    });
-    res.status(200).json(result)
-  
-  } catch (error) {
-    console.log(error)
-    return res.status(500).json({message: `Error en el servidor ${error}`})  
-  }
-
-  
-}
 
 async function updateAsociacion(req,res){
   let [err,asociacion]=await get(models.Asociacion.update({
-    id_tipo: req.body.id_tipo,
-    username: req.body.username,
-    password: req.body.password,
-    
+    id_comercio: req.body.id_comercio,
+    id_delivery: req.body.id_delivery,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+      
     accion: 'U',
-    accion_asociacion: 'Edito un asociacion.',
+    accion_usuario: 'Edito una asociacion.',
     ip: req.ip,
-    asociacion: 0
+    usuario: 0
   },{
     where:{
       id: req.body.id, estado:'A'
     },
     individualHooks: true,
     validate: false
-  }))
+  }))  
+  console.log(asociacion[1][0].dataValues)
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(asociacion==null) return res.status(404).json({message: `Asociacions nulos`})
-  res.status(200).json(asociacion)
+  res.status(200).json(asociacion[1][0].dataValues)
 }
 
 async function deleteAsociacion(req,res){
   let [err,asociacion]=await get(models.Asociacion.update({
     estado: 'I',
 
-    accion_asociacion: 'Elimino un asociacion.',
+    accion_usuario: 'Elimino un asociacion.',
     accion: 'D',
-    ip: req.ip
+    ip: req.ip,
+    usuario: 0
   },{
     where:{
       id: req.params.id, estado:'A'
@@ -144,7 +93,6 @@ module.exports={
   getAsociacions,
   getAsociacion,
   createAsociacion,
-  createAllAsociacion,
   updateAsociacion,
   deleteAsociacion
 }

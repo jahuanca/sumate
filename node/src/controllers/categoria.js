@@ -21,107 +21,80 @@ async function getCategoria(req,res){
 }
 
 async function createCategoria(req,res){
-  let [err,categoria]=await get(models.Categoria.create({
-      id_tipo: req.body.id_tipo,
-      username: req.body.username,
-      password: req.body.password,
-      
-      accion: 'I',
-      accion_categoria: 'Creo un nuevo categoria.',
-      ip: req.ip,
-      categoria: 0
-  }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
-  if(categoria==null) return res.status(404).json({message: `Categorias nulos`})
-  res.status(200).json(categoria)
-}
-
-async function createAllCategoria(req,res){
-  try {
-
-    const result = await sequelize.transaction(async (t) => {
-  
-      const user=await models.Categoria.create({
-        id_tipo: 1,
-        username: req.body.username,
-        password: req.body.password,
-        observacion: req.body.observacion,
-
-        accion: 'I',
-        categoria: 0,
-        ip: req.ip,
-        accion_categoria: 'Creo un nuevo categoria categoria.',
-      }, { transaction: t });
-      
-      const persona = await models.Persona.create({
-        dni: req.body.dni,
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        direccion: req.body.direccion,
-        celular: req.body.celular,
-        descripcion: req.body.descripcion,
-        observacion: req.body.observacion,
-        
-        accion_categoria: 'Creo una nueva persona categoria.',
-        accion: 'I',
-        ip: req.ip,
-        categoria: 0
-      }, { transaction: t });
-  
-      await models.Categoria.create({
-        id_persona: persona.id,
-        id_categoria: user.id,
-        descripcion: req.body.descripcion,
-        observacion: req.body.observacion,
-        
-        accion: 'I',
-        accion_categoria: 'Creo un nuevo categoria.',
-        ip: req.ip,
-        categoria: 0
-      }, { transaction: t });
-  
-      return persona;
-  
-    });
-    res.status(200).json(result)
-  
-  } catch (error) {
-    console.log(error)
-    return res.status(500).json({message: `Error en el servidor ${error}`})  
+  let p={
+    nombre: req.body.nombre,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+    
+    accion: 'I',
+    accion_usuario: 'Creo una nueva categoria.',
+    ip: req.ip,
+    usuario: 0
   }
-
+  if(req.files){
+    p.imagenes='';
+    for (let i = 0; i < req.files.length; i++) {
+      p.imagenes=p.imagenes+req.files[i].filename;
+      if(i!=req.files.length-1){
+        p.imagenes=p.imagenes+','
+      }
+    }
+    p.imagenes=models.limpiar(p.imagenes)
+  }
   
+  let [err,categoria]=await get(models.Categoria.create(p))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(categoria==null) return res.status(404).json({message: `Productos nulos`})
+  res.status(200).json(categoria)
 }
 
 async function updateCategoria(req,res){
-  let [err,categoria]=await get(models.Categoria.update({
-    id_tipo: req.body.id_tipo,
-    username: req.body.username,
-    password: req.body.password,
+  let p={
+    nombre: req.body.nombre,
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
     
     accion: 'U',
-    accion_categoria: 'Edito un categoria.',
+    accion_usuario: 'Edito una categoria.',
     ip: req.ip,
-    categoria: 0
-  },{
-    where:{
-      id: req.body.id, estado:'A'
-    },
-    individualHooks: true,
-    validate: false
-  }))
+    usuario: 0
+  }
+  if(req.files){
+    p.imagenes='';
+    for (let i = 0; i < req.files.length; i++) {
+      if(req.files[i].originalname.includes('sum2020_')){
+        p.imagenes=p.imagenes+req.files[i].originalname;
+      }else{
+        p.imagenes=p.imagenes+req.files[i].filename;
+      }
+      if(i!=req.files.length-1){
+        p.imagenes=p.imagenes+','
+      }
+    }
+    p.imagenes=models.limpiar(p.imagenes)
+  }
+
+  let [err,categoria]=await get(models.Categoria.update(p,
+    {
+      where:{
+        id: req.body.id, estado:'A'
+      },
+      individualHooks: true
+    }  
+  ))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(categoria==null) return res.status(404).json({message: `Categorias nulos`})
-  res.status(200).json(categoria)
+  res.status(200).json(categoria[1][0].dataValues)
 }
 
 async function deleteCategoria(req,res){
   let [err,categoria]=await get(models.Categoria.update({
     estado: 'I',
 
-    accion_categoria: 'Elimino un categoria.',
+    accion_usuario: 'Elimino un categoria.',
     accion: 'D',
-    ip: req.ip
+    ip: req.ip,
+    usuario: 0,
   },{
     where:{
       id: req.params.id, estado:'A'
@@ -144,7 +117,6 @@ module.exports={
   getCategorias,
   getCategoria,
   createCategoria,
-  createAllCategoria,
   updateCategoria,
   deleteCategoria
 }

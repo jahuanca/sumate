@@ -91,6 +91,7 @@ http.listen(config.port,()=>{
     actualizarDatos.llenarDepartamentos();
     actualizarDatos.llenarUsuarios();
     actualizarDatos.llenarTipoEnvio();
+    actualizarDatos.llenarFormaPago();
     actualizarDatos.llenarEstadoPedido();
     actualizarDatos.llenarTipoComercio();
     actualizarDatos.llenarCategorias();

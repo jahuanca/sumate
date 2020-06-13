@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Delivery'
   });
   Delivery.associate = function(models) {
-    // associations can be defined here
+    Delivery.belongsTo(models.Usuario, {foreignKey: 'id_usuario'});
   };
   return Delivery;
 };
