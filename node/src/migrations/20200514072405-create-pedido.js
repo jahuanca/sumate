@@ -38,9 +38,12 @@ module.exports = {
           key: 'id'
         }
       },
-      latitud: {type: Sequelize.DOUBLE, allowNull: false, unique: true, validate: {min:1, isInt: true}},
-      longitud: {type: Sequelize.DOUBLE, allowNull: false, unique: true, validate: {min:1, isInt: true}},
+      direccion: {type: Sequelize.STRING(200), allowNull: false, validate: {notEmpty: true, len: [1,200]}},
+      referencia: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
+      latitud: {type: Sequelize.DOUBLE, allowNull: false, validate: {min:1, isInt: true}},
+      longitud: {type: Sequelize.DOUBLE, allowNull: false, validate: {min:1, isInt: true}},
       peso: {type: Sequelize.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}},
+      tarifa: {type: Sequelize.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}},
       total: {type: Sequelize.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
       observacion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},

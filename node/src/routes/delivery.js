@@ -31,6 +31,7 @@ const storage=multer.diskStorage({
  */
 router.get('/',delivery.getDeliverys)
 router.get('/id/:id',delivery.getDelivery)
+router.get('/id_usuario/:id',delivery.getDeliveryUsuario)
 router.post('/create',delivery.createDelivery)
 router.post('/createAllDelivery',multer({storage: storage}).array('files',5) ,delivery.createAllDelivery)
 router.put('/updateAllDelivery', multer({storage: storage}).array('files',5) ,delivery.updateAllDelivery)

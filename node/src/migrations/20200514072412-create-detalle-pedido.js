@@ -20,8 +20,9 @@ module.exports = {
           key:'id'
         }
       },
-      cantidad: {type: Sequelize.INTEGER, allowNull: false, unique: true, validate: {min:1, isInt: true}},
-      peso: {type: Sequelize.DOUBLE, allowNull: false, unique: true, validate: {min:1, isInt: true}},
+      cantidad: {type: Sequelize.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
+      precio: {type: Sequelize.DOUBLE, allowNull: false, validate: {min:1, isInt: true}},
+      peso: {type: Sequelize.DOUBLE, allowNull: false, validate: {min:1, isInt: true}},
       subtotal: {type: Sequelize.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
       observacion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       estado: {type: Sequelize.CHAR(1), allowNull: false, defaultValue: 'A',

@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Detalle_Pago_Delivery = sequelize.define('Detalle_Pago_Delivery', {
     id_pago_delivery: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
-    id_pedido: {type: DataTypes.INTEGER, allowNull: false, unique: true, validate: {min:1, isInt: true}},
+    id_pedido: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     monto: {type: DataTypes.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     validado: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},

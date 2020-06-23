@@ -19,6 +19,29 @@ async function getAsociacion(req,res){
   if(asociacion==null) return res.status(404).json({message: `Asociacions nulos`})
   res.status(200).json(asociacion)
 }
+async function getAsociacionsComercio(req,res){
+  let [err,asociacions]=await get(models.Asociacion.findAll({
+    where:{estado: 'A'},
+    include: [{model: models.Comercio, where: {id: req.params.id}},
+      {model: models.Delivery}
+    ]
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(asociacions==null) return res.status(404).json({message: `Asociacions nulos`})
+  res.status(200).json(asociacions)
+}
+
+async function getAsociacionsDelivery(req,res){
+  let [err,asociacions]=await get(models.Asociacion.findAll({
+    where:{estado: 'A'},
+    include: [{model: models.Delivery, where: {id: req.params.id}},
+      {model: models.Comercio}
+    ]
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(asociacions==null) return res.status(404).json({message: `Asociacions nulos`})
+  res.status(200).json(asociacions)
+}
 
 async function createAsociacion(req,res){
   let [err,asociacion]=await get(models.Asociacion.create({
@@ -91,6 +114,8 @@ function get(promise) {
 
 module.exports={
   getAsociacions,
+  getAsociacionsComercio,
+  getAsociacionsDelivery,
   getAsociacion,
   createAsociacion,
   updateAsociacion,

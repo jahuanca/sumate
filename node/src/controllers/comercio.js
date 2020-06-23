@@ -23,7 +23,8 @@ async function getComercio(req,res){
 
 async function getComercioUsuario(req,res){
   let [err,comercio]=await get(models.Comercio.findOne({
-    where:{id_usuario: req.params.id, estado: 'A'}
+    where:{id_usuario: req.params.id, estado: 'A'},
+    include: [{all: true}]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(comercio==null) return res.status(404).json({message: `Comercios nulos`})

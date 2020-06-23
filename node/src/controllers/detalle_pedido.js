@@ -20,6 +20,16 @@ async function getDetalle_Pedido(req,res){
   res.status(200).json(detalle_pedido)
 }
 
+async function getDetalle_PedidoPedido(req,res){
+  let [err,detalle_pedido]=await get(models.Detalle_Pedido.findAll({
+    where:{id_pedido: req.params.id, estado: 'A'},
+    include: [{all: true}]
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(detalle_pedido==null) return res.status(404).json({message: `Detalle_Pedidos nulos`})
+  res.status(200).json(detalle_pedido)
+}
+
 async function createDetalle_Pedido(req,res){
   let [err,detalle_pedido]=await get(models.Detalle_Pedido.create({
       id_tipo: req.body.id_tipo,
@@ -143,6 +153,7 @@ function get(promise) {
 module.exports={
   getDetalle_Pedidos,
   getDetalle_Pedido,
+  getDetalle_PedidoPedido,
   createDetalle_Pedido,
   createAllDetalle_Pedido,
   updateDetalle_Pedido,

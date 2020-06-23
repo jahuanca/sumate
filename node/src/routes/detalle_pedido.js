@@ -16,6 +16,7 @@ const auth=require('../middlewares/auth')
  */
 router.get('/',detalle_pedido.getDetalle_Pedidos)
 router.get('/id/:id',detalle_pedido.getDetalle_Pedido)
+router.get('/id_pedido/:id',detalle_pedido.getDetalle_PedidoPedido)
 router.post('/create',detalle_pedido.createDetalle_Pedido)
 router.post('/createAllDetalle_Pedido',detalle_pedido.createAllDetalle_Pedido)
 router.put('/update', detalle_pedido.updateDetalle_Pedido)

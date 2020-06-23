@@ -1,8 +1,15 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Cliente = sequelize.define('Cliente', {
-    id_persona:{type:DataTypes.INTEGER, allowNull: false,validate: {isInt: true, min: 0}},
     id_usuario: {type: DataTypes.INTEGER, allowNull: false, validate: {min: 1, isInt: true}},
+    dni: {type: DataTypes.CHAR(8), unique: true, allowNull: false, validate: {notEmpty: true, len: [8,8], isNumeric: true}},
+    nombre: {type: DataTypes.STRING(50), allowNull: false, validate: {notEmpty: true, len: [1,50]}},
+    apellido: {type: DataTypes.STRING(50), allowNull: false, validate: {notEmpty: true, len: [1,50]}},
+    direccion: {type: DataTypes.STRING(150), allowNull: true, validate: {notEmpty: true, len: [1,50]}},
+    celular: {type: DataTypes.CHAR(9), allowNull: true, validate: {len: [9,9], isNumeric: true}},
+    imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
+    validado: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
+    descripcion: {type: DataTypes.STRING(100), allowNull: true, validate: {notEmpty: true, len: [1,100]}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     estado: {type: DataTypes.CHAR(1), allowNull: false, defaultValue: 'A',
       validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}

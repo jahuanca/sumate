@@ -7,6 +7,6 @@ module.exports={
     SECRET_TOKEN: '20200327congresos',
     sizeDeliverys: 10,
     sizeComercios: 10,
-    sizeClientes: 5,
-    sizeProductos: 300,
+    sizeClientes: 100,
+    sizeProductos: 1000
 }

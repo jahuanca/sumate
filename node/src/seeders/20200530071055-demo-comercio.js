@@ -11,7 +11,7 @@ module.exports = {
       elementos.push(
         {
           id_usuario: index+1,
-          id_tipo_comercio: 1,
+          id_tipo_comercio: chance.integer({min: 1,max: config.sizeComercios}),
           ruc:  chance.string({ length: 11, numeric: true }),
           nombre: chance.name(),
           razon_social: chance.name({ middle: true }),

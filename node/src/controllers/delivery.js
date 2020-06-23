@@ -20,6 +20,16 @@ async function getDelivery(req,res){
   res.status(200).json(delivery)
 }
 
+async function getDeliveryUsuario(req,res){
+  let [err,delivery]=await get(models.Delivery.findOne({
+    where:{id_usuario: req.params.id, estado: 'A'},
+    include: [{all: true}]
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(delivery==null) return res.status(404).json({message: `Delivery nulos`})
+  res.status(200).json(delivery)
+}
+
 async function createDelivery(req,res){
   let [err,delivery]=await get(models.Delivery.create({
       id_tipo: req.body.id_tipo,
@@ -228,6 +238,7 @@ function get(promise) {
 module.exports={
   getDeliverys,
   getDelivery,
+  getDeliveryUsuario,
   createDelivery,
   createAllDelivery,
   updateAllDelivery,

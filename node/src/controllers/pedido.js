@@ -1,33 +1,37 @@
 'use strict'
 const models=require('../models')
 
-async function getEstado_Pedidos(req,res){
-  let [err,estado_pedidos]=await get(models.Estado_Pedido.findAll({
+async function getPedidos(req,res){
+  let [err,pedidos]=await get(models.Pedido.findAll({
     where:{estado: 'A'},
+    limit: 30,
     include: [{all: true}]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
-  if(estado_pedidos==null) return res.status(404).json({message: `Estado_Pedidos nulos`})
-  res.status(200).json(estado_pedidos)
+  if(pedidos==null) return res.status(404).json({message: `Pedidos nulos`})
+  res.status(200).json(pedidos)
 }
 
-async function getEstado_Pedido(req,res){
-  let [err,estado_pedido]=await get(models.Estado_Pedido.findOne({
+async function getPedido(req,res){
+  let [err,pedido]=await get(models.Pedido.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
-  if(estado_pedido==null) return res.status(404).json({message: `Estado_Pedidos nulos`})
-  res.status(200).json(estado_pedido)
+  if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
+  res.status(200).json(pedido)
 }
 
-async function createEstado_Pedido(req,res){
+async function createPedido(req,res){
   let p={
+    id_pedido: req.body.id_pedido,
     nombre: req.body.nombre,
     descripcion: models.limpiar(req.body.descripcion),
     observacion: models.limpiar(req.body.observacion),
+    latitud: req.body.latitud,
+    longitud: req.body.longitud,
     
     accion: 'I',
-    accion_usuario: 'Creo un nuevo estado del pedido.',
+    accion_usuario: 'Creo una nueva pedido.',
     ip: req.ip,
     usuario: 0
   }
@@ -41,27 +45,27 @@ async function createEstado_Pedido(req,res){
     }
     p.imagenes=models.limpiar(p.imagenes)
   }
-  let [err,estado_pedido]=await get(models.Estado_Pedido.create(p))
+  let [err,pedido]=await get(models.Pedido.create(p))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
-  if(estado_pedido==null) return res.status(404).json({message: `Estado_Pedidos nulos`})
-  res.status(200).json(estado_pedido)
+  if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
+  res.status(200).json(pedido)
 }
 
-async function createAllEstado_Pedido(req,res){
+async function createAllPedido(req,res){
   try {
 
     const result = await sequelize.transaction(async (t) => {
   
-      const user=await models.Estado_Pedido.create({
+      const user=await models.Pedido.create({
         id_tipo: 1,
         username: req.body.username,
         password: req.body.password,
         observacion: req.body.observacion,
 
         accion: 'I',
-        estado_pedido: 0,
+        pedido: 0,
         ip: req.ip,
-        accion_estado_pedido: 'Creo un nuevo estado_pedido estado_pedido.',
+        accion_pedido: 'Creo un nuevo pedido pedido.',
       }, { transaction: t });
       
       const persona = await models.Persona.create({
@@ -73,22 +77,22 @@ async function createAllEstado_Pedido(req,res){
         descripcion: req.body.descripcion,
         observacion: req.body.observacion,
         
-        accion_estado_pedido: 'Creo una nueva persona estado_pedido.',
+        accion_pedido: 'Creo una nueva persona pedido.',
         accion: 'I',
         ip: req.ip,
-        estado_pedido: 0
+        pedido: 0
       }, { transaction: t });
   
-      await models.Estado_Pedido.create({
+      await models.Pedido.create({
         id_persona: persona.id,
-        id_estado_pedido: user.id,
+        id_pedido: user.id,
         descripcion: req.body.descripcion,
         observacion: req.body.observacion,
         
         accion: 'I',
-        accion_estado_pedido: 'Creo un nuevo estado_pedido.',
+        accion_pedido: 'Creo un nuevo pedido.',
         ip: req.ip,
-        estado_pedido: 0
+        pedido: 0
       }, { transaction: t });
   
       return persona;
@@ -104,14 +108,17 @@ async function createAllEstado_Pedido(req,res){
   
 }
 
-async function updateEstado_Pedido(req,res){
+async function updatePedido(req,res){
   let p={
+    id_departamento: req.body.departamento,
     nombre: req.body.nombre,
     descripcion: models.limpiar(req.body.descripcion),
     observacion: models.limpiar(req.body.observacion),
+    latitud: req.body.latitud,
+    longitud: req.body.longitud,
     
     accion: 'U',
-    accion_usuario: 'Edito un estado del pedido.',
+    accion_usuario: 'Edito una pedido.',
     ip: req.ip,
     usuario: 0
   }
@@ -129,7 +136,8 @@ async function updateEstado_Pedido(req,res){
     }
     p.imagenes=models.limpiar(p.imagenes)
   }
-  let [err,estado_pedido]=await get(models.Estado_Pedido.update(p,
+
+  let [err,pedido]=await get(models.Pedido.update(p,
     {
       where:{
         id: req.body.id, estado:'A'
@@ -138,15 +146,15 @@ async function updateEstado_Pedido(req,res){
     }  
   ))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
-  if(estado_pedido==null) return res.status(404).json({message: `Estado_Pedidos nulos`})
-  res.status(200).json(estado_pedido[1][0].dataValues)
+  if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
+  res.status(200).json(pedido)
 }
 
-async function deleteEstado_Pedido(req,res){
-  let [err,estado_pedido]=await get(models.Estado_Pedido.update({
+async function deletePedido(req,res){
+  let [err,pedido]=await get(models.Pedido.update({
     estado: 'I',
 
-    accion_estado_pedido: 'Elimino un estado_pedido.',
+    accion_pedido: 'Elimino un pedido.',
     accion: 'D',
     ip: req.ip
   },{
@@ -156,8 +164,8 @@ async function deleteEstado_Pedido(req,res){
     individualHooks: true
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
-  if(estado_pedido==null) return res.status(404).json({message: `Estado_Pedidos nulos`})
-  res.status(200).json(estado_pedido)
+  if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
+  res.status(200).json(pedido)
 }
 
 function get(promise) {
@@ -168,10 +176,10 @@ function get(promise) {
 }
 
 module.exports={
-  getEstado_Pedidos,
-  getEstado_Pedido,
-  createEstado_Pedido,
-  createAllEstado_Pedido,
-  updateEstado_Pedido,
-  deleteEstado_Pedido
+  getPedidos,
+  getPedido,
+  createPedido,
+  createAllPedido,
+  updatePedido,
+  deletePedido
 }

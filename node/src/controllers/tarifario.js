@@ -11,6 +11,17 @@ async function getTarifarios(req,res){
   res.status(200).json(tarifarios)
 }
 
+async function getTarifariosDelivery(req,res){
+  let [err,tarifario]=await get(models.Tarifario.findAll({
+    where:{estado: 'A'},
+    include: [{model: models.Asociacion, where: {id_delivery: req.params.id} , include: [{all: true}]},
+    {model: models.Zona}]
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(tarifario==null) return res.status(404).json({message: `Tarifarios nulos`})
+  res.status(200).json(tarifario)
+}
+
 async function getTarifario(req,res){
   let [err,tarifario]=await get(models.Tarifario.findOne({
     where:{id: req.params.id, estado: 'A'}
@@ -153,6 +164,7 @@ function get(promise) {
 
 module.exports={
   getTarifarios,
+  getTarifariosDelivery,
   getTarifario,
   createTarifario,
   createAllTarifario,

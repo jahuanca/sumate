@@ -16,6 +16,8 @@ const auth=require('../middlewares/auth')
  */
 router.get('/',asociacion.getAsociacions)
 router.get('/id/:id',asociacion.getAsociacion)
+router.get('/id_comercio/:id',asociacion.getAsociacionsComercio)
+router.get('/id_delivery/:id',asociacion.getAsociacionsDelivery)
 router.post('/create',asociacion.createAsociacion)
 router.put('/update', asociacion.updateAsociacion)
 router.delete('/delete/:id', asociacion.deleteAsociacion)

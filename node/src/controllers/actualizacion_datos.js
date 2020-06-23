@@ -8,7 +8,6 @@ const _=require('lodash')
 
 module.exports={
   scriptDireccion,
-  llenarSupervisores,
   llenarTipoUsuarios,
   llenarDepartamentos,
   llenarEstadoPedido,
@@ -29,59 +28,6 @@ function scriptDireccion() {
 }
 
 
-
-async function llenarSupervisores(){
-    let [err,supervisors]=await get(models.Supervisor.count({where: {estado: 'A'}}))
-    if(supervisors==0){
-        let [err2,usuario]=await get(models.Usuario.create({
-            nombre_usuario: 'jhuanca',
-          clave_usuario: '090412',
-          fecha_registro: new Date(),
-          responsable: 'Ningun responsable.',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },{hooks: false}))
-        if(err2) console.log(`${err2}`)
-        let [err3,supervisors2]=await get(models.Supervisor.create({
-            dni: '76208445',
-            nombre: 'José Antonio',
-            apellido: 'Huanca Ancajima',
-            direccion: 'Enace IV Etapa MZ H2 Lt 11',
-            telefono: '989743471',
-            correo: 'joan.huanca19@gmail.com',
-            foto: 'sin_imagen.jpg',
-            id_usuario: usuario.id
-        }, {hooks: false}))
-        if(err3) console.log(`${err3}`)
-
-
-        let [err4,usuario2]=await get(models.Usuario.create({
-          nombre_usuario: 'jvalladares',
-        clave_usuario: '090412',
-        fecha_registro: new Date(),
-        responsable: 'Ningun responsable.',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },{hooks: false}))
-      if(err4) console.log(`${err4}`)
-      let [err5,supervisors]=await get(models.Supervisor.create({
-          dni: '00112233',
-          nombre: 'Julio César',
-          apellido: 'Valladares Saavedra',
-          direccion: 'SatPiura Centro de Piura - Ubicacion',
-          telefono: '919241411',
-          correo: 'jvalladares@satp.gob.pe',
-          foto: 'sin_imagen.jpg',
-          id_usuario: usuario2.id
-      }, {hooks: false}))
-      if(err5) console.log(`${err5}`)
-      console.log('Supervisor creado')
-
-    }else{
-        console.log('Ya tiene supervisores')
-    }
-
-}
 
 async function llenarUsuarios(){
   let [err,usuario]=await get(models.Usuario.count({where: {estado: 'A'}}))
@@ -190,13 +136,20 @@ async function llenarEstadoPedido(){
   if(err) console.log(`${err}`)
   if(cantidad==0){
       let estados=[
-        {nombre: 'Realizado', descripcion: 'El pedido ha sido realizado.', observacion: 'Ingresado por defecto.'},
-        {nombre: 'Pagado', descripcion: 'Ya se ha pagado el pedido.', observacion: 'Ingresado por defecto.'},
-        {nombre: 'Despachado', descripcion: 'Su orden ya se encuentra por recoger.', observacion: 'Ingresado por defecto.'},
-        {nombre: 'Recogido', descripcion: 'El pedido ha sido recogido por su delivery.', observacion: 'Ingresado por defecto.'},
-        {nombre: 'Entregado', descripcion: 'El pedido ha sido entregado al cliente.', observacion: 'Ingresado por defecto.'},
-        {nombre: 'Entregado en buen estado', descripcion: 'El pedido ha sido entregado en buen estado.', observacion: 'Ingresado por defecto.'},
-        {nombre: 'Entregado en mal estado', descripcion: 'El pedido ha sido entregado en mal estado.', observacion: 'Ingresado por defecto.'}
+        {nombre: 'Realizado', descripcion: 'El pedido ha sido realizado.',
+         observacion: 'Ingresado por defecto.', imagenes: 'sum2020_f3cc047ac34d29f1f242d34255d29f7b.png'},
+        {nombre: 'Pagado', descripcion: 'Ya se ha pagado el pedido.', 
+        observacion: 'Ingresado por defecto.', imagenes: 'sum2020_90c44f87769eb93590ed2a093758938a.png'},
+        {nombre: 'Despachado', descripcion: 'Su orden ya se encuentra por recoger.', 
+        observacion: 'Ingresado por defecto.', imagenes: 'sum2020_6e0f0e617a5aa3f72f2e6a661f7bace1.png'},
+        {nombre: 'Recogido', descripcion: 'El pedido ha sido recogido por su delivery.', 
+        observacion: 'Ingresado por defecto.', imagenes: 'sum2020_6dbe98407faf1726e1a4367d735889dc.png'},
+        {nombre: 'Entregado', descripcion: 'El pedido ha sido entregado al cliente.', 
+        observacion: 'Ingresado por defecto.', imagenes: 'sum2020_f1a6256cea8525759308d1666c07ef5d.png'},
+        {nombre: 'Entregado en buen estado', descripcion: 'El pedido ha sido entregado en buen estado.', 
+        observacion: 'Ingresado por defecto.', imagenes: 'sum2020_0736639e341215cf6067c391ac9b7cb1.png'},
+        {nombre: 'Entregado en mal estado', descripcion: 'El pedido ha sido entregado en mal estado.', 
+        observacion: 'Ingresado por defecto.', imagenes: 'sum2020_284e270f36c9732e491cb8792012e536.png'}
       ]
       
       let [err2,tipo]=await get(models.Estado_Pedido.bulkCreate(estados,{hooks: false}))

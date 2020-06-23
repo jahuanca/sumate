@@ -14,7 +14,7 @@ module.exports = {
           key:'id'
         }
       },
-      id_pedido: {type: Sequelize.INTEGER, allowNull: false, unique: true, validate: {min:1, isInt: true}
+      id_pedido: {type: Sequelize.INTEGER, allowNull: false, validate: {min:1, isInt: true}
         ,references:{
           model:'Pedido',
           key:'id'

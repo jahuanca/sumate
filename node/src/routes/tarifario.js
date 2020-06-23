@@ -16,6 +16,7 @@ const auth=require('../middlewares/auth')
  */
 router.get('/',tarifario.getTarifarios)
 router.get('/id/:id',tarifario.getTarifario)
+router.get('/id_delivery/:id',tarifario.getTarifariosDelivery)
 router.post('/create',tarifario.createTarifario)
 router.post('/createAllTarifario',tarifario.createAllTarifario)
 router.put('/update', tarifario.updateTarifario)

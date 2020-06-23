@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const Pago_Comercio = sequelize.define('Pago_Comercio', {
     id_comercio: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     id_usuario: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
-    cantidad: {type: DataTypes.INTEGER, allowNull: false, unique: true, validate: {min:1, isInt: true}},
+    cantidad: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     codigo: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     total: {type: DataTypes.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
