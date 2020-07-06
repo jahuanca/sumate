@@ -3,7 +3,7 @@
     "username": "postgres",
     "password": "123456789",
     "database": "sumate",
-    "host": "127.0.0.1",
+    "host": "159.65.102.23",
     "dialect": "postgres",
     "operatorsAliases": 0,
     "logging": false,
