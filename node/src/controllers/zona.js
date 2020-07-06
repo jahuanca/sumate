@@ -20,6 +20,17 @@ async function getZona(req,res){
   res.status(200).json(zona)
 }
 
+async function getZonasConTarifario(req,res){
+  let [err,zona]=await get(models.Zona.findAll({
+    where:{estado: 'A'},
+    include: [{model: models.Tarifario, required: true}]
+  }))
+  console.log(err)
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(zona==null) return res.status(404).json({message: `Zonas nulos`})
+  res.status(200).json(zona)
+}
+
 async function createZona(req,res){
   let [err,zona]=await get(models.Zona.create({
       id_distrito: req.body.id_distrito,
@@ -148,6 +159,7 @@ function get(promise) {
 
 module.exports={
   getZonas,
+  getZonasConTarifario,
   getZona,
   createZona,
   createAllZona,

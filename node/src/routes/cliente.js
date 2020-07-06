@@ -16,9 +16,12 @@ const auth=require('../middlewares/auth')
  */
 router.get('/',cliente.getClientes)
 router.get('/id/:id',cliente.getCliente)
+router.get('/id_usuario/:id',cliente.getClienteUsuario)
+router.post('/validate',auth.isAuthCliente,cliente.validateCelular)
 router.post('/create',cliente.createCliente)
 router.post('/createAllCliente',cliente.createAllCliente)
 router.put('/update', cliente.updateCliente)
+router.put('/updateMiCuenta', auth.isAuthCliente, cliente.updateMiCuenta)
 router.delete('/delete/:id', cliente.deleteCliente)
 
 module.exports=router

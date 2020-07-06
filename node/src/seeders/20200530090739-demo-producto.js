@@ -10,7 +10,7 @@ module.exports = {
     for (let index = 0; index < config.sizeProductos; index++) {
       elementos.push(
         {
-          id_categoria: 1,
+          id_categoria: chance.integer({min: 1, max: config.sizeDeliverys}),
           id_comercio: chance.integer({min: 1, max: config.sizeComercios}),
           nombre: chance.name(),
           presentacion: chance.country(),

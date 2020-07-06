@@ -15,6 +15,7 @@ const auth=require('../middlewares/auth')
  *        description: A successful response
  */
 router.get('/',zona.getZonas)
+router.get('/inTarifario',zona.getZonasConTarifario)
 router.get('/id/:id',zona.getZona)
 router.post('/create',zona.createZona)
 router.post('/createAllZona',zona.createAllZona)

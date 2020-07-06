@@ -12,6 +12,7 @@
   "author": "jhuanca",
   "license": "ISC",
   "dependencies": {
+    "@types/socket.io": "^2.1.8",
     "body-parser": "^1.19.0",
     "chance": "^1.1.6",
     "cors": "^2.8.5",
@@ -35,7 +36,8 @@
     "socket.io": "^2.3.0",
     "swagger-jsdoc": "^3.5.0",
     "swagger-ui-express": "^4.1.2",
-    "tedious": "^6.6.2"
+    "tedious": "^6.6.2",
+    "web-push": "^3.4.4"
   },
   "devDependencies": {
     "ngrok": "^3.2.7",

@@ -25,7 +25,7 @@ module.exports = {
       descripcion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       observacion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       cantidad: {type: Sequelize.INTEGER, allowNull: false, validate: {notEmpty: true, min: 0}},
-      peso: {type: Sequelize.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}},
+      peso: {type: Sequelize.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}, defaultValue: 0},
       precio: {type: Sequelize.DOUBLE, allowNull: false, validate: {isDecimal: true, min: 0}},
       tiempo_preparacion: {type: Sequelize.INTEGER, allowNull: false, validate: {isDecimal: true, min: 0}},
       imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},

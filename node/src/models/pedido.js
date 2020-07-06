@@ -2,16 +2,16 @@
 module.exports = (sequelize, DataTypes) => {
   const Pedido = sequelize.define('Pedido', {
     id_cliente: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
-    id_tarifario: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
+    id_tarifario: {type: DataTypes.INTEGER, allowNull: true, validate: {min:1, isInt: true}},
     id_tipo_envio: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     id_forma_pago: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     id_estado_pedido: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
-    direccion: {type: DataTypes.STRING(200), allowNull: false, validate: {notEmpty: true, len: [1,200]}},
+    direccion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     referencia: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
-    latitud: {type: DataTypes.DOUBLE, allowNull: false, validate: {min:1, isInt: true}},
-    longitud: {type: DataTypes.DOUBLE, allowNull: false, validate: {min:1, isInt: true}},
-    peso: {type: DataTypes.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}},
-    tarifa: {type: DataTypes.DOUBLE, allowNull: false, validate: {min:0, isDecimal: true}},
+    latitud: {type: DataTypes.DOUBLE, allowNull: true, validate: {isDecimal: true}},
+    longitud: {type: DataTypes.DOUBLE, allowNull: true, validate: {isDecimal: true}},
+    peso: {type: DataTypes.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}, defaultValue: 0},
+    tarifa: {type: DataTypes.DOUBLE, allowNull: true, validate: {min:0, isDecimal: true}},
     total: {type: DataTypes.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
@@ -35,6 +35,8 @@ module.exports = (sequelize, DataTypes) => {
     Pedido.belongsTo(models.Forma_Pago, {foreignKey: 'id_forma_pago'});
     Pedido.belongsTo(models.Estado_Pedido, {foreignKey: 'id_estado_pedido'});
     Pedido.belongsTo(models.Cliente, {foreignKey: 'id_cliente'});
+    Pedido.belongsTo(models.Tarifario, {foreignKey: 'id_tarifario'});
+    Pedido.hasMany(models.Detalle_Pedido, {foreignKey: 'id_pedido'});
   };
   return Pedido;
 };

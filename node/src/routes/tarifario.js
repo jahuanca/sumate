@@ -19,6 +19,7 @@ router.get('/id/:id',tarifario.getTarifario)
 router.get('/id_delivery/:id',tarifario.getTarifariosDelivery)
 router.post('/create',tarifario.createTarifario)
 router.post('/createAllTarifario',tarifario.createAllTarifario)
+router.post('/tarifariosZona',tarifario.getTarifariosComercios)
 router.put('/update', tarifario.updateTarifario)
 router.delete('/delete/:id', tarifario.deleteTarifario)
 

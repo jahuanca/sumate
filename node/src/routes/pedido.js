@@ -31,8 +31,12 @@ const storage=multer.diskStorage({
  */
 router.get('/',pedido.getPedidos)
 router.get('/id/:id',pedido.getPedido)
+router.get('/id_cliente/:id',pedido.getPedidosCliente)
+router.get('/misPedidos', auth.isAuthCliente,pedido.getMisPedidos)
+router.post('/cambiarEstadoPedido',pedido.cambiarEstadoPedido)
+router.post('/pedidosAtendiendo',pedido.getPedidosAtendiendo)
 router.post('/create',pedido.createPedido)
-//router.post('/createAllPedido',multer({storage: storage}).array('files',5) ,pedido.createAllPedido)
+router.post('/createAllPedido',auth.isAuthCliente ,pedido.createAllPedido)
 //router.put('/updateAllPedido', multer({storage: storage}).array('files',5) ,pedido.updateAllPedido)
 router.put('/update', pedido.updatePedido)
 router.delete('/delete/:id', pedido.deletePedido)

@@ -12,6 +12,44 @@ async function getPedidos(req,res){
   res.status(200).json(pedidos)
 }
 
+async function getPedidosAtendiendo(req,res){
+  let [err,pedidos]=await get(models.Pedido.findAll({
+    where:{estado: 'A', id_estado_pedido: req.body},
+    include: [{model: models.Cliente},
+      {model: models.Forma_Pago},
+      {model: models.Estado_Pedido},
+      {model: models.Tipo_Envio},
+      {model: models.Detalle_Pedido, include: [{model: models.Producto}]},
+      {model: models.Tarifario, include: [{model: models.Zona},
+        {model: models.Asociacion,include: [{all: true}]}]}
+    ],
+    order: [['createdAt','ASC']]
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(pedidos==null) return res.status(404).json({message: `Pedidos nulos`})
+  res.status(200).json(pedidos)
+}
+
+//crear dos traer el pedido del cliente y traer mis pedidos
+
+async function getPedidosCliente(req,res){
+  let [err,pedido]=await get(models.Pedido.findAll({
+    where:{id_cliente: req.params.id_cliente, estado: 'A'}
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
+  res.status(200).json(pedido)
+}
+
+async function getMisPedidos(req,res){
+  let [err,pedido]=await get(models.Pedido.findAll({
+    where:{id_cliente: req.cliente, estado: 'A'}
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
+  res.status(200).json(pedido)
+}
+
 async function getPedido(req,res){
   let [err,pedido]=await get(models.Pedido.findOne({
     where:{id: req.params.id, estado: 'A'}
@@ -53,52 +91,45 @@ async function createPedido(req,res){
 
 async function createAllPedido(req,res){
   try {
-
-    const result = await sequelize.transaction(async (t) => {
-  
-      const user=await models.Pedido.create({
-        id_tipo: 1,
-        username: req.body.username,
-        password: req.body.password,
-        observacion: req.body.observacion,
-
+    const result = await models.sequelize.transaction(async (t) => {
+      const pedido=await models.Pedido.create({
+        id_cliente: req.cliente,
+        id_tarifario: models.limpiar(req.body.id_tarifario),
+        id_tipo_envio: req.body.id_tipo_envio,
+        id_estado_pedido: req.body.id_estado_pedido,
+        id_forma_pago: req.body.id_forma_pago,
+        direccion: models.limpiar(req.body.direccion),
+        referencia: models.limpiar(req.body.referencia),
+        latitud: models.limpiar(req.body.longitud),
+        longitud: models.limpiar(req.body.longitud),
+        tarifa: req.body.tarifa,
+        total: req.body.total,
         accion: 'I',
-        pedido: 0,
+        usuario: req.user,
         ip: req.ip,
-        accion_pedido: 'Creo un nuevo pedido pedido.',
+        accion_usuario: 'Creo un nuevo pedido completo.',
       }, { transaction: t });
       
-      const persona = await models.Persona.create({
-        dni: req.body.dni,
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        direccion: req.body.direccion,
-        celular: req.body.celular,
-        descripcion: req.body.descripcion,
-        observacion: req.body.observacion,
-        
-        accion_pedido: 'Creo una nueva persona pedido.',
-        accion: 'I',
-        ip: req.ip,
-        pedido: 0
-      }, { transaction: t });
-  
-      await models.Pedido.create({
-        id_persona: persona.id,
-        id_pedido: user.id,
-        descripcion: req.body.descripcion,
-        observacion: req.body.observacion,
-        
-        accion: 'I',
-        accion_pedido: 'Creo un nuevo pedido.',
-        ip: req.ip,
-        pedido: 0
-      }, { transaction: t });
-  
-      return persona;
-  
+      for (let i = 0; i < req.body.Detalle_Pedidos.length; i++) {
+        let d=req.body.Detalle_Pedidos[i];
+        await models.Detalle_Pedido.create({
+          id_pedido: pedido.id,
+          id_producto: d.id_producto,
+          cantidad: d.cantidad,
+          precio: d.precio,
+          subtotal: d.subtotal,
+          peso: d.peso,
+
+          accion: 'I',
+          accion_usuario: 'Creo un nuevo detalle de pedido.',
+          ip: req.ip,
+          usuario: 0
+        }, { transaction: t });
+      }
+      return pedido;
     });
     res.status(200).json(result)
+    
   
   } catch (error) {
     console.log(error)
@@ -168,6 +199,24 @@ async function deletePedido(req,res){
   res.status(200).json(pedido)
 }
 
+async function cambiarEstadoPedido(req,res){
+
+  let [err,pedido]=await get(models.Pedido.update({
+    id_estado_pedido: (req.body.id_estado_pedido+1)
+  },
+  {
+    where:{
+      id: req.body.id, estado:'A'
+    },
+    individualHooks: true
+  }  
+  ))
+  console.log(err)
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
+  res.status(200).json(pedido[1][0].dataValues)
+}
+
 function get(promise) {
   return promise.then(data => {
      return [null, data];
@@ -177,9 +226,13 @@ function get(promise) {
 
 module.exports={
   getPedidos,
+  getPedidosCliente,
+  getMisPedidos,
   getPedido,
+  getPedidosAtendiendo,
   createPedido,
   createAllPedido,
   updatePedido,
-  deletePedido
+  deletePedido,
+  cambiarEstadoPedido
 }

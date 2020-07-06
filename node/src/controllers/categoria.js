@@ -11,6 +11,15 @@ async function getCategorias(req,res){
   res.status(200).json(categorias)
 }
 
+async function getCategoriasOnly(req,res){
+  let [err,categorias]=await get(models.Categoria.findAll({
+    where:{estado: 'A'}
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(categorias==null) return res.status(404).json({message: `Categorias nulos`})
+  res.status(200).json(categorias)
+}
+
 async function getCategoria(req,res){
   let [err,categoria]=await get(models.Categoria.findOne({
     where:{id: req.params.id, estado: 'A'}
@@ -115,6 +124,7 @@ function get(promise) {
 
 module.exports={
   getCategorias,
+  getCategoriasOnly,
   getCategoria,
   createCategoria,
   updateCategoria,

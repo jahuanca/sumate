@@ -13,8 +13,30 @@ async function getProductos(req,res){
 
 async function getProducto(req,res){
   let [err,producto]=await get(models.Producto.findOne({
-    where:{id: req.params.id, estado: 'A'}
+    where:{id: req.params.id, estado: 'A'},
+    include: ['Categoria']
   }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(producto==null) return res.status(404).json({message: `Productos nulos`})
+  res.status(200).json(producto)
+}
+
+async function getProductosCategoria(req,res){
+  let [err,producto]=await get(models.Producto.findAll({
+    where:{id_categoria: req.params.id, estado: 'A'},
+    include: ['Categoria']
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(producto==null) return res.status(404).json({message: `Productos nulos`})
+  res.status(200).json(producto)
+}
+
+async function obtenerProductosSome(req,res){
+  let [err,producto]=await get(models.Producto.findAll({
+    where:{id: req.body, estado: 'A'},
+    include: ['Categoria', {model: models.Comercio}]
+  }))
+  console.log(err)
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
@@ -29,6 +51,24 @@ async function getProductosComercio(req,res){
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
 }
+
+async function getProductosBuscados(req,res){
+  let [err,producto]=await get(models.Producto.findAll({
+    where:{
+    estado: 'A',
+    '$col': models.sequelize.where(models.sequelize.fn('lower', models.sequelize.col('Producto.nombre')), {
+      [models.Sequelize.Op.like]: `%${req.params.texto}%`
+    })
+    //nombre: {[models.Sequelize.Op.ilike]: `%${req.params.texto}%`}
+    },
+    include: ['Categoria']
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(producto==null) return res.status(404).json({message: `Productos nulos`})
+  res.status(200).json(producto)
+}
+
+
 
 async function createProducto(req,res){
   let p={
@@ -195,8 +235,11 @@ function get(promise) {
 
 module.exports={
   getProductos,
+  getProductosCategoria,
   getProductosComercio,
+  getProductosBuscados,
   getProducto,
+  obtenerProductosSome,
   createProducto,
   createAllProducto,
   updateProducto,

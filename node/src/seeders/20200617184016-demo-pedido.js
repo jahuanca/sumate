@@ -11,9 +11,9 @@ module.exports = {
       elementos.push(
         {
           id_cliente: chance.integer({min: 1, max: config.sizeClientes}),
-          id_tarifario: chance.integer({min: 1, max: config.sizeClientes*10}),
-          id_tipo_envio: chance.integer({min: 1, max: 2}),
-          id_forma_pago: chance.integer({min: 1, max: 3}),
+          id_tarifario: chance.integer({min: 1, max: config.sizeZonas*config.sizeDeliverys}),
+          id_tipo_envio: chance.integer({min: 2, max: 2}),
+          id_forma_pago: chance.integer({min: 2, max: 4}),
           id_estado_pedido: chance.integer({min: 1, max: 7}),
           direccion: chance.street(),
           referencia: chance.sentence({words: 7}),
@@ -22,7 +22,8 @@ module.exports = {
           peso: chance.integer({min: 1, max: 300}),
           tarifa: chance.integer({min: 1, max: 7}),
           total: chance.integer({min: 100, max: 157}),
-          observacion: chance.sentence({words: 5})
+          observacion: chance.sentence({words: 5}),
+          createdAt: chance.date({day: chance.integer({min:1, max: 5})})
         }
       )
     }

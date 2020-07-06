@@ -14,7 +14,7 @@ module.exports = {
           key: 'id'
         }
       },
-      id_tarifario: {type: Sequelize.INTEGER, allowNull: false, validate: {min:1, isInt: true}
+      id_tarifario: {type: Sequelize.INTEGER, allowNull: true, validate: {min:1, isInt: true}
         ,references:{
           model: 'Tarifario',
           key: 'id'
@@ -38,12 +38,12 @@ module.exports = {
           key: 'id'
         }
       },
-      direccion: {type: Sequelize.STRING(200), allowNull: false, validate: {notEmpty: true, len: [1,200]}},
+      direccion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       referencia: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
-      latitud: {type: Sequelize.DOUBLE, allowNull: false, validate: {min:1, isInt: true}},
-      longitud: {type: Sequelize.DOUBLE, allowNull: false, validate: {min:1, isInt: true}},
-      peso: {type: Sequelize.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}},
-      tarifa: {type: Sequelize.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}},
+      latitud: {type: Sequelize.DOUBLE, allowNull: true, validate: {isDecimal: true}},
+      longitud: {type: Sequelize.DOUBLE, allowNull: true, validate: {isDecimal: true}},
+      peso: {type: Sequelize.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}, defaultValue: 0},
+      tarifa: {type: Sequelize.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}},
       total: {type: Sequelize.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
       observacion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},

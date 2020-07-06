@@ -166,7 +166,7 @@ async function llenarFormaPago(){
   if(err) console.log(`${err}`)
   if(cantidad==0){
       let formas=[
-        {nombre: 'Pago en tienda', descripcion: 'El pedido sera pagado al recogerlo el cliente.', observacion: 'Ingresado por defecto.'},
+        {nombre: 'Pago en tienda', descripcion: 'El pedido sera pagado al recogerlo el cliente.', observacion: 'Ingresado por defecto.', estado: 'I'},
         {nombre: 'Pago por plataforma', descripcion: 'Hara uso de mercado pago asignandole un 4%', observacion: 'Ingresado por defecto.'},
         {nombre: 'Deposito a cuenta', descripcion: 'Deposita a este numero de cuenta ...', observacion: 'Ingresado por defecto.'},
         {nombre: 'Pago por yape', descripcion: 'Yapee a este numero ...', observacion: 'Ingresado por defecto.'}

@@ -3,8 +3,7 @@ const models=require('../models')
 
 async function getForma_Pagos(req,res){
   let [err,forma_pagos]=await get(models.Forma_Pago.findAll({
-    where:{estado: 'A'},
-    include: [{all: true}]
+    where:{estado: 'A'}
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(forma_pagos==null) return res.status(404).json({message: `Forma_Pagos nulos`})

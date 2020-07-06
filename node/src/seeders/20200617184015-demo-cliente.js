@@ -15,6 +15,8 @@ module.exports = {
           nombre: chance.name(),
           apellido:  chance.last(),
           direccion: chance.address(),
+          latitud: chance.latitude({min: -5.3, max: -5.1}),
+          longitud: chance.longitude({min: -80.7, max: -80.5}),
           celular:  chance.string({ length: 9, numeric: true }),
           descripcion:  chance.sentence({words: 5}),
           observacion: chance.sentence({words: 5})

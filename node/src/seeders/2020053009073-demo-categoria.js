@@ -7,7 +7,7 @@ const chance=new Chance();
 module.exports = {
   up: (queryInterface, Sequelize) => {
     let elementos=[];
-    for (let index = 0; index < config.sizeClientes+config.sizeClientes+config.sizeComercios; index++) {
+    for (let index = 0; index < config.sizeDeliverys; index++) {
       elementos.push(
         {
           nombre: chance.name(),

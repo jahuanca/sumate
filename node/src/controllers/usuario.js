@@ -13,8 +13,13 @@ async function getUsuarios(req,res){
 
 async function getUsuario(req,res){
   let [err,usuario]=await get(models.Usuario.findOne({
-    where:{id: req.params.id, estado: 'A'}
+    where:{id: req.params.id, estado: 'A'},
+    include: [{model: models.Cliente},
+      {model: models.Delivery},
+      {model: models.Comercio}
+    ]
   }))
+  console.log(err)
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   res.status(200).json(usuario)
@@ -115,6 +120,34 @@ async function updateUsuario(req,res){
   res.status(200).json(usuario)
 }
 
+async function updatePassword(req,res){
+  let [err,usuario]=await get(models.Usuario.findOne({
+    where:{id: req.usuario, estado: 'A'}
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
+  if(!usuario.correctPassword(req.body.lastPassword)){
+    return res.status(401).json({message: `Codigos no coinciden`})
+  }
+  usuario.password=req.body.password;
+  usuario.save();
+  res.status(200).json(usuario)
+}
+
+async function updateCorreo(req,res){
+  let [err,usuario]=await get(models.Usuario.findOne({
+    where:{id: req.usuario, estado: 'A'}
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
+  if(!usuario.correctPassword(req.body.password)){
+    return res.status(401).json({message: `Codigos no coinciden`})
+  }
+  usuario.username=req.body.username;
+  usuario.save();
+  res.status(200).json(usuario)
+}
+
 async function deleteUsuario(req,res){
   let [err,usuario]=await get(models.Usuario.update({
     estado: 'I',
@@ -133,6 +166,20 @@ async function deleteUsuario(req,res){
   res.status(200).json(usuario)
 }
 
+async function validateCorreo(req,res){
+  let [err,usuario]=await get(models.Usuario.findOne({
+    where:{id: req.usuario, estado: 'A'}
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
+  if(!usuario.correctCodigo(req.body.codigo)){
+    return res.status(401).json({message: `Codigos no coinciden`})
+  }
+  usuario.validado=true;
+  usuario.save();
+  res.status(200).json(usuario)
+}
+
 function get(promise) {
   return promise.then(data => {
      return [null, data];
@@ -146,5 +193,8 @@ module.exports={
   createUsuario,
   createAllUsuario,
   updateUsuario,
-  deleteUsuario
+  updatePassword,
+  updateCorreo,
+  deleteUsuario,
+  validateCorreo
 }

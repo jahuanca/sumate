@@ -29,6 +29,7 @@ const storage=multer.diskStorage({
  *        description: A successful response
  */
 router.get('/',categoria.getCategorias)
+router.get('/only',categoria.getCategoriasOnly)
 router.get('/id/:id',categoria.getCategoria)
 router.post('/create', multer({storage: storage}).array('files',1),categoria.createCategoria)
 router.put('/update', multer({storage: storage}).array('files',1), categoria.updateCategoria)

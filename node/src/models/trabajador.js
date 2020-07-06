@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Trabajador'
   });
   Trabajador.associate = function(models) {
-    // associations can be defined here
+    Trabajador.belongsTo(models.Usuario, {foreignKey: 'id_usuario'});
   };
   return Trabajador;
 };

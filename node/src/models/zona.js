@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Zona.associate = function(models) {
     Zona.belongsTo(models.Distrito, {foreignKey: 'id_distrito'});
+    Zona.hasMany(models.Tarifario, {foreignKey: 'id_zona_destino'});
   };
   return Zona;
 };

@@ -5,8 +5,11 @@ module.exports={
     port: process.env.PORT || 3000,
     db: process.env.SQLSERVER || '',
     SECRET_TOKEN: '20200327congresos',
-    sizeDeliverys: 10,
-    sizeComercios: 10,
-    sizeClientes: 100,
-    sizeProductos: 1000
+    sizeDeliverys: 1,
+    sizeComercios: 5,
+    sizeClientes: 10,
+    sizeProductos: 100,
+    sizeZonas: 10,
+    publicKey:'BKQku2VLuMvwe9syqCjyo7AlosAWLChw2hi3MWrmT_FG55Er6FGqZukxyrEP4Lnom6zBTjtY9rFH0tItN8Ho-KQ',
+    privateKey: 'f4mlPVs8kUyaiZa1uDdQMO77H1HYFz_ey_yoxQJgsPc'
 }

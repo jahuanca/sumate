@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
+const { isNumber } = require('lodash');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
@@ -40,6 +41,9 @@ module.exports.limpiar=limpiar;
   function limpiar(value){
     if(value==undefined || value==0 || value==null){
         return null;
+    }
+    if(isNumber(value)){
+      return value;
     }
     value=value.replace(/-/g,"");
     if(value.trim()=='' || value.trim()=='null'){

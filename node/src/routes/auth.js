@@ -35,6 +35,7 @@ const auth=require('../controllers/auth')
 *        type: string
 */
 router.post('/signIn',auth.signInUser)
+router.post('/signInSocial',auth.signInUserForSocial)
 /**
 * @swagger
 *  /auth/signInAdmin:
@@ -56,6 +57,7 @@ router.post('/signIn',auth.signInUser)
 *          description: Logeado con exito!
 */
 router.post('/signInAdmin',auth.signInAdmin)
+router.post('/register',auth.registerClient)
 
 
 module.exports=router

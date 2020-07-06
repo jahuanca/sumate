@@ -18,7 +18,10 @@ router.get('/',usuario.getUsuarios)
 router.get('/id/:id',usuario.getUsuario)
 router.post('/create',usuario.createUsuario)
 router.post('/createAllUsuario',usuario.createAllUsuario)
+router.post('/validate',auth.isAuthCliente,usuario.validateCorreo)
 router.put('/update', usuario.updateUsuario)
+router.put('/updatePassword', auth.isAuthUser,usuario.updatePassword)
+router.put('/updateCorreo', auth.isAuthUser ,usuario.updateCorreo)
 router.delete('/delete/:id', usuario.deleteUsuario)
 
 module.exports=router
