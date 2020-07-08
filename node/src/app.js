@@ -28,7 +28,7 @@ app.use(function(req, res, next) {
 
 
 
-const whitelist = ['http://localhost:4200', 'http://localhost','http://127.0.0.1:9999']
+const whitelist = ['http://localhost:4200', 'http://localhost','http://jhuanca.com','http://159.65.102.23']
 const corsOptions = {
     origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -108,6 +108,7 @@ io.on("connection", socket => {
 
 app.use(express.static('./public'));
 
+const email=require('./services/nodemailer')
 
 http.listen(config.port,()=>{
     actualizarDatos.llenarTipoUsuarios();
@@ -117,7 +118,7 @@ http.listen(config.port,()=>{
     actualizarDatos.llenarFormaPago();
     actualizarDatos.llenarEstadoPedido();
     actualizarDatos.llenarTipoComercio();
-    actualizarDatos.llenarCategorias();
+    actualizarDatos.llenarCategorias();    
     console.log(`API REST: corriendo en el puerto: ${config.port}`)
 })
 

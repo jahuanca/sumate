@@ -132,7 +132,6 @@ async function createAllPedido(req,res){
     
   
   } catch (error) {
-    console.log(error)
     return res.status(500).json({message: `Error en el servidor ${error}`})  
   }
 

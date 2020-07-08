@@ -71,7 +71,7 @@ async function createAllCliente(req,res){
       }, { transaction: t });
       return cliente;
     });
-    res.status(200).json(result)
+    res.status(200).json(cliente)
   
   }catch (error) {
     return res.status(500).json({message: `Error en el servidor ${error}`})  

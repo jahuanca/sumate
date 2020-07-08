@@ -3,6 +3,7 @@ const models=require('../models')
 const { body } = require('express-validator')
 const { validationResult } = require('express-validator')
 const service=require('../services/index')
+const sendEmail=require('../services/nodemailer')
 
 
 module.exports={ 
@@ -105,6 +106,8 @@ async function registerClient(req, res){
           }, { transaction: t });
           return user;
         });
+        sendEmail.enviarConfirmacionEmail(usuario.username,
+            `${req.body.apellido} ${req.body.nombre}`, usuario.codigo_verificacion);
         let token=service.createToken(usuario)
         res.status(200).json({usuario: usuario, token})
         

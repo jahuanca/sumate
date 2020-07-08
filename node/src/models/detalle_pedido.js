@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const Detalle_Pedido = sequelize.define('Detalle_Pedido', {
     id_pedido: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
@@ -23,9 +24,34 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
     tableName: 'Detalle_Pedido'
   });
+
   Detalle_Pedido.associate = function(models) {
     Detalle_Pedido.belongsTo(models.Pedido, {foreignKey: 'id_pedido'});
     Detalle_Pedido.belongsTo(models.Producto, {foreignKey: 'id_producto'});
   };
+
+  const reducirInventario = async (detalle,options) => {
+    
+    await get(sequelize.models.Producto.
+      decrement(['cantidad'], { by: detalle.cantidad, where: { id: detalle.id_producto }}))
+  }
+
+  const reponerInventario = async (detalle,options) => {
+    if (detalle.changed('estado')) {
+      if(detalle.dataValues.estado=='I'){
+        await get(sequelize.models.Producto.increment(['cantidad', detalle.cantidad], { where: { id: detalle.id_producto }}))
+      }
+    }
+  }
+
+  Detalle_Pedido.addHook('beforeCreate', reducirInventario);
+  Detalle_Pedido.addHook('beforeUpdate', reponerInventario);
   return Detalle_Pedido;
 };
+
+function get(promise) {
+  return promise.then(data => {
+     return [null, data];
+  })
+  .catch(err => [err]);
+}
