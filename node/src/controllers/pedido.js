@@ -43,7 +43,10 @@ async function getPedidosCliente(req,res){
 
 async function getMisPedidos(req,res){
   let [err,pedido]=await get(models.Pedido.findAll({
-    where:{id_cliente: req.cliente, estado: 'A'}
+    where:{id_cliente: req.cliente, estado: 'A'},
+    include: [{model: models.Detalle_Pedido, 
+                include: [{model: models.Producto, include: [{model: models.Comercio, include: [{model: models.Tipo_Comercio}]}]}]}
+      ,{model: models.Forma_Pago},]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
