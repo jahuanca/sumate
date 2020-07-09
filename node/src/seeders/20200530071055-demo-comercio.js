@@ -27,7 +27,9 @@ module.exports = {
         }
       )
     }
-    return models.Comercio.bulkCreate(elementos, {returning: true})
+    return models.Comercio.bulkCreate(elementos, {
+      individualHooks: true 
+    }, {returning: true})
   },
 
   down: (queryInterface, Sequelize) => {

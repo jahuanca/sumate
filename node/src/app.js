@@ -113,7 +113,7 @@ const email=require('./services/nodemailer')
 http.listen(config.port,()=>{
     actualizarDatos.llenarTipoUsuarios();
     actualizarDatos.llenarDepartamentos();
-    //actualizarDatos.llenarUsuarios();
+    actualizarDatos.llenarUsuarios();
     actualizarDatos.llenarTipoEnvio();
     actualizarDatos.llenarFormaPago();
     actualizarDatos.llenarEstadoPedido();

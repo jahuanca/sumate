@@ -12,7 +12,7 @@ module.exports = {
         {
           id_pedido: chance.integer({min: 1, max: config.sizeClientes*10}),
           id_producto: chance.integer({min: 1, max: config.sizeProductos}),
-          cantidad: chance.integer({min: 2, max: 30}),
+          cantidad: chance.integer({min: 1, max: 3}),
           precio: chance.integer({min: 2, max: 30}),
           peso: chance.integer({min: 10, max: 35}),
           subtotal: chance.integer({min: 10, max: 35}),

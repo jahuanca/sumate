@@ -14,7 +14,7 @@ module.exports = {
           id_comercio: chance.integer({min: 1, max: config.sizeComercios}),
           nombre: chance.name(),
           presentacion: chance.country(),
-          cantidad: chance.integer({min: 1, max: 30}),
+          cantidad: chance.integer({min: 70, max: 80}),
           peso: chance.integer({min: 1000, max: 3000}),
           precio: chance.integer({min: 1, max: 30}),
           tiempo_preparacion: chance.integer({min: 0, max: 30})

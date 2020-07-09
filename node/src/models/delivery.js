@@ -35,5 +35,6 @@ module.exports = (sequelize, DataTypes) => {
   Delivery.associate = function(models) {
     Delivery.belongsTo(models.Usuario, {foreignKey: 'id_usuario'});
   };
+  
   return Delivery;
 };

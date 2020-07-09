@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const Comercio = sequelize.define('Comercio', {
     id_usuario: {type: DataTypes.INTEGER, allowNull: false, validate: {min: 1, isInt: true}},
@@ -34,6 +35,33 @@ module.exports = (sequelize, DataTypes) => {
   Comercio.associate = function(models) {
     Comercio.belongsTo(models.Tipo_Comercio, {foreignKey: 'id_tipo_comercio'})
     Comercio.belongsTo(models.Usuario, {foreignKey: 'id_usuario'})
+    Comercio.hasMany(models.Forma_Pago_Comercio, {foreignKey: 'id_comercio'});
   };
+
+  const crearFormasPago = async (comercio,options) => {
+    let [err,forma]=await get(sequelize.models.Forma_Pago.findAll({where: {estado: 'A'}}));    
+    if(err) console.log(err);
+    for (let i = 0; i < forma.length; i++) {
+
+      let [err2, forma_pago_comercio]=await get(sequelize.models.Forma_Pago_Comercio.create(
+        { 
+          id_forma_pago: forma[i].id,
+          id_comercio: comercio.id,
+          cuenta: '-SU CUENTA-'
+        }));
+      if(err2) console.log(err2);
+    }
+    
+  }
+  
+  Comercio.addHook('afterCreate', crearFormasPago);
+
   return Comercio;
 };
+
+function get(promise) {
+  return promise.then(data => {
+     return [null, data];
+  })
+  .catch(err => [err]);
+  }

@@ -34,16 +34,6 @@ async function llenarUsuarios(){
   if(usuario==0){
     let usuarios=[
       {
-        id_tipo_usuario: 2,
-        username: 'jose1@gmail.com',
-        password: '1234'
-      },
-      {
-        id_tipo_usuario: 3,
-        username: 'jose2@gmail.com',
-        password: '1234'
-      },
-      {
         id_tipo_usuario: 4,
         username: 'jose3@gmail.com',
         password: '1234'
