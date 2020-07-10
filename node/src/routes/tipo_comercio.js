@@ -29,6 +29,7 @@ const storage=multer.diskStorage({
  *        description: A successful response
  */
 router.get('/',tipo_comercio.getTipo_Comercios)
+router.get('/all',tipo_comercio.getTipo_ComerciosAll)
 router.get('/id/:id',tipo_comercio.getTipo_Comercio)
 router.post('/create',multer({storage: storage}).array('files',5), tipo_comercio.createTipo_Comercio)
 router.put('/update',multer({storage: storage}).array('files',5),  tipo_comercio.updateTipo_Comercio)
