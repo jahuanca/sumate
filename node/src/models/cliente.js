@@ -1,5 +1,6 @@
 'use strict';
 const crypto=require('crypto')
+const nexmo=require('../services/nexmo')
 
 module.exports = (sequelize, DataTypes) => {
   const Cliente = sequelize.define('Cliente', {
@@ -58,7 +59,9 @@ module.exports = (sequelize, DataTypes) => {
 
   const setSaltAndPassword = (cliente,options) => {
     if (cliente.changed('celular')) {
-      cliente.codigo_verificacion = Cliente.generateCodigo()
+      let codigo=Cliente.generateCodigo();
+      nexmo.sendMessage('','51'+cliente.celular,`Su código de verificación es ${codigo}. SUMATE.`)
+      cliente.codigo_verificacion = codigo;
       cliente.validado = false;
     }
   }

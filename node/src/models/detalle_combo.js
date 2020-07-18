@@ -1,11 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Detalle_Pago_Delivery = sequelize.define('Detalle_Pago_Delivery', {
-    id_pago_delivery: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
-    id_pedido: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
-    monto: {type: DataTypes.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
+  const Detalle_Combo = sequelize.define('Detalle_Combo', {
+    id_combo: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
+    id_producto: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
+    cantidad: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
-    validado: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
     estado: {type: DataTypes.CHAR(1), allowNull: false, defaultValue: 'A',
       validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}
     },
@@ -19,10 +18,11 @@ module.exports = (sequelize, DataTypes) => {
     accion_usuario: {type: DataTypes.VIRTUAL}
   }, {
     freezeTableName: true,
-    tableName: 'Detalle_Pago_Delivery'
+    tableName: 'Detalle_Combo'
   });
-  Detalle_Pago_Delivery.associate = function(models) {
-    // associations can be defined here
+  Detalle_Combo.associate = function(models) {
+    Detalle_Combo.belongsTo(models.Combo, {foreignKey: 'id_combo'});
+    Detalle_Combo.belongsTo(models.Producto, {foreignKey: 'id_producto'});
   };
-  return Detalle_Pago_Delivery;
+  return Detalle_Combo;
 };

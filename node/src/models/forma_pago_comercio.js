@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   Forma_Pago_Comercio.associate = function(models) {
     Forma_Pago_Comercio.belongsTo(models.Forma_Pago, {foreignKey: 'id_forma_pago'});
     Forma_Pago_Comercio.belongsTo(models.Comercio, {foreignKey: 'id_comercio'});
+    Forma_Pago_Comercio.hasMany(models.Pedido, {foreignKey: 'id_forma_pago_comercio'})
   };
   return Forma_Pago_Comercio;
 };

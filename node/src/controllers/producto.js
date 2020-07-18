@@ -21,9 +21,30 @@ async function getProducto(req,res){
   res.status(200).json(producto)
 }
 
+async function getMisProductos(req,res){
+  let [err,producto]=await get(models.Producto.findAll({
+    where:{id_comercio: req.comercio, estado: 'A'},
+    include: ['Categoria']
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(producto==null) return res.status(404).json({message: `Productos nulos`})
+  res.status(200).json(producto)
+}
+
 async function getProductosCategoria(req,res){
   let [err,producto]=await get(models.Producto.findAll({
     where:{id_categoria: req.params.id, estado: 'A'},
+    include: ['Categoria']
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(producto==null) return res.status(404).json({message: `Productos nulos`})
+  res.status(200).json(producto)
+}
+
+async function getProductosRandom(req,res){
+  let [err,producto]=await get(models.Producto.findAll({
+    where:{estado: 'A'},
+    order: models.Sequelize.literal('random()'), limit: 3 ,
     include: ['Categoria']
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
@@ -36,7 +57,6 @@ async function obtenerProductosSome(req,res){
     where:{id: req.body, estado: 'A'},
     include: ['Categoria', {model: models.Comercio}]
   }))
-  console.log(err)
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
@@ -71,9 +91,10 @@ async function getProductosBuscados(req,res){
 
 
 async function createProducto(req,res){
+  
   let p={
     id_categoria: req.body.id_categoria,
-    id_comercio: req.body.id_comercio,
+    id_comercio: req.comercio,
     nombre: req.body.nombre,
     presentacion: req.body.presentacion,
     descripcion: models.limpiar(req.body.descripcion),
@@ -235,6 +256,8 @@ function get(promise) {
 
 module.exports={
   getProductos,
+  getProductosRandom,
+  getMisProductos,
   getProductosCategoria,
   getProductosComercio,
   getProductosBuscados,

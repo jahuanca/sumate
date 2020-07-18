@@ -26,9 +26,9 @@ module.exports = {
           key: 'id'
         }
       },
-      id_forma_pago: {type: Sequelize.INTEGER, allowNull: false, validate: {min:1, isInt: true}
+      id_forma_pago_comercio: {type: Sequelize.INTEGER, allowNull: false, validate: {min:1, isInt: true}
         ,references:{
-          model: 'Forma_Pago',
+          model: 'Forma_Pago_Comercio',
           key: 'id'
         }
       },
@@ -42,7 +42,7 @@ module.exports = {
       referencia: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       latitud: {type: Sequelize.DOUBLE, allowNull: true, validate: {isDecimal: true}},
       longitud: {type: Sequelize.DOUBLE, allowNull: true, validate: {isDecimal: true}},
-      peso: {type: Sequelize.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}, defaultValue: 0},
+      peso: {type: Sequelize.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}, defaultValue: 0},
       tarifa: {type: Sequelize.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}},
       total: {type: Sequelize.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
       observacion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},

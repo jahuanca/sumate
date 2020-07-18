@@ -50,7 +50,6 @@ async function createComercio(req,res){
 async function createAllComercio(req,res){
   try {
     const result = await models.sequelize.transaction(async (t) => {
-      console.log(req.body)
       let usuario=null;
       if(req.body.Usuario){
         let u=JSON.parse(req.body.Usuario);
@@ -98,7 +97,7 @@ async function createAllComercio(req,res){
         }
         c.imagenes=models.limpiar(c.imagenes)
       }
-      let comercio=await get(models.Comercio.create(c,{ transaction: t }))
+      let comercio=await get(models.Comercio.create(c,{individualHooks: true},{ transaction: t }))
       comercio.Usuario=usuario;
       return comercio;
     });

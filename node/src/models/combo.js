@@ -1,7 +1,9 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Forma_Pago = sequelize.define('Forma_Pago', {
+  const Combo = sequelize.define('Combo', {
     nombre: {type: DataTypes.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
+    peso: {type: DataTypes.DOUBLE, allowNull: true, validate: {min:0, isInt: true}},
+    precio: {type: DataTypes.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
     descripcion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
@@ -18,10 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     accion_usuario: {type: DataTypes.VIRTUAL}
   }, {
     freezeTableName: true,
-    tableName: 'Forma_Pago'
+    tableName: 'Combo'
   });
-  Forma_Pago.associate = function(models) {
-    Forma_Pago.hasMany(models.Forma_Pago_Comercio, {foreignKey: 'id_forma_pago'});
+  Combo.associate = function(models) {
+    Combo.hasMany(models.Detalle_Combo, {foreignKey: 'id_combo'})
   };
-  return Forma_Pago;
+  return Combo;
 };

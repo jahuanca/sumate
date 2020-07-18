@@ -49,6 +49,7 @@ async function isAuthCliente(req, res, next){
     const token=req.headers.authorization.split(" ")[1]
     
     let [err, response]=await get(service.decodeToken(token))
+    console.log(err)
     if(err) return res.status(401).json(`Error en con el token ${err}`)
 
     let [err2,cliente]=await get(models.Cliente.findOne({
@@ -60,6 +61,28 @@ async function isAuthCliente(req, res, next){
     
     req.usuario=response[0]
     req.cliente=cliente.id
+    req.tipo=response[1]
+    next()
+}
+
+async function isAuthOnlyComercio(req, res, next){
+    if(!req.headers.authorization){
+        return res.status(403).send({message: 'No tienes autorización'})
+    }
+    const token=req.headers.authorization.split(" ")[1]
+    
+    let [err, response]=await get(service.decodeToken(token))
+    if(err) return res.status(401).json(`Error en con el token ${err}`)
+
+    let [err2,comercio]=await get(models.Comercio.findOne({
+        where: {id_usuario: response[0]}
+    }))
+
+    if(err2) return res.status(500).json({message: `Error en el servidor ${err2}`})
+    if(comercio==null) return res.status(404).json({message: `Comercios nulos`})
+    
+    req.usuario=response[0]
+    req.comercio=comercio.id
     req.tipo=response[1]
     next()
 }
@@ -93,6 +116,7 @@ async function isAuthPonente(req, res, next){
 module.exports={
     isAuthAdmin,
     isAuthUser,
+    isAuthOnlyComercio,
     isAuthCliente,
     isAuthPonente
 }

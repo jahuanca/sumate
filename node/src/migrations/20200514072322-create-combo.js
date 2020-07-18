@@ -1,28 +1,19 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Detalle_Pago_Comercio', {
+    return queryInterface.createTable('Combo', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id_pago_comercio: {type: Sequelize.INTEGER, allowNull: false, validate: {min:1, isInt: true}
-        ,references:{
-          model:'Pago_Comercio',
-          key:'id'
-        }
-      },
-      id_pedido: {type: Sequelize.INTEGER, allowNull: false, validate: {min:1, isInt: true}
-        ,references:{
-          model:'Pedido',
-          key:'id'
-        }
-      },
-      monto: {type: Sequelize.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
+      nombre: {type: Sequelize.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
+      peso: {type: Sequelize.DOUBLE, allowNull: true, validate: {min:0, isInt: true}},
+      precio: {type: Sequelize.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
+      descripcion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       observacion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
-      validado: {type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false},
+      imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       estado: {type: Sequelize.CHAR(1), allowNull: false, defaultValue: 'A',
         validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}
       },
@@ -32,6 +23,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Detalle_Pago_Comercio');
+    return queryInterface.dropTable('Combo');
   }
 };

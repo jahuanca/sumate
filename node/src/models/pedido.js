@@ -4,13 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     id_cliente: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     id_tarifario: {type: DataTypes.INTEGER, allowNull: true, validate: {min:1, isInt: true}},
     id_tipo_envio: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
-    id_forma_pago: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
+    id_forma_pago_comercio: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     id_estado_pedido: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     direccion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     referencia: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     latitud: {type: DataTypes.DOUBLE, allowNull: true, validate: {isDecimal: true}},
     longitud: {type: DataTypes.DOUBLE, allowNull: true, validate: {isDecimal: true}},
-    peso: {type: DataTypes.DOUBLE, allowNull: false, validate: {min: 0, isDecimal: true}, defaultValue: 0},
+    peso: {type: DataTypes.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}, defaultValue: 0},
     tarifa: {type: DataTypes.DOUBLE, allowNull: true, validate: {min:0, isDecimal: true}},
     total: {type: DataTypes.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Pedido.associate = function(models) {
     Pedido.belongsTo(models.Tipo_Envio, {foreignKey: 'id_tipo_envio'});
-    Pedido.belongsTo(models.Forma_Pago, {foreignKey: 'id_forma_pago'});
+    Pedido.belongsTo(models.Forma_Pago_Comercio, {foreignKey: 'id_forma_pago_comercio'});
     Pedido.belongsTo(models.Estado_Pedido, {foreignKey: 'id_estado_pedido'});
     Pedido.belongsTo(models.Cliente, {foreignKey: 'id_cliente'});
     Pedido.belongsTo(models.Tarifario, {foreignKey: 'id_tarifario'});

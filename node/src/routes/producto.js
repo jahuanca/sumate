@@ -30,14 +30,16 @@ const storage=multer.diskStorage({
  *        description: A successful response
  */
 router.get('/',producto.getProductos)
+router.get('/random',producto.getProductosRandom)
+router.get('/misProductos', auth.isAuthOnlyComercio,producto.getMisProductos)
 router.get('/id/:id',producto.getProducto)
 router.get('/id_categoria/:id',producto.getProductosCategoria)
 router.get('/id_comercio/:id',producto.getProductosComercio)
 router.get('/busqueda/:texto',producto.getProductosBuscados)
 router.post('/some',producto.obtenerProductosSome)
-router.post('/create', multer({storage: storage}).array('files',5) ,producto.createProducto)
+router.post('/create', auth.isAuthOnlyComercio,multer({storage: storage}).array('files',5) ,producto.createProducto)
 router.post('/createAllProducto',producto.createAllProducto)
-router.put('/update',  multer({storage: storage}).array('files',5) ,producto.updateProducto)
+router.put('/update', auth.isAuthOnlyComercio, multer({storage: storage}).array('files',5) ,producto.updateProducto)
 router.delete('/delete/:id', producto.deleteProducto)
 
 module.exports=router

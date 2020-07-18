@@ -46,7 +46,7 @@ async function getMisPedidos(req,res){
     where:{id_cliente: req.cliente, estado: 'A'},
     include: [{model: models.Detalle_Pedido, 
                 include: [{model: models.Producto, include: [{model: models.Comercio, include: [{model: models.Tipo_Comercio}]}]}]}
-      ,{model: models.Forma_Pago},]
+      ,{model: models.Forma_Pago_Comercio},{model: models.Estado_Pedido}]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
@@ -100,7 +100,7 @@ async function createAllPedido(req,res){
         id_tarifario: models.limpiar(req.body.id_tarifario),
         id_tipo_envio: req.body.id_tipo_envio,
         id_estado_pedido: req.body.id_estado_pedido,
-        id_forma_pago: req.body.id_forma_pago,
+        id_forma_pago_comercio: req.body.id_forma_pago_comercio,
         direccion: models.limpiar(req.body.direccion),
         referencia: models.limpiar(req.body.referencia),
         latitud: models.limpiar(req.body.longitud),
@@ -126,7 +126,7 @@ async function createAllPedido(req,res){
           accion: 'I',
           accion_usuario: 'Creo un nuevo detalle de pedido.',
           ip: req.ip,
-          usuario: 0
+          usuario: req.user
         }, { transaction: t });
       }
       return pedido;

@@ -91,6 +91,10 @@ fs
 
 /** code io**/
 const documents = {};
+//
+
+const email=require('./services/nodemailer')
+
 
 io.on("connection", socket => {    
     socket.on('registrarse', (idUser)=>{
@@ -108,8 +112,6 @@ io.on("connection", socket => {
 
 app.use(express.static('./public'));
 
-const email=require('./services/nodemailer')
-
 http.listen(config.port,()=>{
     actualizarDatos.llenarTipoUsuarios();
     actualizarDatos.llenarDepartamentos();
@@ -119,6 +121,7 @@ http.listen(config.port,()=>{
     actualizarDatos.llenarEstadoPedido();
     actualizarDatos.llenarTipoComercio();
     actualizarDatos.llenarCategorias();    
+    
     console.log(`API REST: corriendo en el puerto: ${config.port}`)
 })
 
