@@ -11,13 +11,16 @@ async function isAuthAdmin(req, res, next){
     let [err, response]=await get(service.decodeToken(token))
     if(err) return res.status(401).json(`Error en con el token ${err}`)
 
-    let [err2,supervisor]=await get(models.Supervisor.findOne({
+    let [err2,admin]=await get(models.Administrador.findOne({
         where: {id_usuario: response[0]}
     }))
-
+    console.log(err2)
     if(err2) return res.status(500).json({message: `Error en el servidor ${err2}`})
-    if(supervisor==null) return res.status(404).json({message: `Gestor nulos`})
+    if(admin==null) return res.status(404).json({message: `Admins nulos`})
+    
     req.usuario=response[0]
+    req.admin=admin.id
+    req.tipo=response[1]
     next()
 }
 

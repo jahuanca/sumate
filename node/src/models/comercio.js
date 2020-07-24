@@ -48,13 +48,14 @@ module.exports = (sequelize, DataTypes) => {
           id_forma_pago: forma[i].id,
           id_comercio: comercio.id,
           cuenta: '-SU CUENTA-'
-        }));
+        }, {transaction: options.transaction}));
       if(err2) console.log(err2);
     }
     
   }
   
   Comercio.addHook('afterCreate', crearFormasPago);
+  //Comercio.afterCreate(crearFormasPago);
 
   return Comercio;
 };

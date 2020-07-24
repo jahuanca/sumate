@@ -16,7 +16,8 @@ async function getUsuario(req,res){
     where:{id: req.params.id, estado: 'A'},
     include: [{model: models.Cliente},
       {model: models.Delivery},
-      {model: models.Comercio}
+      {model: models.Comercio},
+      {model: models.Administrador}
     ]
   }))
   console.log(err)

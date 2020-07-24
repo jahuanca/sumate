@@ -57,7 +57,7 @@ async function getMisCombos(req,res){
   let [err,combo]=await get(models.Combo.findAll({
     where:{ estado: 'A'},
     include: [{model: models.Detalle_Combo, where: {estado: 'A'},
-      include: [{model: models.Producto, where: {id_comercio: req.comercio}}]}]
+      include: [{model: models.Producto, where: {id_comercio: req.comercio, estado: 'A'}}]}]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(combo==null) return res.status(404).json({message: `Combos nulos`})
@@ -192,6 +192,7 @@ async function updateCombo(req,res){
         detalles=JSON.parse(req.body.Detalle_Combos);
         for (let i = 0; i < detalles.length; i++) {
           detalles[i].id_combo=req.body.id;
+          detalles[i].estado='A';
           detalles[i]=await models.Detalle_Combo
               .findOne({ where: {id: detalles[i].id}},{transaction: t})
               .then(function(obj) {

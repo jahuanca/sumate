@@ -48,6 +48,7 @@ async function createComercio(req,res){
 }
 
 async function createAllComercio(req,res){
+  console.log(req.body)
   try {
     const result = await models.sequelize.transaction(async (t) => {
       let usuario=null;
@@ -59,12 +60,10 @@ async function createAllComercio(req,res){
           username: u.username,
           password: u.password,
           accion: 'I',
-          usuario: 1,
+          usuario: req.usuario,
           ip: req.ip,
           accion_usuario: 'Creo un nuevo usuario de comercio.',
         }, { transaction: t });
-      }else{
-        return res.status(500).json({message: `Error en el servidor Usuario no enviado.`})
       }
 
       let c={
@@ -85,7 +84,7 @@ async function createAllComercio(req,res){
         accion: 'I',
         accion_usuario: 'Creo un nuevo comercio completo.',
         ip: req.ip,
-        usuario: 0
+        usuario: req.usuario
       }
       if(req.files){
         c.imagenes='';
@@ -97,12 +96,14 @@ async function createAllComercio(req,res){
         }
         c.imagenes=models.limpiar(c.imagenes)
       }
-      let comercio=await get(models.Comercio.create(c,{individualHooks: true},{ transaction: t }))
+
+      let comercio=await models.Comercio.create(c,{ transaction: t});
       comercio.Usuario=usuario;
       return comercio;
     });
     res.status(200).json(result)
   } catch (error) {
+    console.log(error)
     return res.status(500).json({message: `Error en el servidor ${error}`})
   }
 }

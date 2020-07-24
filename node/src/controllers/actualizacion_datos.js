@@ -30,26 +30,27 @@ function scriptDireccion() {
 
 
 async function llenarUsuarios(){
-  let [err,usuario]=await get(models.Usuario.count({where: {estado: 'A'}}))
-  if(usuario==0){
-    let usuarios=[
-      {
-        id_tipo_usuario: 4,
-        username: 'jose3@gmail.com',
-        password: '1234'
-      },
-      {
+  let [err,cantidad]=await get(models.Administrador.count({where: {estado: 'A'}}))
+  if(cantidad==0){
+      let [err2,usuario]=await get(models.Usuario.create({
         id_tipo_usuario: 5,
-        username: 'jose4@gmail.com',
+        username: 'huancaancajima@gmail.com',
         password: '1234'
-      },
-    ]
-      let [err2,usuario]=await get(models.Usuario.bulkCreate(usuarios,{individualHooks: true}))
-      if(err2) console.log(`${err2}`)
-      console.log('Usuarios creados')
+      },{individualHooks: true}))
+      if(err2) console.log(`${err2}`);
+      let [err3,administrador]=await get(models.Administrador.create({
+        id_usuario: usuario.id,
+        dni: '76208445',
+        nombre: 'José Antonio',
+        apellido:'Huanca Ancajima',
+        direccion:'Enace IV Etapa Mz H2 Lt 11',
+        celular: '989743471'
+      },{individualHooks: true}))
+      console.log('Administrador creado')
+      if(err3) console.log(`${err3}`);
 
   }else{
-      console.log('Ya tiene usuarios')
+      console.log('Ya tiene administrador')
   }
 
 }

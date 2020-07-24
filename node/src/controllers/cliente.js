@@ -101,7 +101,7 @@ async function updateCliente(req,res){
 }
 
 async function updateMiCuenta(req,res){
-  let [err,cliente]=await get(models.Cliente.update({
+  let c={
     dni: models.limpiar(req.body.dni),
     nombre: req.body.nombre,
     apellido: req.body.apellido,
@@ -114,7 +114,11 @@ async function updateMiCuenta(req,res){
     accion_usuario: 'Edito un cliente.',
     ip: req.ip,
     usuario: 0
-  },{
+  };
+  if(req.file){
+    c.imagenes=req.file.filename;
+  }
+  let [err,cliente]=await get(models.Cliente.update(c,{
     where:{
       id: req.cliente, estado:'A'
     },

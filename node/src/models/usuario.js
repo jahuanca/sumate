@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Usuario.associate = function(models) {
     Usuario.belongsTo(models.Tipo_Usuario, {foreignKey: 'id_tipo_usuario'});
+    Usuario.hasOne(models.Administrador, {foreignKey: 'id_usuario'});
     Usuario.hasOne(models.Cliente, {foreignKey: 'id_usuario'});
     Usuario.hasOne(models.Comercio, {foreignKey: 'id_usuario'});
     Usuario.hasOne(models.Delivery, {foreignKey: 'id_usuario'});

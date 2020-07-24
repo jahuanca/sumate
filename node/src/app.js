@@ -107,6 +107,11 @@ io.on("connection", socket => {
         socket.broadcast.to(data.destino).emit('nuevoPedido', data.origen);
     })
 
+    socket.on('enviarDelivery',(data)=>{
+      console.log('se enviara un mensaje al usuario '+data.destino);
+      socket.broadcast.to(data.destino).emit('nuevoPedidoDelivery', data.origen);
+    })
+
 });
 
 

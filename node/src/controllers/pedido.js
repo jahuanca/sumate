@@ -16,7 +16,7 @@ async function getPedidosAtendiendo(req,res){
   let [err,pedidos]=await get(models.Pedido.findAll({
     where:{estado: 'A', id_estado_pedido: req.body},
     include: [{model: models.Cliente},
-      {model: models.Forma_Pago},
+      {model: models.Forma_Pago_Comercio},
       {model: models.Estado_Pedido},
       {model: models.Tipo_Envio},
       {model: models.Detalle_Pedido, include: [{model: models.Producto}]},
@@ -44,8 +44,12 @@ async function getPedidosCliente(req,res){
 async function getMisPedidos(req,res){
   let [err,pedido]=await get(models.Pedido.findAll({
     where:{id_cliente: req.cliente, estado: 'A'},
+    order: [
+      ['createdAt', 'DESC'],
+    ],
     include: [{model: models.Detalle_Pedido, 
-                include: [{model: models.Producto, include: [{model: models.Comercio, include: [{model: models.Tipo_Comercio}]}]}]}
+                include: [{model: models.Producto, include: 
+                  [{model: models.Comercio, include: [{model: models.Tipo_Comercio}]}]}]}
       ,{model: models.Forma_Pago_Comercio},{model: models.Estado_Pedido}]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
@@ -103,7 +107,7 @@ async function createAllPedido(req,res){
         id_forma_pago_comercio: req.body.id_forma_pago_comercio,
         direccion: models.limpiar(req.body.direccion),
         referencia: models.limpiar(req.body.referencia),
-        latitud: models.limpiar(req.body.longitud),
+        latitud: models.limpiar(req.body.latitud),
         longitud: models.limpiar(req.body.longitud),
         tarifa: req.body.tarifa,
         total: req.body.total,
@@ -204,7 +208,7 @@ async function deletePedido(req,res){
 async function cambiarEstadoPedido(req,res){
 
   let [err,pedido]=await get(models.Pedido.update({
-    id_estado_pedido: (req.body.id_estado_pedido+1)
+    id_estado_pedido: (req.body.id_estado_pedido)
   },
   {
     where:{
