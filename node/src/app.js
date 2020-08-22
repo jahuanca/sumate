@@ -28,14 +28,14 @@ app.use(function(req, res, next) {
 
 
 
-const whitelist = ['http://localhost:4200', 'http://localhost','http://jhuanca.com','http://159.65.102.23']
+const whitelist = ['http://localhost:4200', 'http://localhost','http://jhuanca.com','http://sumatepiura.com','http://159.65.102.23']
 const corsOptions = {
     origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true)
-    } else {
-        callback(new Error('Not allowed by CORS'))
-    }
+      if (whitelist.indexOf(origin) !== -1) {
+          callback(null, true)
+      } else {
+          callback(new Error('Not allowed by CORS'))
+      }
     }
 }
 //configuracion lectura models

@@ -20,8 +20,8 @@ module.exports = {
           key: 'id'
         }
       },
-      precio: {type: Sequelize.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
-      tiempo: {type: Sequelize.INTEGER, allowNull: false, validate: {notEmpty: true, min: 0}},
+      precio: {type: Sequelize.DOUBLE, allowNull: false, validate: {isDecimal: true, min: 0}},
+      tiempo: {type: Sequelize.INTEGER, allowNull: false, validate: {isInt: true, min: 0}},
       descripcion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       condicion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       restriccion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},

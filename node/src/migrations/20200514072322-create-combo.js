@@ -10,7 +10,7 @@ module.exports = {
       },
       nombre: {type: Sequelize.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
       peso: {type: Sequelize.DOUBLE, allowNull: true, validate: {min:0, isInt: true}},
-      precio: {type: Sequelize.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
+      precio: {type: Sequelize.DOUBLE, allowNull: false, validate: {isDecimal: true, min: 0}},
       descripcion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       observacion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},

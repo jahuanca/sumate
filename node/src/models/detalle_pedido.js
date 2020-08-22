@@ -5,9 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     id_pedido: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     id_producto: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     cantidad: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
-    precio: {type: DataTypes.DOUBLE, allowNull: false, validate: {min:0, isInt: true}},
+    precio: {type: DataTypes.DOUBLE, allowNull: false, validate: {min:0, isDecimal: true}},
     peso: {type: DataTypes.DOUBLE, allowNull: true, validate: {min:0, isInt: true}},
-    subtotal: {type: DataTypes.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
+    subtotal: {type: DataTypes.DOUBLE, allowNull: false, validate: {isDecimal: true, min: 0}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     estado: {type: DataTypes.CHAR(1), allowNull: false, defaultValue: 'A',
       validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}

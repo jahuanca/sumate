@@ -44,7 +44,7 @@ module.exports = {
       longitud: {type: Sequelize.DOUBLE, allowNull: true, validate: {isDecimal: true}},
       peso: {type: Sequelize.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}, defaultValue: 0},
       tarifa: {type: Sequelize.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}},
-      total: {type: Sequelize.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
+      total: {type: Sequelize.DOUBLE, allowNull: false, validate: {isDecimal: true, min: 0}},
       observacion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       estado: {type: Sequelize.CHAR(1), allowNull: false, defaultValue: 'A',

@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const Tarifario = sequelize.define('Tarifario', {
     id_asociacion: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
     id_zona_destino: {type: DataTypes.INTEGER, allowNull: false, validate: {min:1, isInt: true}},
-    precio: {type: DataTypes.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
+    precio: {type: DataTypes.DOUBLE, allowNull: false, validate: {isDecimal: true, min: 0}},
     tiempo: {type: DataTypes.INTEGER, allowNull: false, validate: {notEmpty: true, min: 0}},
     descripcion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     condicion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},

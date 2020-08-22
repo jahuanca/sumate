@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const Combo = sequelize.define('Combo', {
     nombre: {type: DataTypes.STRING(100), allowNull: false, validate: {notEmpty: true, len: [1,100]}},
     peso: {type: DataTypes.DOUBLE, allowNull: true, validate: {min:0, isInt: true}},
-    precio: {type: DataTypes.DOUBLE, allowNull: false, validate: {notEmpty: true, min: 0}},
+    precio: {type: DataTypes.DOUBLE, allowNull: false, validate: {isDecimal: true, min: 0}},
     descripcion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
