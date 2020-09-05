@@ -75,6 +75,11 @@ async function createAllDelivery(req,res){
         latitud: req.body.latitud,
         longitud: req.body.longitud,
         celular: req.body.celular,
+
+        facebook: models.limpiar(req.body.facebook),
+        instagram: models.limpiar(req.body.instagram),
+        whatsapp: models.limpiar(req.body.whatsapp),
+        
         hora_apertura: req.body.hora_apertura,
         hora_cierre: req.body.hora_cierre,
         restriccion: models.limpiar(req.body.restriccion),
@@ -145,6 +150,11 @@ async function updateAllDelivery(req,res){
         hora_apertura: req.body.hora_apertura,
         hora_cierre: req.body.hora_cierre,
         condicion: models.limpiar(req.body.condicion),
+
+        facebook: models.limpiar(req.body.facebook),
+        instagram: models.limpiar(req.body.instagram),
+        whatsapp: models.limpiar(req.body.whatsapp),
+        
         restriccion: models.limpiar(req.body.restriccion),
         descripcion: models.limpiar(req.body.descripcion),
         observacion: models.limpiar(req.body.observacion),

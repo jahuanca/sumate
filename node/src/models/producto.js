@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     peso: {type: DataTypes.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}, defaultValue: 0},
     precio: {type: DataTypes.DOUBLE, allowNull: false, validate: {isDecimal: true, min: 0}},
     tiempo_preparacion: {type: DataTypes.INTEGER, allowNull: false, validate: {isInt: true, min: 0}},
+    valoracion: {type: DataTypes.DOUBLE, allowNull: true, validate: {isDecimal: true}, defaultValue: 0},
     imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     estado: {type: DataTypes.CHAR(1), allowNull: false, defaultValue: 'A',
       validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}

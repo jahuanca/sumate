@@ -4,8 +4,10 @@ const crypto=require('crypto')
 module.exports = (sequelize, DataTypes) => {
   const Usuario = sequelize.define('Usuario', {
     id_tipo_usuario: {type: DataTypes.INTEGER, allowNull: false, validate: {min: 1, isInt: true}},
+    codigo_invitado: {type: DataTypes.STRING, allowNull: true, unique: true, validate: {len: [1,200], notEmpty: true}
+    },
     username: {type: DataTypes.STRING(50), unique: true, allowNull: false, validate: {isEmail: true,notEmpty: true, len: [1,50]}},
-    password: {type: DataTypes.STRING(200), allowNull: false, validate: {notEmpty: true, len: [1,200]},
+    password: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]},
       get() {
         return () => this.getDataValue('password')
       }
@@ -24,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
         return() => this.getDataValue('codigo_verificacion')
       }
     },
+    premium: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
+    fecha_premium: {type: DataTypes.DATE, allowNull: true},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     estado: {type: DataTypes.CHAR(1), allowNull: false, defaultValue: 'A',
       validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}
@@ -40,6 +44,8 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Usuario'
   });
   Usuario.associate = function(models) {
+    Usuario.hasMany(models.Subscripcion, {foreignKey: 'id_usuario'});
+    Usuario.hasMany(models.Subscripcion, {foreignKey: 'id_usuario_invito', as: 'Invitaciones'});
     Usuario.belongsTo(models.Tipo_Usuario, {foreignKey: 'id_tipo_usuario'});
     Usuario.hasOne(models.Administrador, {foreignKey: 'id_usuario'});
     Usuario.hasOne(models.Cliente, {foreignKey: 'id_usuario'});
@@ -83,7 +89,21 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
+
+
   Usuario.addHook('beforeCreate', setSaltAndPassword);
+  Usuario.addHook('afterCreate', async (usuario, options) => {
+    await Usuario.update({ codigo_invitado: `SUM-00${usuario.dataValues.id}` }, {
+      where: {
+        id: usuario.id
+      },
+      transaction: options.transaction
+    });
+    //usuario.codigo_invitado=`SUM-00${usuario.dataValues.id}`;
+    // return usuario.set('codigo_invitado', `SUM-00${usuario.dataValues.id}`).save().then((self) => {
+    //   return self;
+    // });
+  });
   Usuario.addHook('beforeUpdate', setSaltAndPassword);
   return Usuario;
 };

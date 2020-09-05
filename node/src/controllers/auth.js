@@ -59,6 +59,7 @@ async function signInUser(req, res){
         let token=service.createToken(usuario)
         res.status(200).json({usuario: usuario, token})
     }else{
+        console.log('password incorrecta')
         return res.status(404).json({message: `Contraseña incorrecta`})
     }
 }
@@ -92,7 +93,7 @@ async function registerClient(req, res){
             usuario: 0,
             ip: req.ip,
             accion_usuario: 'Creo un nuevo cliente-usuario-all.',
-          }, { transaction: t });
+          } , {individualHooks: true}, { transaction: t });
     
           const cliente=await models.Cliente.create({
             nombre: req.body.nombre,

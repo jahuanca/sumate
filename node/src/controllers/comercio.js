@@ -76,6 +76,11 @@ async function createAllComercio(req,res){
         latitud: req.body.latitud,
         longitud: req.body.longitud,
         celular: req.body.celular,
+
+        facebook: models.limpiar(req.body.facebook),
+        instagram: models.limpiar(req.body.instagram),
+        whatsapp: models.limpiar(req.body.whatsapp),
+
         hora_apertura: req.body.hora_apertura,
         hora_cierre: req.body.hora_cierre,
         descripcion: models.limpiar(req.body.descripcion),
@@ -146,6 +151,9 @@ async function updateAllComercio(req,res){
         celular: req.body.celular,
         hora_apertura: req.body.hora_apertura,
         hora_cierre: req.body.hora_cierre,
+        facebook: models.limpiar(req.body.facebook),
+        instagram: models.limpiar(req.body.instagram),
+        whatsapp: models.limpiar(req.body.whatsapp),
         descripcion: models.limpiar(req.body.descripcion),
         observacion: models.limpiar(req.body.observacion),
 

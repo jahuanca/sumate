@@ -16,6 +16,7 @@ const auth=require('../middlewares/auth')
  */
 router.get('/',usuario.getUsuarios)
 router.get('/id/:id',usuario.getUsuario)
+router.get('/codigo_invitado/:codigo',usuario.getUsuarioCodigoInvitado)
 router.post('/create',usuario.createUsuario)
 router.post('/createAllUsuario',usuario.createAllUsuario)
 router.post('/validate',auth.isAuthCliente,usuario.validateCorreo)

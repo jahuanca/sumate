@@ -21,9 +21,15 @@ module.exports = {
       latitud:{type: Sequelize.DOUBLE, allowNull:false, validate: {isNumeric: true}},
       longitud:{type: Sequelize.DOUBLE, allowNull:false, validate: {isNumeric: true}},
       celular: {type: Sequelize.STRING(9), allowNull: false, validate: {notEmpty: true, len: [9,9]}},
+
+      facebook: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [0,200]}},
+      instagram: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [0,200]}},
+      whatsapp: {type: Sequelize.STRING(20), allowNull: true, validate: {notEmpty: true, len: [0,20]}},
+
       validado: {type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false},
       hora_apertura: {type: Sequelize.DATE, allowNull: false},
       hora_cierre: {type: Sequelize.DATE, allowNull: false},
+      valoracion: {type: Sequelize.DOUBLE, allowNull: true, validate: {isDecimal: true}, defaultValue: 0},
       imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       condicion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       restriccion: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},

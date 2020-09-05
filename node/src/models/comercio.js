@@ -11,9 +11,16 @@ module.exports = (sequelize, DataTypes) => {
     latitud:{type: DataTypes.DOUBLE, allowNull:false, validate: {isNumeric: true}},
     longitud:{type: DataTypes.DOUBLE, allowNull:false, validate: {isNumeric: true}},
     celular: {type: DataTypes.STRING(9), allowNull: false, validate: {notEmpty: true, len: [9,9]}},
+    
+    //TODO: modificar esa vista tambien xd 
+    facebook: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [0,200]}},
+    instagram: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [0,200]}},
+    whatsapp: {type: DataTypes.STRING(20), allowNull: true, validate: {notEmpty: true, len: [0,20]}},
+
     validado: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
     hora_apertura: {type: DataTypes.DATE, allowNull: false},
     hora_cierre: {type: DataTypes.DATE, allowNull: false},
+    valoracion: {type: DataTypes.DOUBLE, allowNull: true, validate: {isDecimal: true}, defaultValue: 0},
     imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     descripcion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
