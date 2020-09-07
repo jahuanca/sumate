@@ -25,6 +25,20 @@ async function getUsuario(req,res){
   res.status(200).json(usuario)
 }
 
+async function getUsuarioUsername(req,res){
+  let [err,usuario]=await get(models.Usuario.findOne({
+    where:{username: req.params.username, estado: 'A'},
+    include: [{model: models.Cliente},
+      {model: models.Delivery},
+      {model: models.Comercio},
+      {model: models.Administrador}
+    ]
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
+  res.status(200).json(usuario)
+}
+
 async function getUsuarioCodigoInvitado(req,res){
   let [err,usuario]=await get(models.Usuario.findOne({
     where:{codigo_invitado: req.params.codigo, estado: 'A'},
@@ -203,6 +217,7 @@ function get(promise) {
 module.exports={
   getUsuarios,
   getUsuario,
+  getUsuarioUsername,
   getUsuarioCodigoInvitado,
   createUsuario,
   createAllUsuario,

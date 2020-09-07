@@ -32,7 +32,9 @@ const storage=multer.diskStorage({
 router.get('/',subscripcion.getSubscripcions)
 router.get('/id/:id',subscripcion.getSubscripcion)
 router.post('/create', auth.isAuthUser, multer({storage: storage}).single('files'),subscripcion.createSubscripcion)
-router.put('/update',subscripcion.updateSubscripcion)
+router.post('/createAdmin', auth.isAuthAdmin, multer({storage: storage}).single('files'),subscripcion.createAdminSubscripcion)
+router.post('/atender', auth.isAuthAdmin,subscripcion.atenderSubscripcion)
+router.put('/update', auth.isAuthAdmin,  multer({storage: storage}).single('files') ,subscripcion.updateSubscripcion)
 router.delete('/delete/:id', subscripcion.deleteSubscripcion)
 
 module.exports=router

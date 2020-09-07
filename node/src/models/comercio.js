@@ -72,4 +72,4 @@ function get(promise) {
      return [null, data];
   })
   .catch(err => [err]);
-  }
+}

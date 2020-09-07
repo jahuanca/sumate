@@ -1,4 +1,6 @@
 'use strict';
+const moment=require('moment');
+
 module.exports = (sequelize, DataTypes) => {
   const Subscripcion = sequelize.define('Subscripcion', {
     
@@ -52,8 +54,58 @@ module.exports = (sequelize, DataTypes) => {
           done();
         });
       }
-    }};
+  }};
+
+  const updateInUserPremium = async (subscripcion,options) => {
+    if (subscripcion.changed('atendido')) {
+      if(subscripcion.atendido==true){
+        let [err,usuario]=await get(sequelize.models.Usuario.findOne({ where: {id: subscripcion.id_usuario, estado: 'A'}}));
+        if(err || usuario == null) return;
+        let fecha=moment(usuario.fecha_premium).add(subscripcion.dias_agregar,'d');
+        await sequelize.models.Usuario.update({
+          fecha_premium: fecha,
+
+          accion: 'I',
+          accion_usuario: '(HOOK BeforeUpdate) Se agregaron los dias de la subscripcion.',
+          usuario: 0
+          },{
+            where:{ id: subscripcion.id_usuario, estado:'A'}
+          },{transaction: options.transaction});
+      }
+    }
+
+    if(subscripcion.changed('estado')){
+      if(subscripcion.estado=='I'){
+        let [err,usuario]=await get(sequelize.models.Usuario.findOne({ where: {id: subscripcion.id_usuario, estado: 'A'}}));
+        if(err || usuario == null) return;
+        let fecha=moment(usuario.fecha_premium).subtract(subscripcion.dias_agregar,'d');
+        
+        await sequelize.models.Usuario.update({
+          fecha_premium: fecha,
+
+          accion: 'I',
+          accion_usuario: '(HOOK BeforeUpdate) Se agregaron los dias de la subscripcion.',
+          usuario: 0
+          },{
+            where:{ id: subscripcion.id_usuario, estado:'A'}
+          },{transaction: options.transaction});
+      }
+    }
+  }
+
+  
+
+  Subscripcion.addHook('beforeCreate', updateInUserPremium);
+  Subscripcion.addHook('beforeUpdate', updateInUserPremium);  
   
   return Subscripcion;
 
 };
+
+function get(promise) {
+  return promise.then(data => {
+     return [null, data];
+  })
+  .catch(err => [err]);
+}
+
