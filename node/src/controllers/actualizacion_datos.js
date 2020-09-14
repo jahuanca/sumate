@@ -15,7 +15,8 @@ module.exports={
   llenarTipoEnvio,
   llenarUsuarios,
   llenarTipoComercio,
-  llenarCategorias
+  llenarCategorias,
+  llenarPlanesBeneficios,
 }
 
 function scriptDireccion() {
@@ -118,6 +119,101 @@ async function llenarCategorias(){
 
   }else{
       console.log('Ya tiene categorias')
+  }
+
+}
+
+async function llenarPlanesBeneficios(){
+  let [err,bcantidad]=await get(models.Beneficio.count({where: {estado: 'A'}}));
+  if(bcantidad==0){
+    let beneficios=[
+      {
+        nombre: 'Adquiere puntos cash junto con tu plan',
+        descripcion: 'Junto con tu plan recibe puntos cash los cuales podras canjear por productos sin necesidad de pagar un precio extra.',
+      },
+      {
+        nombre: 'Deliverys gratis',
+        descripcion: 'Te otorgamos cierta cantidad de deliverys gratis para que no tengas que pagar el precio de envio.',
+      },
+      {
+        nombre: 'Precios especiales',
+        descripcion: 'Como usuario premium te damos precios especiales por producto, para que puedas seguir ahorrando.',
+      },
+      {
+        nombre: 'Promociones exclusivas',
+        descripcion: 'Accede a promociones unicas para usuarios exclusivas, como sorteos, articulos gratuitos, entre otras cosas.',
+      }
+      
+    ]
+      let [err2,beneficio]=await get(models.Beneficio.bulkCreate(beneficios))
+      if(err2) console.log(`${err2}`)
+      console.log('Beneficios creados')
+
+  }else{
+      console.log('Ya tiene beneficios')
+  }
+
+  let [err3,pcantidad]=await get(models.Plan.count({where: {estado: 'A'}}));
+  if(pcantidad==0){
+    let planes=[
+      {
+        nombre: 'Plan mensual',
+        descripcion: 'por mes',
+        precio: 20,
+        cash: 2,
+        deliverys_gratis: 0,
+        duracion: 30
+      },
+      {
+        nombre: 'Plan semestral',
+        descripcion: 'por seis meses',
+        precio: 150,
+        cash: 20,
+        deliverys_gratis: 2,
+        duracion: 180,
+      },
+      {
+        nombre: 'Plan anual',
+        descripcion: 'por año',
+        precio: 200,
+        cash: 50,
+        deliverys_gratis: 6,
+        duracion: 360,
+      }
+      
+    ]
+      let [err4,plan]=await get(models.Plan.bulkCreate(planes))
+      if(err4) console.log(`${err4}`)
+      console.log('Planes creados')
+
+  }else{
+      console.log('Ya tiene planes')
+  }
+
+  let [err5,pbeneficio_plan]=await get(models.Beneficio_Plan.count({where: {estado: 'A'}}));
+  if(pbeneficio_plan==0){
+    let beneficio_plan=[
+      {id_beneficio: 1, id_plan: 1, descripcion: 'Recibe 2 puntos cash'},
+      {id_beneficio: 3, id_plan: 1, descripcion: 'Promociones exclusivas'},
+      {id_beneficio: 4, id_plan: 1, descripcion: 'Precios especiales'},
+
+      {id_beneficio: 1, id_plan: 2, descripcion: 'Recibe 20 puntos cash'},
+      {id_beneficio: 2, id_plan: 2, descripcion: 'Recibe 2 deliverys gratis'},
+      {id_beneficio: 3, id_plan: 2, descripcion: 'Promociones exclusivas'},
+      {id_beneficio: 4, id_plan: 2, descripcion: 'Precios especiales'},
+
+      {id_beneficio: 1, id_plan: 3, descripcion: 'Recibe 50 puntos cash'},
+      {id_beneficio: 2, id_plan: 3, descripcion: 'Recibe 6 deliverys gratis'},
+      {id_beneficio: 3, id_plan: 3, descripcion: 'Promociones exclusivas'},
+      {id_beneficio: 4, id_plan: 3, descripcion: 'Precios especiales'},
+      
+    ]
+      let [err6,plan]=await get(models.Beneficio_Plan.bulkCreate(beneficio_plan))
+      if(err6) console.log(`${err6}`)
+      console.log('Planes y beneficios')
+
+  }else{
+      console.log('Ya tiene planes y beneficios')
   }
 
 }

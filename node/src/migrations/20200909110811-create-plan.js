@@ -33,8 +33,7 @@ module.exports = {
   }
 };
 //TODO: editar modelos PRODUCTO, USUARIO, SUBSCRIPCION
-//TODO: CREAR modeles PLAN, BENEFICIO, BENEFICIO_PLAN
-//TODO: crear SERVICES: PLAN, BENEFICIO, BENEFICIO_PLAN
+
 //TODO: editar modulos: PRODUCTO, USUARIO, SUBSCRIPCION
-//TODO: crear modulos PLAN, BENEFICIO, BENEIFICI_PLAN
+
 //TODO: modificar el metodo atender HOOKS que agregue los dias del plan correspondiente

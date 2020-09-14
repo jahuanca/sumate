@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     nota: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     
     atendido: {type: DataTypes.BOOLEAN, allowNull: true, defaultValue: false},
-    inicio: {type: DataTypes.DATE, allowNull: false},
-    fin: {type: DataTypes.DATE, allowNull: false},
+    inicio: {type: DataTypes.DATE, allowNull: true},
+    fin: {type: DataTypes.DATE, allowNull: true},
 
     imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
 
@@ -30,7 +30,32 @@ module.exports = (sequelize, DataTypes) => {
     ip: {type: DataTypes.VIRTUAL},
     accion_usuario: {type: DataTypes.VIRTUAL}
   }, {
-    //validar,
+    validate:{
+      unicoActivo() {
+        console.log('id '+this.id_usuario)
+        if (true) {
+          throw new Error('Either both latitude and longitude, or neither!');
+        }
+        
+      },
+      /* function(done){
+        console.log('id '+this.id_usuario)
+        sequelize.models.Subscripcion.findOne({
+          where: {estado: 'A', atendido: true, id_usuario: this.id_usuario}
+        })
+        .done(function (subscripcion, err) {
+          if (err) {
+              done(err);
+          }
+          if (subscripcion) {
+              if(moment().isBefore(subscripcion.fin)){
+                done(new Error('Ya tiene una subscripcion activa.'));
+              }
+          }
+          done();
+        });
+      } */
+    },
     freezeTableName: true,
     tableName: 'Subscripcion'
   });
@@ -43,15 +68,17 @@ module.exports = (sequelize, DataTypes) => {
     validate:{
       isUnique: function(done){
           //cuando se va modificar y crear id_cartera!=undefined
-        sequelize.models.Subscripcion.count({
-          where: {estado: 'A', id_usuario: this.id_usuario}
+        sequelize.models.Subscripcion.findOne({
+          where: {estado: 'A', atendido: true, id_usuario: this.id_usuario}
         })
-        .done(function (cantidad, err) {
+        .done(function (subscripcion, err) {
           if (err) {
               done(err);
           }
-          if (cantidad>0) {
-              done(new Error('Ya se creo una subscripcion.'));
+          if (subscripcion) {
+              if(moment().isBefore(subscripcion.fin)){
+                done(new Error('Ya tiene una subscripcion activa.'));
+              }
           }
           done();
         });
@@ -60,51 +87,24 @@ module.exports = (sequelize, DataTypes) => {
 
 
   //FIXME: invalid date in null parameter
+  //TODO: crear y probar metodo de atender
+  //asimismo inicio y fin
   const updateInUserPremium = async (subscripcion,options) => {
-    if (subscripcion.changed('atendido')) {
-      if(subscripcion.atendido==true){
-        let [err,usuario]=await get(sequelize.models.Usuario.findOne({ where: {id: subscripcion.id_usuario, estado: 'A'}}));
-        if(err || usuario == null) return;
-        try {
-          let fecha=moment(usuario.fecha_premium).add(subscripcion.dias_agregar,'d');
-        await sequelize.models.Usuario.update({
-          fecha_premium: fecha,
-
-          accion: 'I',
-          accion_usuario: '(HOOK BeforeUpdate) Se agregaron los dias de la subscripcion.',
-          usuario: 0
-          },{
-            where:{ id: subscripcion.id_usuario, estado:'A'}
-          },{transaction: options.transaction});
-        } catch (error) {
-          console.log(error)
-        }
-      }
-    }
-
-    if(subscripcion.changed('estado')){
-      if(subscripcion.estado=='I'){
-        let [err,usuario]=await get(sequelize.models.Usuario.findOne({ where: {id: subscripcion.id_usuario, estado: 'A'}}));
-        if(err || usuario == null) return;
-        let fecha=moment(usuario.fecha_premium).subtract(subscripcion.dias_agregar,'d');
-        
-        await sequelize.models.Usuario.update({
-          fecha_premium: fecha,
-
-          accion: 'I',
-          accion_usuario: '(HOOK BeforeUpdate) Se agregaron los dias de la subscripcion.',
-          usuario: 0
-          },{
-            where:{ id: subscripcion.id_usuario, estado:'A'}
-          },{transaction: options.transaction});
+    console.log('entro')
+    if(subscripcion.changed('atendido')){
+      if(subscripcion.atendido=='A'){
+        console.log('atendido')
+        let [err,plan]=await get(sequelize.models.Plan.findOne({estado: 'A', id: subscripcion.id_plan}));
+        if(err || plan==null) return;
+        subscripcion.inicio= moment();
+        subscripcion.fin=moment().add(plan.duracion,'d');
       }
     }
   }
-
   
 
-  //Subscripcion.addHook('beforeCreate', updateInUserPremium);
-  //Subscripcion.addHook('beforeUpdate', updateInUserPremium);  
+  Subscripcion.addHook('beforeCreate', updateInUserPremium);
+  Subscripcion.addHook('beforeUpdate', updateInUserPremium);  
   
   return Subscripcion;
 

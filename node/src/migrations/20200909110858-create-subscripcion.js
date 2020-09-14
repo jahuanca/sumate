@@ -30,8 +30,8 @@ module.exports = {
       monto: {type: Sequelize.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}},
       nota: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       atendido: {type: Sequelize.BOOLEAN, allowNull: true, defaultValue: false},
-      inicio: {type: Sequelize.DATE, allowNull: false},
-      fin: {type: Sequelize.DATE, allowNull: false},      
+      inicio: {type: Sequelize.DATE, allowNull: true},
+      fin: {type: Sequelize.DATE, allowNull: true},      
 
       imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       

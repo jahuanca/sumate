@@ -14,7 +14,7 @@ async function isAuthAdmin(req, res, next){
     let [err2,admin]=await get(models.Administrador.findOne({
         where: {id_usuario: response[0]}
     }))
-    console.log(err2)
+    
     if(err2) return res.status(500).json({message: `Error en el servidor ${err2}`})
     if(admin==null) return res.status(404).json({message: `Admins nulos`})
     
@@ -36,7 +36,6 @@ async function isAuthUser(req, res, next){
     let [err2,usuario]=await get(models.Usuario.findOne({
         where: {id: response[0]}
     }))
-
     if(err2) return res.status(500).json({message: `Error en el servidor ${err2}`})
     if(usuario==null) return res.status(404).json({message: `Usuario nulos`})
     
@@ -52,7 +51,7 @@ async function isAuthCliente(req, res, next){
     const token=req.headers.authorization.split(" ")[1]
     
     let [err, response]=await get(service.decodeToken(token))
-    console.log(err)
+    
     if(err) return res.status(401).json(`Error en con el token ${err}`)
 
     let [err2,cliente]=await get(models.Cliente.findOne({

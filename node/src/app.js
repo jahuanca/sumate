@@ -124,6 +124,7 @@ http.listen(config.port,()=>{
     actualizarDatos.llenarEstadoPedido();
     actualizarDatos.llenarTipoComercio();
     actualizarDatos.llenarCategorias().then( ()=> actualizarDatos.llenarUsuarios());
+    actualizarDatos.llenarPlanesBeneficios();
 
     
     console.log(`API REST: corriendo en el puerto: ${config.port}`)
