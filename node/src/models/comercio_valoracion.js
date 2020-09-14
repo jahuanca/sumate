@@ -19,11 +19,60 @@ module.exports = (sequelize, DataTypes) => {
     ip: {type: DataTypes.VIRTUAL},
     accion_usuario: {type: DataTypes.VIRTUAL}
   }, {
+      validate:{
+        isUnique: function(done){
+            //cuando se va modificar y crear id_cartera!=undefined
+          sequelize.models.ComercioValoracion.count({
+            where: {estado: 'A', id_usuario: this.id_usuario, id_comercio: this.id_comercio}
+          })
+          .done(function (cantidad, err) {
+            if (err) {
+                done(err);
+            }
+            if (cantidad>0) {
+                done(new Error('Ya se creo una subscripcion.'));
+            }
+            done();
+          });
+        }
+    },
     freezeTableName: true,
     tableName: 'Comercio_Valoracion'
   });
   ComercioValoracion.associate = function(models) {
     // associations can be defined here
   };
+
+
+  const calcularValoracionComercio=async (comercioValoracion, options) => {
+    let [err,promedio]=await get(sequelize.models.Comercio_Valoracion.findAll({
+      attributes: ['id_comercio',[sequelize.fn('AVG', sequelize.col('valoracion')), 'valoracion']],
+      group: 'id_comercio',
+      where: {
+        id_comercio: comercioValoracion.id_comercio, estado: 'A'
+      },
+      transaction: options.transaction
+    }));
+    if(err) return;
+
+    await sequelize.models.Comercio.update({ valoracion: promedio[0].valoracion }, {
+      where: {
+        id: comercioValoracion.id_comercio, estado: 'A'
+      },
+      transaction: options.transaction
+    });
+  }
+
+  ComercioValoracion.addHook('afterCreate', calcularValoracionComercio);
+  ComercioValoracion.addHook('afterUpdate', calcularValoracionComercio);
+
+
   return ComercioValoracion;
 };
+
+function get(promise) {
+  return promise.then(data => {
+     return [null, data];
+  })
+  .catch(err => [err]);
+}

@@ -1,14 +1,14 @@
 'use strict'
 const express=require('express')
 const router=express.Router()
-const seguidor=require('../controllers/seguidor')
+const beneficio_plan=require('../controllers/beneficio_plan')
 const auth=require('../middlewares/auth')
 const multer  = require('multer')
 const path=require('path')
 const crypto=require('crypto')
 
 /*const storage=multer.diskStorage({
-    destination: './public/uploads/seguidors/',
+    destination: './public/uploads/beneficio_plans/',
     filename: function(req, file, cb) {
       return crypto.pseudoRandomBytes(16, function(err, raw) {
         if (err) {
@@ -21,32 +21,29 @@ const crypto=require('crypto')
 
 /**
  * @swagger
- * /Seguidor/:
+ * /Beneficio_Plan/:
  *  get:
- *    tags: [Seguidor]
- *    description: Obtiene todos los Seguidors.
+ *    tags: [Beneficio_Plan]
+ *    description: Obtiene todos los Beneficio_Plans.
  *    responses:
  *      '200':
  *        description: A successful response
  */
-router.get('/',seguidor.getSeguidors)
-router.get('/id_comercio/:id', auth.isAuthUser ,seguidor.getSeguidorComercio)
-router.get('/follower/:id_comercio', auth.isAuthUser ,seguidor.isFollowerComercio)
-router.get('/count/:id_comercio', auth.isAuthUser ,seguidor.getCountComercio)
-router.get('/id/:id',seguidor.getSeguidor)
-router.post('/create', auth.isAuthCliente,seguidor.createSeguidor)
-router.put('/update',seguidor.updateSeguidor)
-router.delete('/delete/:id', auth.isAuthCliente, seguidor.deleteSeguidor)
+router.get('/',beneficio_plan.getBeneficio_Plans)
+router.get('/id/:id',beneficio_plan.getBeneficio_Plan)
+router.post('/create',beneficio_plan.createBeneficio_Plan)
+router.put('/update',beneficio_plan.updateBeneficio_Plan)
+router.delete('/delete/:id', beneficio_plan.deleteBeneficio_Plan)
 
 module.exports=router
 /** 
 * @swagger
 *definitions:
-*  Seguidor:           
+*  Beneficio_Plan:           
 *    type: object
 *    required:
-*      - cod_Seguidor
+*      - cod_Beneficio_Plan
 *    properties:
-*      cod_Seguidor:
+*      cod_Beneficio_Plan:
 *        type: integer
 */

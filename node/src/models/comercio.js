@@ -62,7 +62,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   
   Comercio.addHook('afterCreate', crearFormasPago);
-  //Comercio.afterCreate(crearFormasPago);
 
   return Comercio;
 };

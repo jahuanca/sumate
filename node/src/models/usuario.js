@@ -20,14 +20,15 @@ module.exports = (sequelize, DataTypes) => {
           return() => this.getDataValue('salt')
       }
     },
+    cash: {type: DataTypes.INTEGER, allowNull: true, defaultValue: 0},
+    deliverys_gratis: {type: DataTypes.INTEGER, allowNull: true, defaultValue: 0},
     validado: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
     codigo_verificacion:{type: DataTypes.STRING(10), allowNull: true, 
       get() {
         return() => this.getDataValue('codigo_verificacion')
       }
     },
-    premium: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
-    fecha_premium: {type: DataTypes.DATE, allowNull: true},
+
     observacion: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
     estado: {type: DataTypes.CHAR(1), allowNull: false, defaultValue: 'A',
       validate: {notEmpty: true, len: [1,1], isIn: [['A', 'I']], isAlpha: true}

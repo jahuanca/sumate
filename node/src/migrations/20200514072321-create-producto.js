@@ -27,6 +27,8 @@ module.exports = {
       cantidad: {type: Sequelize.INTEGER, allowNull: false, validate: {notEmpty: true, min: 0}},
       peso: {type: Sequelize.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}, defaultValue: 0},
       precio: {type: Sequelize.DOUBLE, allowNull: false, validate: {isDecimal: true, min: 0}},
+      precio_premium: {type: Sequelize.DOUBLE, allowNull: true, validate: { isDecimal: true}},
+      precio_cash: {type: Sequelize.INTEGER, allowNull: true, validate: {isInt: true}},
       tiempo_preparacion: {type: Sequelize.INTEGER, allowNull: false, validate: {isDecimal: true, min: 0}},
       valoracion: {type: Sequelize.DOUBLE, allowNull: true, validate: {isDecimal: true}, defaultValue: 0},
       imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},

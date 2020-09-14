@@ -1,14 +1,14 @@
 'use strict'
 const express=require('express')
 const router=express.Router()
-const seguidor=require('../controllers/seguidor')
+const plan=require('../controllers/plan')
 const auth=require('../middlewares/auth')
 const multer  = require('multer')
 const path=require('path')
 const crypto=require('crypto')
 
 /*const storage=multer.diskStorage({
-    destination: './public/uploads/seguidors/',
+    destination: './public/uploads/plans/',
     filename: function(req, file, cb) {
       return crypto.pseudoRandomBytes(16, function(err, raw) {
         if (err) {
@@ -21,32 +21,31 @@ const crypto=require('crypto')
 
 /**
  * @swagger
- * /Seguidor/:
+ * /Plan/:
  *  get:
- *    tags: [Seguidor]
- *    description: Obtiene todos los Seguidors.
+ *    tags: [Plan]
+ *    description: Obtiene todos los Plans.
  *    responses:
  *      '200':
  *        description: A successful response
  */
-router.get('/',seguidor.getSeguidors)
-router.get('/id_comercio/:id', auth.isAuthUser ,seguidor.getSeguidorComercio)
-router.get('/follower/:id_comercio', auth.isAuthUser ,seguidor.isFollowerComercio)
-router.get('/count/:id_comercio', auth.isAuthUser ,seguidor.getCountComercio)
-router.get('/id/:id',seguidor.getSeguidor)
-router.post('/create', auth.isAuthCliente,seguidor.createSeguidor)
-router.put('/update',seguidor.updateSeguidor)
-router.delete('/delete/:id', auth.isAuthCliente, seguidor.deleteSeguidor)
+router.get('/',plan.getPlans)
+router.get('/id/:id',plan.getPlan)
+router.post('/create',plan.createPlan)
+router.post('/createAll', auth.isAuthAdmin ,plan.createAllPlan)
+router.post('/updateAll', auth.isAuthAdmin ,plan.updateAllPlan)
+router.put('/update', auth.isAuthAdmin ,plan.updatePlan)
+router.delete('/delete/:id',  auth.isAuthAdmin , plan.deletePlan)
 
 module.exports=router
 /** 
 * @swagger
 *definitions:
-*  Seguidor:           
+*  Plan:           
 *    type: object
 *    required:
-*      - cod_Seguidor
+*      - cod_Plan
 *    properties:
-*      cod_Seguidor:
+*      cod_Plan:
 *        type: integer
 */

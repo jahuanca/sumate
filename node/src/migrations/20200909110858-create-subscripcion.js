@@ -21,10 +21,17 @@ module.exports = {
           key: 'id'
         }
       },
+      id_plan: {type: Sequelize.INTEGER, allowNull: true, validate: {min: 1, isInt: true}
+        ,references:{
+          model:'Plan',
+          key: 'id'
+        }
+      },
       monto: {type: Sequelize.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}},
       nota: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       atendido: {type: Sequelize.BOOLEAN, allowNull: true, defaultValue: false},
-      dias_agregar: {type: Sequelize.INTEGER, allowNull: true},
+      inicio: {type: Sequelize.DATE, allowNull: false},
+      fin: {type: Sequelize.DATE, allowNull: false},      
 
       imagenes: {type: Sequelize.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},
       

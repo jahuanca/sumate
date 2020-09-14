@@ -10,6 +10,16 @@ module.exports = (sequelize, DataTypes) => {
     cantidad: {type: DataTypes.INTEGER, allowNull: false, validate: {isInt: true, min: 0}},
     peso: {type: DataTypes.DOUBLE, allowNull: true, validate: {min: 0, isDecimal: true}, defaultValue: 0},
     precio: {type: DataTypes.DOUBLE, allowNull: false, validate: {isDecimal: true, min: 0}},
+    precio_premium: {type: DataTypes.DOUBLE, allowNull: true, 
+      validate: {
+        isDecimal: true,
+        customValidator(value) {
+          if (value !== null && this.precio <= value) {
+            throw new Error("Precio premium debe ser menor al precio normal");
+          }
+        }
+    }},
+    precio_cash: {type: DataTypes.INTEGER, allowNull: true, validate: {isInt: true}},
     tiempo_preparacion: {type: DataTypes.INTEGER, allowNull: false, validate: {isInt: true, min: 0}},
     valoracion: {type: DataTypes.DOUBLE, allowNull: true, validate: {isDecimal: true}, defaultValue: 0},
     imagenes: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [1,200]}},

@@ -35,6 +35,28 @@ async function getSeguidorComercio(req,res){
   }
 }
 
+async function isFollowerComercio(req,res){
+  let [err,seguidor]=await get(models.Seguidor.count({
+    where:{id_comercio: req.params.id_comercio, id_usuario: req.usuario ,estado: 'A'},
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  
+  if(seguidor){
+    res.status(200).json(true)
+  }else{
+    res.status(200).json(false)
+  }
+}
+
+async function getCountComercio(req,res){
+  let [err,seguidor]=await get(models.Seguidor.count({
+    where:{id_comercio: req.params.id_comercio, id_usuario: req.usuario ,estado: 'A'},
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(seguidor==null) return res.status(404).json({message: `Seguidors nulos`})
+  res.status(200).json(seguidor)
+}
+
 async function createSeguidor(req,res){
   let [err,seguidor]=await get(models.Seguidor.create({
       id_usuario: req.usuario,
@@ -94,6 +116,8 @@ module.exports={
   getSeguidors,
   getSeguidor,
   getSeguidorComercio,
+  isFollowerComercio,
+  getCountComercio,
   createSeguidor,
   updateSeguidor,
   deleteSeguidor

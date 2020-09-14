@@ -102,6 +102,8 @@ async function createProducto(req,res){
     cantidad: req.body.cantidad,
     peso: req.body.peso,
     precio: req.body.precio,
+    precio_premium: models.limpiar(req.body.precio_premium),
+    precio_cash: models.limpiar(req.body.precio_cash),
     tiempo_preparacion: req.body.tiempo_preparacion,
     accion: 'I',
     accion_producto: 'Creo un nuevo producto.',
@@ -120,6 +122,7 @@ async function createProducto(req,res){
   }
   
   let [err,producto]=await get(models.Producto.create(p))
+  console.log(err);
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
@@ -193,6 +196,8 @@ async function updateProducto(req,res){
     cantidad: req.body.cantidad,
     peso: req.body.peso,
     precio: req.body.precio,
+    precio_premium: models.limpiar(req.body.precio_premium),
+    precio_cash: models.limpiar(req.body.precio_cash),
     tiempo_preparacion: req.body.tiempo_preparacion,
     
     accion: 'U',

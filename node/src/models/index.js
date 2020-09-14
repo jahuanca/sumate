@@ -37,8 +37,9 @@ db.Sequelize = Sequelize;
 
 module.exports = db;
 module.exports.limpiar=limpiar;
+module.exports.updateOrCreate=updateOrCreate;
 
-  function limpiar(value){
+function limpiar(value){
     if(value==undefined || value==0 || value==null || value==='undefined'){
         return null;
     }
@@ -51,5 +52,20 @@ module.exports.limpiar=limpiar;
     }else{
         return value.trim()
     }
+}
+
+async function updateOrCreate(tableObject ,valuesCreate, valuesUpdate, condition, transactionParameter) {
+  return await tableObject
+      .findOne({ where: condition })
+      .then(function(obj) {
+          if(obj){
+            return obj.update(valuesUpdate,{
+              hooks: false 
+            },transactionParameter);
+          }
+          return tableObject.create(valuesCreate,{
+            hooks: false 
+          },transactionParameter);
+      })
 }
 
