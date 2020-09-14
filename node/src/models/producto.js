@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isDecimal: true,
         customValidator(value) {
-          if (value !== null && this.precio <= value) {
+          if (value != null && Number(this.precio) <= Number(value)) {
             throw new Error("Precio premium debe ser menor al precio normal");
           }
         }

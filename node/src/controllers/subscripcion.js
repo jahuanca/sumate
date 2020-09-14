@@ -1,7 +1,5 @@
 'use strict'
 const models=require('../models')
-const moment=require('moment')
-const usuario = require('./usuario')
 
 async function getSubscripcions(req,res){
   let [err,subscripcions]=await get(models.Subscripcion.findAll({
@@ -64,11 +62,11 @@ async function createAdminSubscripcion(req,res){
 }
 
 async function atenderSubscripcion(req,res){
-  console.log(req.body)
   let [err,subscripcion]=await get(models.Subscripcion.update({
     id_plan: req.body.id_plan,
     monto: req.body.monto,
     atendido: true,
+    id_usuario: req.body.id_usuario,
     
     accion: 'U',
     accion_usuario: 'Atendio una subscripcion.',
@@ -78,10 +76,10 @@ async function atenderSubscripcion(req,res){
     where:{
       id: req.body.id, estado:'A'
     },
-    individualHooks: true,
-    validate: true
+    validate: true,
+    individualHooks: true
   }))
-  console.log(err);
+  
   if(err) return res.status(500).json({message: `Error en el servidor err`})
   if(subscripcion==null) return res.status(404).json({message: `Subscripcions nulos`})
   return res.status(200).json(subscripcion[1][0].dataValues);
@@ -131,7 +129,8 @@ async function deleteSubscripcion(req,res){
     where:{
       id: req.params.id, estado:'A'
     },
-    individualHooks: true
+    individualHooks: true,
+    validate: false
   }))
   if(err) return res.status(500).json({message: `Error en el servidor err`})
   if(subscripcion==null) return res.status(404).json({message: `Subscripcions nulos`})

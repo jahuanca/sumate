@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
   const Subscripcion = sequelize.define('Subscripcion', {
     
     //TODO:crear enrutado guards
-
     id_usuario: {type: DataTypes.INTEGER, allowNull: false, validate: {min: 1, isInt: true}},
     id_usuario_invito: {type: DataTypes.INTEGER, allowNull: true, validate: {min: 1, isInt: true}},
     id_plan: {type: DataTypes.INTEGER, allowNull: true, validate: {min: 1, isInt: true}},
@@ -31,30 +30,23 @@ module.exports = (sequelize, DataTypes) => {
     accion_usuario: {type: DataTypes.VIRTUAL}
   }, {
     validate:{
-      unicoActivo() {
-        console.log('id '+this.id_usuario)
-        if (true) {
-          throw new Error('Either both latitude and longitude, or neither!');
-        }
-        
-      },
-      /* function(done){
-        console.log('id '+this.id_usuario)
-        sequelize.models.Subscripcion.findOne({
-          where: {estado: 'A', atendido: true, id_usuario: this.id_usuario}
-        })
-        .done(function (subscripcion, err) {
-          if (err) {
-              done(err);
-          }
-          if (subscripcion) {
-              if(moment().isBefore(subscripcion.fin)){
-                done(new Error('Ya tiene una subscripcion activa.'));
-              }
-          }
-          done();
-        });
-      } */
+      isUnique: function(done){
+          //enviar valores en el metodo a validar 
+          sequelize.models.Subscripcion.findOne({
+            where: {estado: 'A', atendido: true, id_usuario: this.id_usuario}
+          })
+          .done(function (subscripcion, err) {
+            if (err) {
+                done(err);
+            }
+            if (subscripcion) {
+                if(moment().isBefore(subscripcion.fin)){
+                  done(new Error('Ya tiene una subscripcion activa.'));
+                }
+            }
+            done();
+          });
+      }
     },
     freezeTableName: true,
     tableName: 'Subscripcion'
@@ -86,23 +78,38 @@ module.exports = (sequelize, DataTypes) => {
   }};
 
 
-  //FIXME: invalid date in null parameter
-  //TODO: crear y probar metodo de atender
-  //asimismo inicio y fin
   const updateInUserPremium = async (subscripcion,options) => {
-    console.log('entro')
     if(subscripcion.changed('atendido')){
-      if(subscripcion.atendido=='A'){
-        console.log('atendido')
-        let [err,plan]=await get(sequelize.models.Plan.findOne({estado: 'A', id: subscripcion.id_plan}));
-        if(err || plan==null) return;
+      if(subscripcion.atendido){
+        let [err,plan]=await get(sequelize.models.Plan.findOne({where :{estado: 'A', id: subscripcion.id_plan}}));
+        if(err || plan==null) return new Error('No se encontro el plan deseado');
         subscripcion.inicio= moment();
         subscripcion.fin=moment().add(plan.duracion,'d');
+        let [err2,usuario]=await get(sequelize.models.Usuario.increment({
+          'cash': plan.cash,
+          'deliverys_gratis': plan.deliverys_gratis
+        },{
+          where: {id: subscripcion.id_usuario, estado: 'A'}
+        }));
+        if(err2 || usuario==null) return new Error('Ocurrio un error al agregar beneficios al usuario');
+      }
+    }
+
+    if(subscripcion.changed('estado')){
+      if(subscripcion.estado=='I' && subscripcion.atendido){
+        let [err,plan]=await get(sequelize.models.Plan.findOne({where :{estado: 'A', id: subscripcion.id_plan}}));
+        if(err || plan==null) return new Error('No se encontro el plan deseado');
+        let [err2,usuario]=await get(sequelize.models.Usuario.decrement({
+          'cash': plan.cash,
+          'deliverys_gratis': plan.deliverys_gratis
+        },{
+          where: {id: subscripcion.id_usuario, estado: 'A'}
+        }));
+        if(err2 || usuario==null) return new Error('Ocurrio un error al agregar beneficios al usuario');
       }
     }
   }
   
-
   Subscripcion.addHook('beforeCreate', updateInUserPremium);
   Subscripcion.addHook('beforeUpdate', updateInUserPremium);  
   

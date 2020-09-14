@@ -35,5 +35,3 @@ module.exports = {
 //TODO: editar modelos PRODUCTO, USUARIO, SUBSCRIPCION
 
 //TODO: editar modulos: PRODUCTO, USUARIO, SUBSCRIPCION
-
-//TODO: modificar el metodo atender HOOKS que agregue los dias del plan correspondiente

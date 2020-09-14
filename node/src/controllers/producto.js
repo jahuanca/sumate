@@ -91,7 +91,7 @@ async function getProductosBuscados(req,res){
 
 
 async function createProducto(req,res){
-  
+  console.log(req.body)
   let p={
     id_categoria: req.body.id_categoria,
     id_comercio: req.comercio,
@@ -129,6 +129,7 @@ async function createProducto(req,res){
 }
 
 async function createAllProducto(req,res){
+  console.log(req.body)
   try {
 
     const result = await sequelize.transaction(async (t) => {
