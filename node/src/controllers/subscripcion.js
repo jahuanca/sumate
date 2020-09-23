@@ -1,9 +1,42 @@
 'use strict'
 const models=require('../models')
+const moment=require('moment')
 
 async function getSubscripcions(req,res){
   let [err,subscripcions]=await get(models.Subscripcion.findAll({
     where:{estado: 'A'},
+    include: [{all: true}]
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(subscripcions==null) return res.status(404).json({message: `Subscripcions nulos`})
+  res.status(200).json(subscripcions)
+}
+
+async function getSubscripcionsInvito(req,res){
+  let [err,subscripcions]=await get(models.Subscripcion.findAll({
+    where:{estado: 'A', id_usuario_invito: req.params.id, atendido: true},
+    include: [{all: true}]
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(subscripcions==null) return res.status(404).json({message: `Subscripcions nulos`})
+  res.status(200).json(subscripcions)
+}
+
+async function getSubscripcionsInvitoActivos(req,res){
+  let [err,subscripcions]=await get(models.Subscripcion.findAll({
+    where:{estado: 'A', id_usuario_invito: req.params.id, atendido: true, fin: {
+      [models.Sequelize.Op.gte]: moment()
+    }},
+    include: [{all: true}]
+  }))
+  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(subscripcions==null) return res.status(404).json({message: `Subscripcions nulos`})
+  res.status(200).json(subscripcions)
+}
+
+async function getSubscripcionsInvitoAtender(req,res){
+  let [err,subscripcions]=await get(models.Subscripcion.findAll({
+    where:{estado: 'A', id_usuario_invito: req.params.id, atendido: false},
     include: [{all: true}]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor err`})
@@ -34,7 +67,8 @@ async function createSubscripcion(req,res){
       ip: req.ip,
       usuario: 0
   }, {individualHooks: true}))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  console.log(err)
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcion==null) return res.status(404).json({message: `Subscripcions nulos`})
   res.status(200).json(subscripcion)
 }
@@ -75,6 +109,30 @@ async function atenderSubscripcion(req,res){
   },{
     where:{
       id: req.body.id, estado:'A'
+    },
+    validate: true,
+    individualHooks: true
+  }))
+  
+  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(subscripcion==null) return res.status(404).json({message: `Subscripcions nulos`})
+  return res.status(200).json(subscripcion[1][0].dataValues);
+}
+
+async function atenderSubscripcionPropia(req,res){
+  let [err,subscripcion]=await get(models.Subscripcion.update({
+    id_plan: req.body.id_plan,
+    monto: req.body.monto,
+    id_usuario: req.body.id_usuario,
+    atendido: true,
+    
+    accion: 'U',
+    accion_usuario: 'Atendio una subscripcion propia.',
+    ip: req.ip,
+    usuario: 0
+  },{
+    where:{
+      id: req.body.id, estado:'A', id_usuario_invito: req.usuario
     },
     validate: true,
     individualHooks: true
@@ -147,10 +205,14 @@ function get(promise) {
 
 module.exports={
   getSubscripcions,
+  getSubscripcionsInvito,
+  getSubscripcionsInvitoActivos,
+  getSubscripcionsInvitoAtender,
   getSubscripcion,
   createSubscripcion,
   createAdminSubscripcion,
   atenderSubscripcion,
+  atenderSubscripcionPropia,
   updateSubscripcion,
   deleteSubscripcion
 }

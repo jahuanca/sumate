@@ -1,5 +1,6 @@
 'use strict'
 const models=require('../models')
+const moment=require('moment')
 
 async function getUsuarios(req,res){
   let [err,usuarios]=await get(models.Usuario.findAll({
@@ -23,6 +24,26 @@ async function getUsuario(req,res){
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   res.status(200).json(usuario)
+}
+
+
+
+
+async function getSoyPremium(req,res){
+  
+  let [err,subscripcion]=await get(models.Subscripcion.findOne({
+    where:{
+      id_usuario: req.usuario, estado: 'A', atendido: true, 
+      fin: {
+        [models.Sequelize.Op.gte]: moment()
+      }
+    },
+    include: [{model: models.Plan}]
+  }));
+  
+  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(subscripcion==null) return res.status(404).json({message: `Usuarios nulos`})
+  res.status(200).json(subscripcion);
 }
 
 async function getUsuarioUsername(req,res){
@@ -217,6 +238,7 @@ function get(promise) {
 module.exports={
   getUsuarios,
   getUsuario,
+  getSoyPremium,
   getUsuarioUsername,
   getUsuarioCodigoInvitado,
   createUsuario,

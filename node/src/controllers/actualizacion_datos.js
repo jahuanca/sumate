@@ -128,18 +128,27 @@ async function llenarPlanesBeneficios(){
   if(bcantidad==0){
     let beneficios=[
       {
+        icono: 'fas fa-hand-holding-usd',
+        nombre: 'Gana dinero',
+        descripcion: 'Te pagamos por recomendarnos y conseguir más miembros, haz uso de tu codigo de amigo.',
+      },
+      {
+        icono: 'fas fa-coins',
         nombre: 'Adquiere puntos cash junto con tu plan',
         descripcion: 'Junto con tu plan recibe puntos cash los cuales podras canjear por productos sin necesidad de pagar un precio extra.',
       },
       {
+        icono: 'fas fa-truck',
         nombre: 'Deliverys gratis',
         descripcion: 'Te otorgamos cierta cantidad de deliverys gratis para que no tengas que pagar el precio de envio.',
       },
       {
+        icono: 'fas fa-tags',
         nombre: 'Precios especiales',
         descripcion: 'Como usuario premium te damos precios especiales por producto, para que puedas seguir ahorrando.',
       },
       {
+        icono: 'fas fa-shopping-bag',
         nombre: 'Promociones exclusivas',
         descripcion: 'Accede a promociones unicas para usuarios exclusivas, como sorteos, articulos gratuitos, entre otras cosas.',
       }

@@ -4,7 +4,7 @@ const models=require('../models')
 async function getForma_Pago_Comercios(req,res){
   let [err,forma_pago_comercios]=await get(models.Forma_Pago_Comercio.findAll({
     where:{estado: 'A'},
-    include: [{model: models.Forma_Pago}]
+    include: [{model: models.Forma_Pago}, {model: models.Comercio}]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(forma_pago_comercios==null) return res.status(404).json({message: `Forma_Pago_Comercios nulos`})
@@ -14,7 +14,7 @@ async function getForma_Pago_Comercios(req,res){
 async function getMisFormasPagoComercio(req,res){
   let [err,forma_pago_comercios]=await get(models.Forma_Pago_Comercio.findAll({
     where:{estado: 'A', id_comercio: req.comercio},
-    include: [{model: models.Forma_Pago}]
+    include: [{model: models.Forma_Pago}, {model: models.Comercio}]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(forma_pago_comercios==null) return res.status(404).json({message: `Forma_Pago_Comercios nulos`})
@@ -23,7 +23,8 @@ async function getMisFormasPagoComercio(req,res){
 
 async function postForma_Pago_ComerciosSome(req,res){
   let [err,forma_pago_comercios]=await get(models.Forma_Pago_Comercio.findAll({
-    where:{estado: 'A', id_forma_pago: req.body.id_forma_pago, id_comercio: req.body.id_comercios}
+    where:{estado: 'A', id_forma_pago: req.body.id_forma_pago, id_comercio: req.body.id_comercios},
+    include: [{model: models.Forma_Pago}, {model: models.Comercio}]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(forma_pago_comercios==null) return res.status(404).json({message: `Forma_Pago_Comercios nulos`})

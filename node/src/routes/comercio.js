@@ -7,6 +7,8 @@ const multer  = require('multer')
 const path=require('path')
 const crypto=require('crypto')
 
+const uploadController = require("../controllers/upload_controller");
+
 const storage=multer.diskStorage({
     destination: './public/uploads/comercios/',
     filename: function(req, file, cb) {
@@ -18,6 +20,7 @@ const storage=multer.diskStorage({
       });
     }
 });
+
 
 /**
  * @swagger
@@ -33,7 +36,7 @@ router.get('/',comercio.getComercios)
 router.get('/id/:id',comercio.getComercio)
 router.get('/id_usuario/:id',comercio.getComercioUsuario)
 router.post('/create',comercio.createComercio)
-router.post('/createAllComercio', auth.isAuthAdmin ,multer({storage: storage}).array('files',5),comercio.createAllComercio)
+router.post('/createAllComercio', auth.isAuthAdmin , uploadController.uploadMany(5), uploadController.saveMany('comercios') , comercio.createAllComercio)
 router.put('/update', comercio.updateComercio)
 router.put('/updateAllComercio', multer({storage: storage}).array('files',5), comercio.updateAllComercio)
 router.delete('/delete/:id', comercio.deleteComercio)

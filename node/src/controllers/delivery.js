@@ -103,7 +103,7 @@ async function createAllDelivery(req,res){
         c.imagenes=models.limpiar(c.imagenes)
       }
       let delivery=await get(models.Delivery.create(c,{ transaction: t }))
-      delivery.Usuario=usuario;
+      delivery.dataValues.Usuario=usuario;
       return delivery;
     });
     res.status(200).json(result)

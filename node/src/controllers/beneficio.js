@@ -24,6 +24,7 @@ async function getBeneficio(req,res){
 
 async function createBeneficio(req,res){
   let [err,beneficio]=await get(models.Beneficio.create({
+      icono: req.body.icono,
       nombre: req.body.nombre,
       descripcion: req.body.descripcion,
       restriccion: models.limpiar(req.body.restriccion),
@@ -41,6 +42,7 @@ async function createBeneficio(req,res){
 
 async function updateBeneficio(req,res){
   let [err,beneficio]=await get(models.Beneficio.update({
+    icono: req.body.icono,
     nombre: req.body.nombre,
     descripcion: req.body.descripcion,
     restriccion: models.limpiar(req.body.restriccion),

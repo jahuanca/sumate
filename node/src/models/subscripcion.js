@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
   const Subscripcion = sequelize.define('Subscripcion', {
     
     //TODO:crear enrutado guards
+    //TODO: crear en vista usuario cash y deliverys
+    //TODO: crear en detalle de pedido campo de cash para especificar si se pago con cash de cuanto fue
+    //TODO: en mi cuenta crear un item mas con informacion de la cuenta para agrear si es premium cuanto de cash y deliverys gratis
+    //TODO: considerar agregar icono en beneficio
     id_usuario: {type: DataTypes.INTEGER, allowNull: false, validate: {min: 1, isInt: true}},
     id_usuario_invito: {type: DataTypes.INTEGER, allowNull: true, validate: {min: 1, isInt: true}},
     id_plan: {type: DataTypes.INTEGER, allowNull: true, validate: {min: 1, isInt: true}},
@@ -54,6 +58,7 @@ module.exports = (sequelize, DataTypes) => {
   Subscripcion.associate = function(models) {
     Subscripcion.belongsTo(models.Usuario, {foreignKey: 'id_usuario', as: 'Usuario'});
     Subscripcion.belongsTo(models.Usuario, {foreignKey: 'id_usuario_invito', as: 'UsuarioInvito'});
+    Subscripcion.belongsTo(models.Plan, {foreignKey: 'id_plan'});
   };
 
   const validar={

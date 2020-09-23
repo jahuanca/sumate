@@ -44,8 +44,8 @@ async function getProductosCategoria(req,res){
 async function getProductosRandom(req,res){
   let [err,producto]=await get(models.Producto.findAll({
     where:{estado: 'A'},
-    order: models.Sequelize.literal('random()'), limit: 3 ,
-    include: ['Categoria']
+    order: models.Sequelize.literal('random()'), limit: Number(req.params.cantidad) ,
+    include: ['Categoria', {model: models.Comercio}]
   }))
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
@@ -57,6 +57,7 @@ async function obtenerProductosSome(req,res){
     where:{id: req.body, estado: 'A'},
     include: ['Categoria', {model: models.Comercio}]
   }))
+  console.log(err)
   if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)

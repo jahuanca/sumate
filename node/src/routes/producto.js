@@ -30,7 +30,7 @@ const storage=multer.diskStorage({
  *        description: A successful response
  */
 router.get('/',producto.getProductos)
-router.get('/random',producto.getProductosRandom)
+router.get('/random/:cantidad',producto.getProductosRandom)
 router.get('/misProductos', auth.isAuthOnlyComercio,producto.getMisProductos)
 router.get('/id/:id',producto.getProducto)
 router.get('/id_categoria/:id',producto.getProductosCategoria)
