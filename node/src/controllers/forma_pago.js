@@ -5,7 +5,7 @@ async function getForma_Pagos(req,res){
   let [err,forma_pagos]=await get(models.Forma_Pago.findAll({
     where:{estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pagos==null) return res.status(404).json({message: `Forma_Pagos nulos`})
   res.status(200).json(forma_pagos)
 }
@@ -14,7 +14,7 @@ async function getForma_Pago(req,res){
   let [err,forma_pago]=await get(models.Forma_Pago.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pago==null) return res.status(404).json({message: `Forma_Pagos nulos`})
   res.status(200).json(forma_pago)
 }
@@ -41,7 +41,7 @@ async function createForma_Pago(req,res){
     p.imagenes=models.limpiar(p.imagenes)
   }
   let [err,forma_pago]=await get(models.Forma_Pago.create(p))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pago==null) return res.status(404).json({message: `Forma_Pagos nulos`})
   res.status(200).json(forma_pago)
 }
@@ -137,7 +137,7 @@ async function updateForma_Pago(req,res){
       individualHooks: true
     }  
   ))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pago==null) return res.status(404).json({message: `Forma_Pagos nulos`})
   res.status(200).json(forma_pago)
 }
@@ -155,7 +155,7 @@ async function deleteForma_Pago(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pago==null) return res.status(404).json({message: `Forma_Pagos nulos`})
   res.status(200).json(forma_pago)
 }

@@ -7,7 +7,7 @@ async function getUsuarios(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(usuarios==null) return res.status(404).json({message: `Usuarios nulos`})
   res.status(200).json(usuarios)
 }
@@ -21,7 +21,7 @@ async function getUsuario(req,res){
       {model: models.Administrador}
     ]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   res.status(200).json(usuario)
 }
@@ -41,7 +41,7 @@ async function getSoyPremium(req,res){
     include: [{model: models.Plan}]
   }));
   
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcion==null) return res.status(404).json({message: `Usuarios nulos`})
   res.status(200).json(subscripcion);
 }
@@ -55,7 +55,7 @@ async function getUsuarioUsername(req,res){
       {model: models.Administrador}
     ]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   res.status(200).json(usuario)
 }
@@ -69,7 +69,7 @@ async function getUsuarioCodigoInvitado(req,res){
       {model: models.Administrador}
     ]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   res.status(200).json(usuario)
 }
@@ -85,7 +85,7 @@ async function createUsuario(req,res){
       ip: req.ip,
       usuario: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   res.status(200).json(usuario)
 }
@@ -163,7 +163,7 @@ async function updateUsuario(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   res.status(200).json(usuario)
 }
@@ -172,7 +172,7 @@ async function updatePassword(req,res){
   let [err,usuario]=await get(models.Usuario.findOne({
     where:{id: req.usuario, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   if(!usuario.correctPassword(req.body.lastPassword)){
     return res.status(401).json({message: `Codigos no coinciden`})
@@ -186,7 +186,7 @@ async function updateCorreo(req,res){
   let [err,usuario]=await get(models.Usuario.findOne({
     where:{id: req.usuario, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   if(!usuario.correctPassword(req.body.password)){
     return res.status(401).json({message: `Codigos no coinciden`})
@@ -209,7 +209,7 @@ async function deleteUsuario(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   res.status(200).json(usuario)
 }
@@ -218,7 +218,7 @@ async function validateCorreo(req,res){
   let [err,usuario]=await get(models.Usuario.findOne({
     where:{id: req.usuario, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   if(!usuario.correctCodigo(req.body.codigo)){
     return res.status(401).json({message: `Codigos no coinciden`})

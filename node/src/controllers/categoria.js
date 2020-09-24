@@ -6,7 +6,7 @@ async function getCategorias(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(categorias==null) return res.status(404).json({message: `Categorias nulos`})
   res.status(200).json(categorias)
 }
@@ -15,7 +15,7 @@ async function getCategoriasOnly(req,res){
   let [err,categorias]=await get(models.Categoria.findAll({
     where:{estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(categorias==null) return res.status(404).json({message: `Categorias nulos`})
   res.status(200).json(categorias)
 }
@@ -25,7 +25,7 @@ async function getCategoriasAllComercio(req,res){
     where:{estado: 'A'},
     include: [{model: models.Producto, required: true, where: {id_comercio: req.params.id}}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(categorias==null) return res.status(404).json({message: `Categorias nulos`})
   res.status(200).json(categorias)
 }
@@ -34,7 +34,7 @@ async function getCategoria(req,res){
   let [err,categoria]=await get(models.Categoria.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(categoria==null) return res.status(404).json({message: `Categorias nulos`})
   res.status(200).json(categoria)
 }
@@ -62,7 +62,7 @@ async function createCategoria(req,res){
   }
   
   let [err,categoria]=await get(models.Categoria.create(p))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(categoria==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(categoria)
 }
@@ -101,7 +101,7 @@ async function updateCategoria(req,res){
       individualHooks: true
     }  
   ))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(categoria==null) return res.status(404).json({message: `Categorias nulos`})
   res.status(200).json(categoria[1][0].dataValues)
 }
@@ -120,7 +120,7 @@ async function deleteCategoria(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(categoria==null) return res.status(404).json({message: `Categorias nulos`})
   res.status(200).json(categoria)
 }

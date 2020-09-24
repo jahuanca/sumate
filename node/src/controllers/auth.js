@@ -53,7 +53,7 @@ async function signInUser(req, res){
         }
     }))
     
-    if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+    if(err) return res.status(500).json({message: `${err}`})
     if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
     if(usuario.correctPassword(String(req.body.password))){
         let token=service.createToken(usuario)
@@ -75,7 +75,7 @@ async function signInUserForSocial(req, res){
         }
     }))
     
-    if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+    if(err) return res.status(500).json({message: `${err}`})
     if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
     let token=service.createToken(usuario)
     res.status(200).json({usuario: usuario, token})

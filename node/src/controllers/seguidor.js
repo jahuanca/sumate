@@ -6,7 +6,7 @@ async function getSeguidors(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(seguidors==null) return res.status(404).json({message: `Seguidors nulos`})
   res.status(200).json(seguidors)
 }
@@ -17,7 +17,7 @@ async function getSeguidor(req,res){
     include: [{all: true}]
   }))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(seguidor==null) return res.status(404).json({message: `Seguidors nulos`})
   res.status(200).json(seguidor)
 }
@@ -26,7 +26,7 @@ async function getSeguidorComercio(req,res){
   let [err,seguidor]=await get(models.Seguidor.count({
     where:{id_comercio: req.params.id, id_usuario: req.usuario ,estado: 'A'},
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(seguidor==null) return res.status(404).json({message: `Seguidors nulos`})
   if(seguidor>0){
     res.status(200).json(true)
@@ -39,7 +39,7 @@ async function isFollowerComercio(req,res){
   let [err,seguidor]=await get(models.Seguidor.count({
     where:{id_comercio: req.params.id_comercio, id_usuario: req.usuario ,estado: 'A'},
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   
   if(seguidor){
     res.status(200).json(true)
@@ -52,7 +52,7 @@ async function getCountComercio(req,res){
   let [err,seguidor]=await get(models.Seguidor.count({
     where:{id_comercio: req.params.id_comercio, id_usuario: req.usuario ,estado: 'A'},
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(seguidor==null) return res.status(404).json({message: `Seguidors nulos`})
   res.status(200).json(seguidor)
 }
@@ -67,7 +67,7 @@ async function createSeguidor(req,res){
       ip: req.ip,
       usuario: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(seguidor==null) return res.status(404).json({message: `Seguidors nulos`})
   res.status(200).json(seguidor)
 }
@@ -88,7 +88,7 @@ async function updateSeguidor(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(seguidor==null) return res.status(404).json({message: `Seguidors nulos`})
   res.status(200).json(seguidor)
 }
@@ -99,7 +99,7 @@ async function deleteSeguidor(req,res){
     where:{
       id_comercio: req.params.id, id_usuario: req.usuario, estado:'A'
   }}));
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(seguidor==null) return res.status(404).json({message: `Seguidors nulos`})
   res.status(200).json(false)
 }

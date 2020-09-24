@@ -6,7 +6,7 @@ async function getAsociacions(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(asociacions==null) return res.status(404).json({message: `Asociacions nulos`})
   res.status(200).json(asociacions)
 }
@@ -15,7 +15,7 @@ async function getAsociacion(req,res){
   let [err,asociacion]=await get(models.Asociacion.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(asociacion==null) return res.status(404).json({message: `Asociacions nulos`})
   res.status(200).json(asociacion)
 }
@@ -26,7 +26,7 @@ async function getAsociacionsComercio(req,res){
       {model: models.Delivery}
     ]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(asociacions==null) return res.status(404).json({message: `Asociacions nulos`})
   res.status(200).json(asociacions)
 }
@@ -38,7 +38,7 @@ async function getAsociacionsDelivery(req,res){
       {model: models.Comercio}
     ]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(asociacions==null) return res.status(404).json({message: `Asociacions nulos`})
   res.status(200).json(asociacions)
 }
@@ -55,7 +55,7 @@ async function createAsociacion(req,res){
       ip: req.ip,
       usuario: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(asociacion==null) return res.status(404).json({message: `Asociacions nulos`})
   res.status(200).json(asociacion)
 }
@@ -81,7 +81,7 @@ async function updateAsociacion(req,res){
     validate: false
   }))  
   console.log(asociacion[1][0].dataValues)
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(asociacion==null) return res.status(404).json({message: `Asociacions nulos`})
   res.status(200).json(asociacion[1][0].dataValues)
 }
@@ -100,7 +100,7 @@ async function deleteAsociacion(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(asociacion==null) return res.status(404).json({message: `Asociacions nulos`})
   res.status(200).json(asociacion)
 }

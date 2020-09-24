@@ -6,7 +6,7 @@ async function getClientes(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(clientes==null) return res.status(404).json({message: `Clientes nulos`})
   res.status(200).json(clientes)
 }
@@ -15,7 +15,7 @@ async function getCliente(req,res){
   let [err,cliente]=await get(models.Cliente.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(cliente==null) return res.status(404).json({message: `Clientes nulos`})
   res.status(200).json(cliente)
 }
@@ -25,7 +25,7 @@ async function getClienteUsuario(req,res){
     where:{id_usuario: req.params.id, estado: 'A'},
     include:[{model: models.Usuario}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(cliente==null) return res.status(404).json({message: `Clientes nulos`})
   res.status(200).json(cliente)
 }
@@ -41,7 +41,7 @@ async function createCliente(req,res){
       ip: req.ip,
       cliente: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(cliente==null) return res.status(404).json({message: `Clientes nulos`})
   res.status(200).json(cliente)
 }
@@ -95,7 +95,7 @@ async function updateCliente(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(cliente==null) return res.status(404).json({message: `Clientes nulos`})
   res.status(200).json(cliente)
 }
@@ -125,7 +125,7 @@ async function updateMiCuenta(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(cliente==null) return res.status(404).json({message: `Clientes nulos`})
   res.status(200).json(cliente[1][0].dataValues)
 }
@@ -143,7 +143,7 @@ async function deleteCliente(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(cliente==null) return res.status(404).json({message: `Clientes nulos`})
   res.status(200).json(cliente)
 }
@@ -152,7 +152,7 @@ async function validateCelular(req,res){
   let [err,cliente]=await get(models.Cliente.findOne({
     where:{id: req.cliente, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(cliente==null) return res.status(404).json({message: `Cliente nulos`})
   if(!cliente.correctCodigo(req.body.codigo)){
     return res.status(401).json({message: `Codigos no coinciden`})

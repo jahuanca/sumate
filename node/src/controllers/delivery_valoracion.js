@@ -6,7 +6,7 @@ async function getDelivery_Valoracions(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(name_mins==null) return res.status(404).json({message: `Delivery_Valoracions nulos`})
   res.status(200).json(name_mins)
 }
@@ -17,7 +17,7 @@ async function getDelivery_Valoracion(req,res){
     include: [{all: true}]
   }))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(name_min==null) return res.status(404).json({message: `Delivery_Valoracions nulos`})
   res.status(200).json(name_min)
 }
@@ -31,7 +31,7 @@ async function createDelivery_Valoracion(req,res){
       ip: req.ip,
       usuario: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(name_min==null) return res.status(404).json({message: `Delivery_Valoracions nulos`})
   res.status(200).json(name_min)
 }
@@ -52,7 +52,7 @@ async function updateDelivery_Valoracion(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(name_min==null) return res.status(404).json({message: `Delivery_Valoracions nulos`})
   res.status(200).json(name_min)
 }
@@ -72,7 +72,7 @@ async function deleteDelivery_Valoracion(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(name_min==null) return res.status(404).json({message: `Delivery_Valoracions nulos`})
   res.status(200).json(name_min)
 }

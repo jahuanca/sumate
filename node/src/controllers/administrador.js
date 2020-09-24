@@ -6,7 +6,7 @@ async function getAdministradors(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(administradors==null) return res.status(404).json({message: `Administradors nulos`})
   res.status(200).json(administradors)
 }
@@ -15,7 +15,7 @@ async function getAdministrador(req,res){
   let [err,administrador]=await get(models.Administrador.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(administrador==null) return res.status(404).json({message: `Administradors nulos`})
   res.status(200).json(administrador)
 }
@@ -25,7 +25,7 @@ async function getAdministradorUsuario(req,res){
     where:{id_usuario: req.params.id, estado: 'A'},
     include:[{model: models.Usuario}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(administrador==null) return res.status(404).json({message: `Administradors nulos`})
   res.status(200).json(administrador)
 }
@@ -41,7 +41,7 @@ async function createAdministrador(req,res){
       ip: req.ip,
       administrador: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(administrador==null) return res.status(404).json({message: `Administradors nulos`})
   res.status(200).json(administrador)
 }
@@ -95,7 +95,7 @@ async function updateAdministrador(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(administrador==null) return res.status(404).json({message: `Administradors nulos`})
   res.status(200).json(administrador)
 }
@@ -121,7 +121,7 @@ async function updateMiCuenta(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(administrador==null) return res.status(404).json({message: `Administradors nulos`})
   res.status(200).json(administrador[1][0].dataValues)
 }
@@ -139,7 +139,7 @@ async function deleteAdministrador(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(administrador==null) return res.status(404).json({message: `Administradors nulos`})
   res.status(200).json(administrador)
 }
@@ -148,7 +148,7 @@ async function validateCelular(req,res){
   let [err,administrador]=await get(models.Administrador.findOne({
     where:{id: req.administrador, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(administrador==null) return res.status(404).json({message: `Administrador nulos`})
   if(!administrador.correctCodigo(req.body.codigo)){
     return res.status(401).json({message: `Codigos no coinciden`})

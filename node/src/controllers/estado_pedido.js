@@ -6,7 +6,7 @@ async function getEstado_Pedidos(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(estado_pedidos==null) return res.status(404).json({message: `Estado_Pedidos nulos`})
   res.status(200).json(estado_pedidos)
 }
@@ -15,7 +15,7 @@ async function getEstado_Pedido(req,res){
   let [err,estado_pedido]=await get(models.Estado_Pedido.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(estado_pedido==null) return res.status(404).json({message: `Estado_Pedidos nulos`})
   res.status(200).json(estado_pedido)
 }
@@ -42,7 +42,7 @@ async function createEstado_Pedido(req,res){
     p.imagenes=models.limpiar(p.imagenes)
   }
   let [err,estado_pedido]=await get(models.Estado_Pedido.create(p))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(estado_pedido==null) return res.status(404).json({message: `Estado_Pedidos nulos`})
   res.status(200).json(estado_pedido)
 }
@@ -137,7 +137,7 @@ async function updateEstado_Pedido(req,res){
       individualHooks: true
     }  
   ))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(estado_pedido==null) return res.status(404).json({message: `Estado_Pedidos nulos`})
   res.status(200).json(estado_pedido[1][0].dataValues)
 }
@@ -155,7 +155,7 @@ async function deleteEstado_Pedido(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(estado_pedido==null) return res.status(404).json({message: `Estado_Pedidos nulos`})
   res.status(200).json(estado_pedido)
 }

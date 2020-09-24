@@ -5,7 +5,7 @@ async function getTipo_Envios(req,res){
   let [err,tipo_envios]=await get(models.Tipo_Envio.findAll({
     where:{estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_envios==null) return res.status(404).json({message: `Tipo_Envios nulos`})
   res.status(200).json(tipo_envios)
 }
@@ -14,7 +14,7 @@ async function getTipo_Envio(req,res){
   let [err,tipo_envio]=await get(models.Tipo_Envio.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_envio==null) return res.status(404).json({message: `Tipo_Envios nulos`})
   res.status(200).json(tipo_envio)
 }
@@ -41,7 +41,7 @@ async function createTipo_Envio(req,res){
     p.imagenes=models.limpiar(p.imagenes)
   }
   let [err,tipo_envio]=await get(models.Tipo_Envio.create(p))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_envio==null) return res.status(404).json({message: `Tipo_Envios nulos`})
   res.status(200).json(tipo_envio)
 }
@@ -137,7 +137,7 @@ async function updateTipo_Envio(req,res){
       individualHooks: true
     }  
   ))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_envio==null) return res.status(404).json({message: `Tipo_Envios nulos`})
   res.status(200).json(tipo_envio)
 }
@@ -155,7 +155,7 @@ async function deleteTipo_Envio(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_envio==null) return res.status(404).json({message: `Tipo_Envios nulos`})
   res.status(200).json(tipo_envio)
 }

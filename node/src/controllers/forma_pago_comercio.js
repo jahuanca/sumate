@@ -6,7 +6,7 @@ async function getForma_Pago_Comercios(req,res){
     where:{estado: 'A'},
     include: [{model: models.Forma_Pago}, {model: models.Comercio}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pago_comercios==null) return res.status(404).json({message: `Forma_Pago_Comercios nulos`})
   res.status(200).json(forma_pago_comercios)
 }
@@ -16,7 +16,7 @@ async function getMisFormasPagoComercio(req,res){
     where:{estado: 'A', id_comercio: req.comercio},
     include: [{model: models.Forma_Pago}, {model: models.Comercio}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pago_comercios==null) return res.status(404).json({message: `Forma_Pago_Comercios nulos`})
   res.status(200).json(forma_pago_comercios)
 }
@@ -26,7 +26,7 @@ async function postForma_Pago_ComerciosSome(req,res){
     where:{estado: 'A', id_forma_pago: req.body.id_forma_pago, id_comercio: req.body.id_comercios},
     include: [{model: models.Forma_Pago}, {model: models.Comercio}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pago_comercios==null) return res.status(404).json({message: `Forma_Pago_Comercios nulos`})
   res.status(200).json(forma_pago_comercios)
 }
@@ -35,7 +35,7 @@ async function getForma_Pago_Comercio(req,res){
   let [err,forma_pago_comercio]=await get(models.Forma_Pago_Comercio.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pago_comercio==null) return res.status(404).json({message: `Forma_Pago_Comercios nulos`})
   res.status(200).json(forma_pago_comercio)
 }
@@ -62,7 +62,7 @@ async function createForma_Pago_Comercio(req,res){
     p.imagenes=models.limpiar(p.imagenes)
   }
   let [err,forma_pago_comercio]=await get(models.Forma_Pago_Comercio.create(p))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pago_comercio==null) return res.status(404).json({message: `Forma_Pago_Comercios nulos`})
   res.status(200).json(forma_pago_comercio)
 }
@@ -158,7 +158,7 @@ async function updateForma_Pago_Comercio(req,res){
       individualHooks: true
     }  
   ))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pago_comercio==null) return res.status(404).json({message: `Forma_Pago_Comercios nulos`})
   res.status(200).json(forma_pago_comercio[1][0].dataValues)
 }
@@ -176,7 +176,7 @@ async function deleteForma_Pago_Comercio(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(forma_pago_comercio==null) return res.status(404).json({message: `Forma_Pago_Comercios nulos`})
   res.status(200).json(forma_pago_comercio)
 }

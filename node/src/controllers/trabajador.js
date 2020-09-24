@@ -6,7 +6,7 @@ async function getTrabajadors(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(trabajadors==null) return res.status(404).json({message: `Trabajadors nulos`})
   res.status(200).json(trabajadors)
 }
@@ -15,7 +15,7 @@ async function getTrabajador(req,res){
   let [err,trabajador]=await get(models.Trabajador.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(trabajador==null) return res.status(404).json({message: `Trabajadors nulos`})
   res.status(200).json(trabajador)
 }
@@ -31,7 +31,7 @@ async function createTrabajador(req,res){
       ip: req.ip,
       trabajador: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(trabajador==null) return res.status(404).json({message: `Trabajadors nulos`})
   res.status(200).json(trabajador)
 }
@@ -110,7 +110,7 @@ async function updateTrabajador(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(trabajador==null) return res.status(404).json({message: `Trabajadors nulos`})
   res.status(200).json(trabajador)
 }
@@ -128,7 +128,7 @@ async function deleteTrabajador(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(trabajador==null) return res.status(404).json({message: `Trabajadors nulos`})
   res.status(200).json(trabajador)
 }

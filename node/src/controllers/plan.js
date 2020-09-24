@@ -6,7 +6,7 @@ async function getPlans(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(plans==null) return res.status(404).json({message: `Plans nulos`})
   res.status(200).json(plans)
 }
@@ -17,7 +17,7 @@ async function getPlan(req,res){
     include: [{all: true}]
   }))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(plan==null) return res.status(404).json({message: `Plans nulos`})
   res.status(200).json(plan)
 }
@@ -31,7 +31,7 @@ async function createPlan(req,res){
       ip: req.ip,
       usuario: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(plan==null) return res.status(404).json({message: `Plans nulos`})
   res.status(200).json(plan)
 }
@@ -98,7 +98,7 @@ async function updatePlan(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(plan==null) return res.status(404).json({message: `Plans nulos`})
   res.status(200).json(plan[1][0].dataValues)
 }

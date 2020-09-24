@@ -6,7 +6,7 @@ async function getZonas(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(zonas==null) return res.status(404).json({message: `Zonas nulos`})
   res.status(200).json(zonas)
 }
@@ -15,7 +15,7 @@ async function getZona(req,res){
   let [err,zona]=await get(models.Zona.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(zona==null) return res.status(404).json({message: `Zonas nulos`})
   res.status(200).json(zona)
 }
@@ -26,7 +26,7 @@ async function getZonasConTarifario(req,res){
     include: [{model: models.Tarifario, required: true}]
   }))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(zona==null) return res.status(404).json({message: `Zonas nulos`})
   res.status(200).json(zona)
 }
@@ -45,7 +45,7 @@ async function createZona(req,res){
       zona: 0
   }))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(zona==null) return res.status(404).json({message: `Zonas nulos`})
   res.status(200).json(zona)
 }
@@ -127,7 +127,7 @@ async function updateZona(req,res){
     validate: false
   }))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(zona==null) return res.status(404).json({message: `Zonas nulos`})
   res.status(200).json(zona[1][0].dataValues)
 }
@@ -145,7 +145,7 @@ async function deleteZona(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(zona==null) return res.status(404).json({message: `Zonas nulos`})
   res.status(200).json(zona)
 }

@@ -6,7 +6,7 @@ async function getProducto_Valoracions(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto_valoracions==null) return res.status(404).json({message: `Producto_Valoracions nulos`})
   res.status(200).json(producto_valoracions)
 }
@@ -17,7 +17,7 @@ async function getProducto_Valoracion(req,res){
     include: [{all: true}]
   }))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto_valoracion==null) return res.status(404).json({message: `Producto_Valoracions nulos`})
   res.status(200).json(producto_valoracion)
 }
@@ -31,7 +31,7 @@ async function createProducto_Valoracion(req,res){
       ip: req.ip,
       usuario: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto_valoracion==null) return res.status(404).json({message: `Producto_Valoracions nulos`})
   res.status(200).json(producto_valoracion)
 }
@@ -52,7 +52,7 @@ async function updateProducto_Valoracion(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto_valoracion==null) return res.status(404).json({message: `Producto_Valoracions nulos`})
   res.status(200).json(producto_valoracion)
 }
@@ -72,7 +72,7 @@ async function deleteProducto_Valoracion(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto_valoracion==null) return res.status(404).json({message: `Producto_Valoracions nulos`})
   res.status(200).json(producto_valoracion)
 }

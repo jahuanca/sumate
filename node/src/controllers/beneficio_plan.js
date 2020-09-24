@@ -6,7 +6,7 @@ async function getBeneficio_Plans(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(beneficio_plans==null) return res.status(404).json({message: `Beneficio_Plans nulos`})
   res.status(200).json(beneficio_plans)
 }
@@ -17,7 +17,7 @@ async function getBeneficio_Plan(req,res){
     include: [{all: true}]
   }))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(beneficio_plan==null) return res.status(404).json({message: `Beneficio_Plans nulos`})
   res.status(200).json(beneficio_plan)
 }
@@ -31,7 +31,7 @@ async function createBeneficio_Plan(req,res){
       ip: req.ip,
       usuario: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(beneficio_plan==null) return res.status(404).json({message: `Beneficio_Plans nulos`})
   res.status(200).json(beneficio_plan)
 }
@@ -52,7 +52,7 @@ async function updateBeneficio_Plan(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(beneficio_plan==null) return res.status(404).json({message: `Beneficio_Plans nulos`})
   res.status(200).json(beneficio_plan[1][0].dataValues)
 }
@@ -72,7 +72,7 @@ async function deleteBeneficio_Plan(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(beneficio_plan==null) return res.status(404).json({message: `Beneficio_Plans nulos`})
   res.status(200).json(beneficio_plan)
 }

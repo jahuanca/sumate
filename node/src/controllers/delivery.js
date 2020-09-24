@@ -6,7 +6,7 @@ async function getDeliverys(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(deliverys==null) return res.status(404).json({message: `Deliverys nulos`})
   res.status(200).json(deliverys)
 }
@@ -15,7 +15,7 @@ async function getDelivery(req,res){
   let [err,delivery]=await get(models.Delivery.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(delivery==null) return res.status(404).json({message: `Deliverys nulos`})
   res.status(200).json(delivery)
 }
@@ -25,7 +25,7 @@ async function getDeliveryUsuario(req,res){
     where:{id_usuario: req.params.id, estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(delivery==null) return res.status(404).json({message: `Delivery nulos`})
   res.status(200).json(delivery)
 }
@@ -41,7 +41,7 @@ async function createDelivery(req,res){
       ip: req.ip,
       delivery: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(delivery==null) return res.status(404).json({message: `Deliverys nulos`})
   res.status(200).json(delivery)
 }
@@ -215,7 +215,7 @@ async function updateDelivery(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(delivery==null) return res.status(404).json({message: `Deliverys nulos`})
   res.status(200).json(delivery)
 }
@@ -233,7 +233,7 @@ async function deleteDelivery(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(delivery==null) return res.status(404).json({message: `Deliverys nulos`})
   res.status(200).json(delivery)
 }

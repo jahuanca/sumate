@@ -7,7 +7,7 @@ async function getSubscripcions(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcions==null) return res.status(404).json({message: `Subscripcions nulos`})
   res.status(200).json(subscripcions)
 }
@@ -17,7 +17,7 @@ async function getSubscripcionsInvito(req,res){
     where:{estado: 'A', id_usuario_invito: req.params.id, atendido: true},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcions==null) return res.status(404).json({message: `Subscripcions nulos`})
   res.status(200).json(subscripcions)
 }
@@ -29,7 +29,7 @@ async function getSubscripcionsInvitoActivos(req,res){
     }},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcions==null) return res.status(404).json({message: `Subscripcions nulos`})
   res.status(200).json(subscripcions)
 }
@@ -39,7 +39,7 @@ async function getSubscripcionsInvitoAtender(req,res){
     where:{estado: 'A', id_usuario_invito: req.params.id, atendido: false},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcions==null) return res.status(404).json({message: `Subscripcions nulos`})
   res.status(200).json(subscripcions)
 }
@@ -49,7 +49,7 @@ async function getSubscripcion(req,res){
     where:{id: req.params.id, estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcion==null) return res.status(404).json({message: `Subscripcions nulos`})
   res.status(200).json(subscripcion)
 }
@@ -68,7 +68,7 @@ async function createSubscripcion(req,res){
       usuario: 0
   }, {individualHooks: true}))
   console.log(err)
-  if(err) return res.status(500).json({message: `${err}`})
+  if(err) return res.status(500).json({message: `${err.errors[0].message}`})
   if(subscripcion==null) return res.status(404).json({message: `Subscripcions nulos`})
   res.status(200).json(subscripcion)
 }
@@ -90,7 +90,7 @@ async function createAdminSubscripcion(req,res){
       ip: req.ip,
       usuario: 0
   }, {validate: true,individualHooks: true}));
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcion==null) return res.status(404).json({message: `Subscripcions nulos`})
   res.status(200).json(subscripcion)
 }
@@ -114,7 +114,7 @@ async function atenderSubscripcion(req,res){
     individualHooks: true
   }))
   
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcion==null) return res.status(404).json({message: `Subscripcions nulos`})
   return res.status(200).json(subscripcion[1][0].dataValues);
 }
@@ -138,7 +138,7 @@ async function atenderSubscripcionPropia(req,res){
     individualHooks: true
   }))
   
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcion==null) return res.status(404).json({message: `Subscripcions nulos`})
   return res.status(200).json(subscripcion[1][0].dataValues);
 }
@@ -168,7 +168,7 @@ async function updateSubscripcion(req,res){
     individualHooks: true,
     validate: false
   }));  
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcion==null) return res.status(404).json({message: `Subscripcions nulos`})
   res.status(200).json(subscripcion[1][0].dataValues);
 
@@ -190,7 +190,7 @@ async function deleteSubscripcion(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(subscripcion==null) return res.status(404).json({message: `Subscripcions nulos`})
   res.status(200).json(subscripcion)
 }

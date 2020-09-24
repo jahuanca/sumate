@@ -6,7 +6,7 @@ async function getDepartamentos(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(departamentos==null) return res.status(404).json({message: `Departamentos nulos`})
   res.status(200).json(departamentos)
 }
@@ -15,7 +15,7 @@ async function getDepartamento(req,res){
   let [err,departamento]=await get(models.Departamento.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(departamento==null) return res.status(404).json({message: `Departamentos nulos`})
   res.status(200).json(departamento)
 }
@@ -44,7 +44,7 @@ async function createDepartamento(req,res){
     p.imagenes=models.limpiar(p.imagenes)
   }
   let [err,departamento]=await get(models.Departamento.create(p))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(departamento==null) return res.status(404).json({message: `Departamentos nulos`})
   res.status(200).json(departamento)
 }
@@ -142,7 +142,7 @@ async function updateDepartamento(req,res){
       individualHooks: true
     }  
   ))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(departamento==null) return res.status(404).json({message: `Departamentos nulos`})
   res.status(200).json(departamento)
 }
@@ -160,7 +160,7 @@ async function deleteDepartamento(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(departamento==null) return res.status(404).json({message: `Departamentos nulos`})
   res.status(200).json(departamento)
 }

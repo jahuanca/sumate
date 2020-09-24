@@ -6,7 +6,7 @@ async function getComercios(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(comercios==null) return res.status(404).json({message: `Comercios nulos`})
   res.status(200).json(comercios)
 }
@@ -16,7 +16,7 @@ async function getComercio(req,res){
     where:{id: req.params.id, estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(comercio==null) return res.status(404).json({message: `Comercios nulos`})
   res.status(200).json(comercio)
 }
@@ -26,7 +26,7 @@ async function getComercioUsuario(req,res){
     where:{id_usuario: req.params.id, estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(comercio==null) return res.status(404).json({message: `Comercios nulos`})
   res.status(200).json(comercio)
 }
@@ -42,7 +42,7 @@ async function createComercio(req,res){
       ip: req.ip,
       comercio: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(comercio==null) return res.status(404).json({message: `Comercios nulos`})
   res.status(200).json(comercio)
 }
@@ -213,7 +213,7 @@ async function updateComercio(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(comercio==null) return res.status(404).json({message: `Comercios nulos`})
   res.status(200).json(comercio)
 }
@@ -231,7 +231,7 @@ async function deleteComercio(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(comercio==null) return res.status(404).json({message: `Comercios nulos`})
   res.status(200).json(comercio)
 }

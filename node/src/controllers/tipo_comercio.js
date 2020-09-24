@@ -6,7 +6,7 @@ async function getTipo_Comercios(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_comercios==null) return res.status(404).json({message: `Tipo_Comercios nulos`})
   res.status(200).json(tipo_comercios)
 }
@@ -16,7 +16,7 @@ async function getTipo_ComerciosAll(req,res){
     where:{estado: 'A'},
     include: [{model: models.Comercio, required: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_comercios==null) return res.status(404).json({message: `Tipo_Comercios nulos`})
   res.status(200).json(tipo_comercios)
 }
@@ -25,7 +25,7 @@ async function getTipo_Comercio(req,res){
   let [err,tipo_comercio]=await get(models.Tipo_Comercio.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_comercio==null) return res.status(404).json({message: `Tipo_Comercios nulos`})
   res.status(200).json(tipo_comercio)
 }
@@ -54,7 +54,7 @@ async function createTipo_Comercio(req,res){
   
   let [err,tipo_comercio]=await get(models.Tipo_Comercio.create(p))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_comercio==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(tipo_comercio)
 }
@@ -94,7 +94,7 @@ async function updateTipo_Comercio(req,res){
       individualHooks: true
     }  
   ))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_comercio==null) return res.status(404).json({message: `Tipo de comercio nulos`})
   res.status(200).json(tipo_comercio[1][0].dataValues)
 }
@@ -113,7 +113,7 @@ async function deleteTipo_Comercio(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_comercio==null) return res.status(404).json({message: `Tipo_Comercios nulos`})
   res.status(200).json(tipo_comercio)
 }

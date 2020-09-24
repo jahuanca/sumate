@@ -32,6 +32,3 @@ module.exports = {
     return queryInterface.dropTable('Plan');
   }
 };
-//TODO: editar modelos PRODUCTO, USUARIO, SUBSCRIPCION
-
-//TODO: editar modulos: PRODUCTO, USUARIO, SUBSCRIPCION

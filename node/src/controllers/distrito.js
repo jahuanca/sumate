@@ -6,7 +6,7 @@ async function getDistritos(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(distritos==null) return res.status(404).json({message: `Distritos nulos`})
   res.status(200).json(distritos)
 }
@@ -15,7 +15,7 @@ async function getDistrito(req,res){
   let [err,distrito]=await get(models.Distrito.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(distrito==null) return res.status(404).json({message: `Distritos nulos`})
   res.status(200).json(distrito)
 }
@@ -45,7 +45,7 @@ async function createDistrito(req,res){
     p.imagenes=models.limpiar(p.imagenes)
   }
   let [err,distrito]=await get(models.Distrito.create(p))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(distrito==null) return res.status(404).json({message: `Distritos nulos`})
   res.status(200).json(distrito)
 }
@@ -144,7 +144,7 @@ async function updateDistrito(req,res){
       individualHooks: true
     }  
   ))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(distrito==null) return res.status(404).json({message: `Distritos nulos`})
   res.status(200).json(distrito)
 }
@@ -162,7 +162,7 @@ async function deleteDistrito(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(distrito==null) return res.status(404).json({message: `Distritos nulos`})
   res.status(200).json(distrito)
 }

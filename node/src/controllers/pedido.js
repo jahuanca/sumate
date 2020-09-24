@@ -7,7 +7,7 @@ async function getPedidos(req,res){
     limit: 30,
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(pedidos==null) return res.status(404).json({message: `Pedidos nulos`})
   res.status(200).json(pedidos)
 }
@@ -25,7 +25,7 @@ async function getPedidosAtendiendo(req,res){
     ],
     order: [['createdAt','ASC']]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(pedidos==null) return res.status(404).json({message: `Pedidos nulos`})
   res.status(200).json(pedidos)
 }
@@ -36,7 +36,7 @@ async function getPedidosCliente(req,res){
   let [err,pedido]=await get(models.Pedido.findAll({
     where:{id_cliente: req.params.id_cliente, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
   res.status(200).json(pedido)
 }
@@ -52,7 +52,7 @@ async function getMisPedidos(req,res){
                   [{model: models.Comercio, include: [{model: models.Tipo_Comercio}]}]}]}
       ,{model: models.Forma_Pago_Comercio},{model: models.Estado_Pedido}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
   res.status(200).json(pedido)
 }
@@ -61,7 +61,7 @@ async function getPedido(req,res){
   let [err,pedido]=await get(models.Pedido.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
   res.status(200).json(pedido)
 }
@@ -91,7 +91,7 @@ async function createPedido(req,res){
     p.imagenes=models.limpiar(p.imagenes)
   }
   let [err,pedido]=await get(models.Pedido.create(p))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
   res.status(200).json(pedido)
 }
@@ -182,7 +182,7 @@ async function updatePedido(req,res){
       individualHooks: true
     }  
   ))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
   res.status(200).json(pedido)
 }
@@ -200,7 +200,7 @@ async function deletePedido(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
   res.status(200).json(pedido)
 }
@@ -218,7 +218,7 @@ async function cambiarEstadoPedido(req,res){
   }  
   ))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(pedido==null) return res.status(404).json({message: `Pedidos nulos`})
   res.status(200).json(pedido[1][0].dataValues)
 }

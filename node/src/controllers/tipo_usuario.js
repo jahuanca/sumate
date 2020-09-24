@@ -6,7 +6,7 @@ async function getTipo_Usuarios(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_usuarios==null) return res.status(404).json({message: `Tipo_Usuarios nulos`})
   res.status(200).json(tipo_usuarios)
 }
@@ -15,7 +15,7 @@ async function getTipo_Usuario(req,res){
   let [err,tipo_usuario]=await get(models.Tipo_Usuario.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_usuario==null) return res.status(404).json({message: `Tipo_Usuarios nulos`})
   res.status(200).json(tipo_usuario)
 }
@@ -31,7 +31,7 @@ async function createTipo_Usuario(req,res){
       ip: req.ip,
       tipo_usuario: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_usuario==null) return res.status(404).json({message: `Tipo_Usuarios nulos`})
   res.status(200).json(tipo_usuario)
 }
@@ -110,7 +110,7 @@ async function updateTipo_Usuario(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_usuario==null) return res.status(404).json({message: `Tipo_Usuarios nulos`})
   res.status(200).json(tipo_usuario)
 }
@@ -128,7 +128,7 @@ async function deleteTipo_Usuario(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tipo_usuario==null) return res.status(404).json({message: `Tipo_Usuarios nulos`})
   res.status(200).json(tipo_usuario)
 }

@@ -6,7 +6,7 @@ async function getDetalle_Pedidos(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(detalle_pedidos==null) return res.status(404).json({message: `Detalle_Pedidos nulos`})
   res.status(200).json(detalle_pedidos)
 }
@@ -15,7 +15,7 @@ async function getDetalle_Pedido(req,res){
   let [err,detalle_pedido]=await get(models.Detalle_Pedido.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(detalle_pedido==null) return res.status(404).json({message: `Detalle_Pedidos nulos`})
   res.status(200).json(detalle_pedido)
 }
@@ -25,7 +25,7 @@ async function getDetalle_PedidoPedido(req,res){
     where:{id_pedido: req.params.id, estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(detalle_pedido==null) return res.status(404).json({message: `Detalle_Pedidos nulos`})
   res.status(200).json(detalle_pedido)
 }
@@ -41,7 +41,7 @@ async function createDetalle_Pedido(req,res){
       ip: req.ip,
       detalle_pedido: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(detalle_pedido==null) return res.status(404).json({message: `Detalle_Pedidos nulos`})
   res.status(200).json(detalle_pedido)
 }
@@ -120,7 +120,7 @@ async function updateDetalle_Pedido(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(detalle_pedido==null) return res.status(404).json({message: `Detalle_Pedidos nulos`})
   res.status(200).json(detalle_pedido)
 }
@@ -138,7 +138,7 @@ async function deleteDetalle_Pedido(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(detalle_pedido==null) return res.status(404).json({message: `Detalle_Pedidos nulos`})
   res.status(200).json(detalle_pedido)
 }

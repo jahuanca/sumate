@@ -7,7 +7,7 @@ async function getCombos(req,res){
     include: [{model: models.Detalle_Combo, where: {estado: 'A'}}]
   }))
   
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(combos==null) return res.status(404).json({message: `Combos nulos`})
   res.status(200).json(combos)
 }
@@ -25,7 +25,7 @@ async function getCombosAtendiendo(req,res){
     ],
     order: [['createdAt','ASC']]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(combos==null) return res.status(404).json({message: `Combos nulos`})
   res.status(200).json(combos)
 }
@@ -37,7 +37,7 @@ async function getCombosComercio(req,res){
     include: [{model: models.Detalle_Combo ,where: {estado: 'A'},
       require: true, include: [{model: models.Producto, require: true, where: {id_comercio: req.params.id}}]}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(combo==null) return res.status(404).json({message: `Combos nulos`})
   res.status(200).json(combo)
 }
@@ -48,7 +48,7 @@ async function getCombosCliente(req,res){
   let [err,combo]=await get(models.Combo.findAll({
     where:{id_cliente: req.params.id_cliente, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(combo==null) return res.status(404).json({message: `Combos nulos`})
   res.status(200).json(combo)
 }
@@ -59,7 +59,7 @@ async function getMisCombos(req,res){
     include: [{model: models.Detalle_Combo, where: {estado: 'A'},
       include: [{model: models.Producto, where: {id_comercio: req.comercio, estado: 'A'}}]}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(combo==null) return res.status(404).json({message: `Combos nulos`})
   res.status(200).json(combo)
 }
@@ -68,7 +68,7 @@ async function getCombo(req,res){
   let [err,combo]=await get(models.Combo.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(combo==null) return res.status(404).json({message: `Combos nulos`})
   res.status(200).json(combo)
 }
@@ -96,7 +96,7 @@ async function createCombo(req,res){
     p.imagenes=models.limpiar(p.imagenes)
   }
   let [err,combo]=await get(models.Combo.create(p))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(combo==null) return res.status(404).json({message: `Combos nulos`})
   res.status(200).json(combo)
 }
@@ -233,7 +233,7 @@ async function deleteCombo(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(combo==null) return res.status(404).json({message: `Combos nulos`})
   res.status(200).json(combo)
 }
@@ -251,7 +251,7 @@ async function cambiarEstadoCombo(req,res){
   }  
   ))
   
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(combo==null) return res.status(404).json({message: `Combos nulos`})
   res.status(200).json(combo[1][0].dataValues)
 }

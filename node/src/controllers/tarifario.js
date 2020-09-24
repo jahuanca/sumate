@@ -6,7 +6,7 @@ async function getTarifarios(req,res){
     where:{estado: 'A'},
     include: [{model: models.Asociacion, include: [{all: true}]},{model: models.Zona}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tarifarios==null) return res.status(404).json({message: `Tarifarios nulos`})
   res.status(200).json(tarifarios)
 }
@@ -17,7 +17,7 @@ async function getTarifariosDelivery(req,res){
     include: [{model: models.Asociacion, where: {id_delivery: req.params.id} , include: [{all: true}]},
     {model: models.Zona}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tarifario==null) return res.status(404).json({message: `Tarifarios nulos`})
   res.status(200).json(tarifario)
 }
@@ -26,7 +26,7 @@ async function getTarifario(req,res){
   let [err,tarifario]=await get(models.Tarifario.findOne({
     where:{id: req.params.id, estado: 'A'}
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tarifario==null) return res.status(404).json({message: `Tarifarios nulos`})
   res.status(200).json(tarifario)
 }
@@ -37,7 +37,7 @@ async function getTarifariosComercios(req,res){
     where:{id_zona_destino: req.body.id_zona, estado: 'A'},
     include: [{model:models.Asociacion, where:{id_comercio: req.body.comercios}}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tarifario==null) return res.status(404).json({message: `Tarifarios nulos`})
   res.status(200).json(tarifario)
 }
@@ -58,7 +58,7 @@ async function createTarifario(req,res){
       ip: req.ip,
       usuario: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tarifario==null) return res.status(404).json({message: `Tarifarios nulos`})
   res.status(200).json(tarifario)
 }
@@ -142,7 +142,7 @@ async function updateTarifario(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tarifario==null) return res.status(404).json({message: `Tarifarios nulos`})
   res.status(200).json(tarifario)
 }
@@ -161,7 +161,7 @@ async function deleteTarifario(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(tarifario==null) return res.status(404).json({message: `Tarifarios nulos`})
   res.status(200).json(tarifario)
 }

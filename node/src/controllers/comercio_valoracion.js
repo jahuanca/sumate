@@ -6,7 +6,7 @@ async function getComercio_Valoracions(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(comercio_valoracions==null) return res.status(404).json({message: `Comercio_Valoracions nulos`})
   res.status(200).json(comercio_valoracions)
 }
@@ -16,7 +16,7 @@ async function getComercio_Valoracion(req,res){
     where:{id: req.params.id, estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(comercio_valoracion==null) return res.status(404).json({message: `Comercio_Valoracions nulos`})
   res.status(200).json(comercio_valoracion)
 }
@@ -29,7 +29,7 @@ async function getComercio_ValoracionComercio(req,res){
       estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   //if(comercio_valoracion==null) return res.status(404).json({message: `Comercio_Valoracions nulos`})
   res.status(200).json(comercio_valoracion)
 }
@@ -47,7 +47,7 @@ async function createComercio_Valoracion(req,res){
       ip: req.ip,
       usuario: 0
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(comercio_valoracion==null) return res.status(404).json({message: `Comercio_Valoracions nulos`})
   res.status(200).json(comercio_valoracion)
 }
@@ -69,7 +69,7 @@ async function updateComercio_Valoracion(req,res){
     individualHooks: true,
     validate: false
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(comercio_valoracion==null) return res.status(404).json({message: `Comercio_Valoracions nulos`})
   res.status(200).json(comercio_valoracion[1][0].dataValues)
 }
@@ -89,7 +89,7 @@ async function deleteComercio_Valoracion(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(comercio_valoracion==null) return res.status(404).json({message: `Comercio_Valoracions nulos`})
   res.status(200).json(comercio_valoracion)
 }

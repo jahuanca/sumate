@@ -6,7 +6,7 @@ async function getProductos(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(productos==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(productos)
 }
@@ -16,7 +16,7 @@ async function getProducto(req,res){
     where:{id: req.params.id, estado: 'A'},
     include: ['Categoria']
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
 }
@@ -26,7 +26,7 @@ async function getMisProductos(req,res){
     where:{id_comercio: req.comercio, estado: 'A'},
     include: ['Categoria']
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
 }
@@ -36,7 +36,7 @@ async function getProductosCategoria(req,res){
     where:{id_categoria: req.params.id, estado: 'A'},
     include: ['Categoria']
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
 }
@@ -47,7 +47,7 @@ async function getProductosRandom(req,res){
     order: models.Sequelize.literal('random()'), limit: Number(req.params.cantidad) ,
     include: ['Categoria', {model: models.Comercio}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
 }
@@ -58,7 +58,7 @@ async function obtenerProductosSome(req,res){
     include: ['Categoria', {model: models.Comercio}]
   }))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
 }
@@ -68,7 +68,7 @@ async function getProductosComercio(req,res){
     where:{id_comercio: req.params.id, estado: 'A'},
     include: ['Categoria']
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
 }
@@ -84,7 +84,7 @@ async function getProductosBuscados(req,res){
     },
     include: ['Categoria']
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
 }
@@ -124,7 +124,7 @@ async function createProducto(req,res){
   
   let [err,producto]=await get(models.Producto.create(p))
   console.log(err);
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
 }
@@ -230,7 +230,7 @@ async function updateProducto(req,res){
       individualHooks: true
     }  
   ))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto[1][0].dataValues)
 }
@@ -249,7 +249,7 @@ async function deleteProducto(req,res){
     },
     individualHooks: true
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor ${err}`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(producto==null) return res.status(404).json({message: `Productos nulos`})
   res.status(200).json(producto)
 }

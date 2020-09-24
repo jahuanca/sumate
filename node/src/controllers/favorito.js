@@ -6,7 +6,7 @@ async function getFavoritos(req,res){
     where:{estado: 'A'},
     include: [{all: true}]
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(favoritos==null) return res.status(404).json({message: `Favoritos nulos`})
   res.status(200).json(favoritos)
 }
@@ -17,7 +17,7 @@ async function getFavorito(req,res){
     include: [{all: true}]
   }))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(favorito==null) return res.status(404).json({message: `Favoritos nulos`})
   res.status(200).json(favorito)
 }
@@ -26,7 +26,7 @@ async function getFavoritoProducto(req,res){
   let [err,favorito]=await get(models.Favorito.count({
     where:{id_producto: req.params.id, id_usuario: req.usuario ,estado: 'A'},
   }))
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(favorito==null) return res.status(404).json({message: `Favoritos nulos`})
   if(favorito>0){
     res.status(200).json(true)
@@ -46,7 +46,7 @@ async function createFavorito(req,res){
       usuario: 0
   }))
   console.log(err)
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(favorito==null) return res.status(404).json({message: `Favoritos nulos`})
   res.status(200).json(true)
 }
@@ -57,7 +57,7 @@ async function updateFavorito(req,res){
     where:{
       id_producto: req.params.id, id_usuario: req.usuario, estado:'A'
   }}));
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(favorito==null) return res.status(404).json({message: `Favoritos nulos`})
   res.status(200).json(false)
 }
@@ -68,7 +68,7 @@ async function deleteFavorito(req,res){
     where:{
       id_producto: req.params.id, id_usuario: req.usuario, estado:'A'
   }}));
-  if(err) return res.status(500).json({message: `Error en el servidor err`})
+  if(err) return res.status(500).json({message: `${err}`})
   if(favorito==null) return res.status(404).json({message: `Favoritos nulos`})
   res.status(200).json(false)
 }
