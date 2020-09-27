@@ -35,17 +35,17 @@ async function llenarUsuarios(){
   if(cantidad==0){
       let [err2,usuario]=await get(models.Usuario.create({
         id_tipo_usuario: 5,
-        username: 'huancaancajima@gmail.com',
-        password: '1234'
+        username: 'sumatepiura@gmail.com',
+        password: '05102020'
       },{individualHooks: true}))
       if(err2) console.log(`${err2}`);
       let [err3,administrador]=await get(models.Administrador.create({
         id_usuario: usuario.id,
         dni: '76208445',
-        nombre: 'José Antonio',
-        apellido:'Huanca Ancajima',
-        direccion:'Enace IV Etapa Mz H2 Lt 11',
-        celular: '989743471'
+        nombre: 'SUMATE',
+        apellido:'PIURA',
+        direccion:'No tiene dirección',
+        celular: '960546503'
       },{individualHooks: true}))
       console.log('Administrador creado')
       if(err3) console.log(`${err3}`);
