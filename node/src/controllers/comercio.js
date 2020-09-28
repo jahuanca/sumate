@@ -114,6 +114,7 @@ async function createAllComercio(req,res){
 }
 
 async function updateAllComercio(req,res){
+  console.log(req.body)
   try {
     const result = await models.sequelize.transaction(async (t) => {
       let usuario=null;

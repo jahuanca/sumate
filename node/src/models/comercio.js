@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
     longitud:{type: DataTypes.DOUBLE, allowNull:false, validate: {isNumeric: true}},
     celular: {type: DataTypes.STRING(9), allowNull: false, validate: {notEmpty: true, len: [9,9]}},
     
-    //TODO: modificar esa vista tambien xd 
     facebook: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [0,200]}},
     instagram: {type: DataTypes.STRING(200), allowNull: true, validate: {notEmpty: true, len: [0,200]}},
     whatsapp: {type: DataTypes.STRING(20), allowNull: true, validate: {notEmpty: true, len: [0,20]}},

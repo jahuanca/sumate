@@ -47,6 +47,7 @@ async function createDelivery(req,res){
 }
 
 async function createAllDelivery(req,res){
+  
   try {
     const result = await models.sequelize.transaction(async (t) => {
       let usuario=null;
@@ -103,11 +104,12 @@ async function createAllDelivery(req,res){
         c.imagenes=models.limpiar(c.imagenes)
       }
       let delivery=await get(models.Delivery.create(c,{ transaction: t }))
-      delivery.dataValues.Usuario=usuario;
+      delivery.Usuario=usuario;
       return delivery;
     });
     res.status(200).json(result)
   } catch (error) {
+    console.log(error);
     return res.status(500).json({message: `Error en el servidor ${error}`})
   }
 }
@@ -281,7 +283,7 @@ async function updateMiCuenta(req,res){
 
 async function validateCelular(req,res){
   let [err,delivery]=await get(models.Delivery.findOne({
-    where:{id: req.comercio, estado: 'A'}
+    where:{id: req.delivery, estado: 'A'}
   }))
   if(err) return res.status(500).json({message: `${err}`})
   if(delivery==null) return res.status(404).json({message: `Deliverys nulos`})

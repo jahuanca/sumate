@@ -106,7 +106,7 @@ async function isAuthOnlyDelivery(req, res, next){
     if(delivery==null) return res.status(404).json({message: `Deliverys nulos`})
     
     req.usuario=response[0]
-    req.comercio=delivery.id
+    req.delivery=delivery.id
     req.tipo=response[1]
     next()
 }
