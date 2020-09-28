@@ -236,6 +236,58 @@ async function deleteComercio(req,res){
   res.status(200).json(comercio)
 }
 
+async function updateMiCuenta(req,res){
+  let c={
+    id_tipo_comercio: req.body.id_tipo_comercio,
+    ruc: req.body.ruc,
+    nombre: req.body.nombre,
+    razon_social: req.body.razon_social,
+    direccion: req.body.direccion,
+    latitud: req.body.latitud,
+    longitud: req.body.longitud,
+    celular: req.body.celular,
+    hora_apertura: req.body.hora_apertura,
+    hora_cierre: req.body.hora_cierre,
+    facebook: models.limpiar(req.body.facebook),
+    instagram: models.limpiar(req.body.instagram),
+    whatsapp: models.limpiar(req.body.whatsapp),
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+    
+    accion: 'U',
+    accion_usuario: 'Edito un comercio.',
+    ip: req.ip,
+    usuario: 0
+  };
+  if(req.file){
+    c.imagenes=req.file.filename;
+  }
+  let [err,comercio]=await get(models.Comercio.update(c,{
+    where:{
+      id: req.comercio, estado:'A'
+    },
+    individualHooks: true,
+    validate: false
+  }))
+  if(err) return res.status(500).json({message: `${err}`})
+  if(comercio==null) return res.status(404).json({message: `Comercios nulos`})
+  res.status(200).json(comercio[1][0].dataValues)
+}
+
+async function validateCelular(req,res){
+  let [err,comercio]=await get(models.Comercio.findOne({
+    where:{id: req.comercio, estado: 'A'}
+  }))
+  if(err) return res.status(500).json({message: `${err}`})
+  if(comercio==null) return res.status(404).json({message: `Cliente nulos`})
+  if(!comercio.correctCodigo(req.body.codigo)){
+    return res.status(402).json({message: `Codigos no coinciden`})
+  }
+  comercio.validado=true;
+  comercio.save();
+  res.status(200).json(comercio)
+}
+
 function get(promise) {
   return promise.then(data => {
      return [null, data];
@@ -251,5 +303,7 @@ module.exports={
   createAllComercio,
   updateAllComercio,
   updateComercio,
-  deleteComercio
+  deleteComercio,
+  updateMiCuenta,
+  validateCelular
 }

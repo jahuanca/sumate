@@ -175,7 +175,7 @@ async function updatePassword(req,res){
   if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   if(!usuario.correctPassword(req.body.lastPassword)){
-    return res.status(401).json({message: `Codigos no coinciden`})
+    return res.status(402).json({message: `Codigos no coinciden`})
   }
   usuario.password=req.body.password;
   usuario.save();
@@ -189,7 +189,7 @@ async function updateCorreo(req,res){
   if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   if(!usuario.correctPassword(req.body.password)){
-    return res.status(401).json({message: `Codigos no coinciden`})
+    return res.status(402).json({message: `Codigos no coinciden`})
   }
   usuario.username=req.body.username;
   usuario.save();
@@ -221,7 +221,7 @@ async function validateCorreo(req,res){
   if(err) return res.status(500).json({message: `${err}`})
   if(usuario==null) return res.status(404).json({message: `Usuarios nulos`})
   if(!usuario.correctCodigo(req.body.codigo)){
-    return res.status(401).json({message: `Codigos no coinciden`})
+    return res.status(402).json({message: `Codigos no coinciden`})
   }
   usuario.validado=true;
   usuario.save();

@@ -32,10 +32,12 @@ const storage=multer.diskStorage({
 router.get('/',delivery.getDeliverys)
 router.get('/id/:id',delivery.getDelivery)
 router.get('/id_usuario/:id',delivery.getDeliveryUsuario)
+router.post('/validate',auth.isAuthOnlyDelivery,delivery.validateCelular)
 router.post('/create',delivery.createDelivery)
 router.post('/createAllDelivery',multer({storage: storage}).array('files',5) ,delivery.createAllDelivery)
 router.put('/updateAllDelivery', multer({storage: storage}).array('files',5) ,delivery.updateAllDelivery)
 router.put('/update', delivery.updateDelivery)
+router.put('/updateMiCuenta', auth.isAuthOnlyDelivery, multer({storage: storage}).single('files'),delivery.updateMiCuenta)
 router.delete('/delete/:id', delivery.deleteDelivery)
 
 module.exports=router

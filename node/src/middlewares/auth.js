@@ -89,6 +89,28 @@ async function isAuthOnlyComercio(req, res, next){
     next()
 }
 
+async function isAuthOnlyDelivery(req, res, next){
+    if(!req.headers.authorization){
+        return res.status(403).send({message: 'No tienes autorización'})
+    }
+    const token=req.headers.authorization.split(" ")[1]
+    
+    let [err, response]=await get(service.decodeToken(token))
+    if(err) return res.status(401).json(`Error en con el token ${err}`)
+
+    let [err2,delivery]=await get(models.Delivery.findOne({
+        where: {id_usuario: response[0]}
+    }))
+
+    if(err2) return res.status(500).json({message: `Error en el servidor ${err2}`})
+    if(delivery==null) return res.status(404).json({message: `Deliverys nulos`})
+    
+    req.usuario=response[0]
+    req.comercio=delivery.id
+    req.tipo=response[1]
+    next()
+}
+
 async function isAuthPonente(req, res, next){
     if(!req.headers.authorization){
         return res.status(403).send({message: 'No tienes autorización'})
@@ -118,6 +140,7 @@ async function isAuthPonente(req, res, next){
 module.exports={
     isAuthAdmin,
     isAuthUser,
+    isAuthOnlyDelivery,
     isAuthOnlyComercio,
     isAuthCliente,
     isAuthPonente

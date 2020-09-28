@@ -151,7 +151,7 @@ async function validateCelular(req,res){
   if(err) return res.status(500).json({message: `${err}`})
   if(administrador==null) return res.status(404).json({message: `Administrador nulos`})
   if(!administrador.correctCodigo(req.body.codigo)){
-    return res.status(401).json({message: `Codigos no coinciden`})
+    return res.status(402).json({message: `Codigos no coinciden`})
   }
   administrador.validado=true;
   administrador.save();

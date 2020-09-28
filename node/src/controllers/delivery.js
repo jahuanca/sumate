@@ -238,6 +238,61 @@ async function deleteDelivery(req,res){
   res.status(200).json(delivery)
 }
 
+async function updateMiCuenta(req,res){
+  let c={
+    ruc: req.body.ruc,
+    nombre: req.body.nombre,
+    razon_social: req.body.razon_social,
+    direccion: req.body.direccion,
+    latitud: req.body.latitud,
+    longitud: req.body.longitud,
+    celular: req.body.celular,
+
+    facebook: models.limpiar(req.body.facebook),
+    instagram: models.limpiar(req.body.instagram),
+    whatsapp: models.limpiar(req.body.whatsapp),
+    
+    hora_apertura: req.body.hora_apertura,
+    hora_cierre: req.body.hora_cierre,
+    restriccion: models.limpiar(req.body.restriccion),
+    condicion: models.limpiar(req.body.condicion),
+    descripcion: models.limpiar(req.body.descripcion),
+    observacion: models.limpiar(req.body.observacion),
+    
+    accion: 'U',
+    accion_usuario: 'Edito un delivery.',
+    ip: req.ip,
+    usuario: 0
+  };
+  if(req.file){
+    c.imagenes=req.file.filename;
+  }
+  let [err,delivery]=await get(models.Delivery.update(c,{
+    where:{
+      id: req.delivery, estado:'A'
+    },
+    individualHooks: true,
+    validate: false
+  }))
+  if(err) return res.status(500).json({message: `${err}`})
+  if(delivery==null) return res.status(404).json({message: `Deliverys nulos`})
+  res.status(200).json(delivery[1][0].dataValues)
+}
+
+async function validateCelular(req,res){
+  let [err,delivery]=await get(models.Delivery.findOne({
+    where:{id: req.comercio, estado: 'A'}
+  }))
+  if(err) return res.status(500).json({message: `${err}`})
+  if(delivery==null) return res.status(404).json({message: `Deliverys nulos`})
+  if(!delivery.correctCodigo(req.body.codigo)){
+    return res.status(402).json({message: `Codigos no coinciden`})
+  }
+  delivery.validado=true;
+  delivery.save();
+  res.status(200).json(delivery)
+}
+
 function get(promise) {
   return promise.then(data => {
      return [null, data];
@@ -253,5 +308,7 @@ module.exports={
   createAllDelivery,
   updateAllDelivery,
   updateDelivery,
-  deleteDelivery
+  deleteDelivery,
+  updateMiCuenta,
+  validateCelular
 }

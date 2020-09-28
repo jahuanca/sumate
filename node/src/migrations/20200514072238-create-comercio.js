@@ -34,6 +34,7 @@ module.exports = {
 
 
       validado: {type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false},
+      codigo_verificacion:{type: Sequelize.STRING(10), allowNull: true},
       hora_apertura: {type: Sequelize.DATE, allowNull: false},
       hora_cierre: {type: Sequelize.DATE, allowNull: false},
       valoracion: {type: Sequelize.DOUBLE, allowNull: true, validate: {isDecimal: true}, defaultValue: 0},
