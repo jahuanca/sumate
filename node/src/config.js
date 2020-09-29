@@ -12,6 +12,6 @@ module.exports={
     sizeZonas: 10,
     publicKey:'BKQku2VLuMvwe9syqCjyo7AlosAWLChw2hi3MWrmT_FG55Er6FGqZukxyrEP4Lnom6zBTjtY9rFH0tItN8Ho-KQ',
     privateKey: 'f4mlPVs8kUyaiZa1uDdQMO77H1HYFz_ey_yoxQJgsPc',
-    email: 'huancaancajima@gmail.com',
-    passwordEmail: '1234'
+    email: 'sumatepiura@gmail.com',
+    passwordEmail: 'alonsito@01'
 }

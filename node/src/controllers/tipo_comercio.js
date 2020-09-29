@@ -14,8 +14,10 @@ async function getTipo_Comercios(req,res){
 async function getTipo_ComerciosAll(req,res){
   let [err,tipo_comercios]=await get(models.Tipo_Comercio.findAll({
     where:{estado: 'A'},
-    include: [{model: models.Comercio, required: true}]
+    include: [{model: models.Comercio, required: true}],
+    order: ['nombre',[{model: models.Comercio}, 'nombre']]
   }))
+  console.log(err);
   if(err) return res.status(500).json({message: `${err}`})
   if(tipo_comercios==null) return res.status(404).json({message: `Tipo_Comercios nulos`})
   res.status(200).json(tipo_comercios)
